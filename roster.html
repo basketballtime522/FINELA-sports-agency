@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FINELA - ROSTER</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { 
+            font-family: 'Helvetica Neue', 'Pretendard', Arial, sans-serif; 
+            background-color: #FFFFFF; 
+            color: #111; 
+            padding: 80px 100px; 
+        }
+        
+        /* 상단 헤더 영역 */
+        header { margin-bottom: 60px; text-align: left; }
+        h1 { font-size: 4.5rem; font-weight: 900; letter-spacing: -2px; margin-bottom: 10px; }
+        .slogan { font-size: 1.2rem; color: #E60000; font-weight: 800; margin-bottom: 10px; letter-spacing: 1px; }
+        .sub-desc { font-size: 1.1rem; color: #888; font-weight: 500; }
+        
+        /* 4x3 선수단 그리드 */
+        .roster-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 40px;
+            max-width: 1600px;
+        }
+        
+        /* 개별 선수 카드 UI */
+        .player-card {
+            background: #F8F8F8;
+            border-radius: 16px;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+        .player-card:hover {
+            transform: translateY(-12px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+        }
+        
+        /* 이미지 영역 (호버 시 효과 포함) */
+        .image-placeholder {
+            width: 100%;
+            height: 400px;
+            background-color: #EBEBEB;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            font-size: 0.95rem;
+            font-weight: bold;
+            transition: all 0.4s ease;
+            text-align: center;
+            padding: 20px;
+        }
+        .player-card:hover .image-placeholder {
+            background-color: #E60000; /* 호버 시 FINELA Red 컬러로 전환되며 일러스트레이션 노출을 유도 */
+            color: #FFFFFF;
+        }
+        
+        /* 텍스트 정보 영역 */
+        .info { padding: 25px; background: #FFFFFF; border-top: 1px solid #EEE; }
+        .name { font-size: 1.6rem; font-weight: 800; margin-bottom: 8px; }
+        .details { color: #E60000; font-size: 1rem; font-weight: 700; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="slogan">PLAY WITH THE MEDALISTS</div>
+        <h1>ROSTER</h1>
+        <div class="sub-desc">2026 아이치-나고야 아시안게임 남자 농구 국가대표 명단</div>
+    </header>
+
+    <div class="roster-grid">
+        <!-- Guards -->
+        <div class="player-card">
+            <div class="image-placeholder">허훈 실사 사진<br>(Hover: 2D 일러스트 전환)</div>
+            <div class="info"><div class="name">허훈</div><div class="details">No.2 | Guard</div></div>
+        </div>
+        <div class="player-card">
+            <div class="image-placeholder">이정현 실사 사진<br>(Hover: 2D 일러스트 전환)</div>
+            <div class="info"><div class="name">이정현</div><div class="details">No.4 | Guard</div></div>
+        </div>
+        <div class="player-card">
+            <div class="image-placeholder">한호빈 실사 사진<br>(Hover: 2D 일러스트 전환)</div>
+            <div class="info"><div class="name">한호빈</div><div class="details">No.5 | Guard</div></div>
+        </div>
+        <div class="player-card">
+            <div class="image-placeholder">오재현 실사 사진<br>(Hover: 2D 일러스트 전환)</div>
+            <div class="info"><div class="name">오재현</div><div class="details">No.10 | Guard</div></div>
+        </div>
+
+        <!-- Forwards -->
+        <div class="player-card">
+            <div class="image-placeholder">최준용 실사 사진<br>(Hover: 2D 일러스트 전환)</div>
+            <div class="info"><div class="name">최준용</div><div class="details">No.3 | Forward</div></div>
+        </div>
+        <div class="player-card">
+            <div class="image-placeholder">송교창 실사 사진<br>(Hover: 2D 일러스트 전환)</div>
+            <div class="info"><div class="name">송교창</div><div class="details">No.11 | Forward</div></div>
+        </div>
+        <div class="player-card">
+            <div class="image-placeholder">안영준 실사 사진<br>(Hover: 2D 일러스트 전환)</div>
+            <div class="info"><div class="name">안영준</div><div class="details">No.8 | Forward</div></div>
+        </div>
+        <div class="player-card">
+            <div class="image-placeholder">이우석 실사 사진<br>(Hover: 2D 일러스트 전환)</div>
+            <div class="info"><div class="name">이우석</div><div class="details">No.12 | Forward</div></div>
+        </div>
+
+        <!-- Forwards / Centers -->
+        <div class="player-card">
+            <div class="image-placeholder">양재민 실사 사진<br>(Hover: 2D 일러스트 전환)</div>
+            <div class="info"><div class="name">양재민</div><div class="details">No.7 | Forward</div></div>
+        </div>
+        <div class="player-card">
+            <div class="image-placeholder">이원석 실사 사진<br>(Hover: 2D 일러스트 전환)</div>
+            <div class="info"><div class="name">이원석</div><div class="details">No.15 | Center</div></div>
+        </div>
+        <div class="player-card">
+            <div class="image-placeholder">하윤기 실사 사진<br>(Hover: 2D 일러스트 전환)</div>
+            <div class="info"><div class="name">하윤기</div><div class="details">No.22 | Center</div></div>
+        </div>
+        <div class="player-card">
+            <div class="image-placeholder">김종규 실사 사진<br>(Hover: 2D 일러스트 전환)</div>
+            <div class="info"><div class="name">김종규</div><div class="details">No.32 | Center</div></div>
+        </div>
+    </div>
+
+</body>
+</html>

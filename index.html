@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FINELA SPORTS AGENCY | Play With The Medalists</title>
+  
+  <!-- 웹폰트: Montserrat, Oswald, Permanent Marker & Pretendard -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,600;0,700;0,800;0,900;1,900&family=Oswald:wght@500;600;700&family=Permanent+Marker&family=Pretendard:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome 6 Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- 통합 스타일시트 -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- ============================================================================== -->
+  <!-- 1. GNB 헤더 (고정 투명 글래스모피즘 & 카트 버튼)                               -->
+  <!-- ============================================================================== -->
+  <header class="gnb-header" id="gnb">
+    <div class="gnb-container">
+      
+      <!-- 로고 영역 -->
+      <a href="#hero" class="brand-logo-wrap" title="FINELA SPORTS AGENCY">
+        <img src="FINELA agent.svg" alt="FINELA" class="brand-logo-img">
+        <span class="brand-tag">SPORTS AGENCY</span>
+      </a>
+
+      <!-- 네비게이션 메뉴 -->
+      <nav class="gnb-nav">
+        <ul class="nav-menu">
+          <li class="nav-item"><a href="#roster" class="nav-link">ROSTER</a></li>
+          <li class="nav-item"><a href="#services" class="nav-link">SERVICES</a></li>
+          <li class="nav-item"><a href="#store" class="nav-link">STORE</a></li>
+          <li class="nav-item"><a href="#partners" class="nav-link">PARTNERS</a></li>
+        </ul>
+      </nav>
+
+      <!-- 우측 액션 버튼 (장바구니 & 문의하기) -->
+      <div class="gnb-actions">
+        <!-- 장바구니 아이콘 버튼 -->
+        <button class="cart-icon-btn" id="openCartBtn" title="장바구니 열기">
+          <i class="fa-solid fa-cart-shopping"></i>
+          <span class="cart-badge" id="cartBadge">0</span>
+        </button>
+
+        <!-- 문의하기 CTA 알약 버튼 -->
+        <a href="#contact" class="btn-contact-pill">CONTACT US</a>
+
+        <!-- 모바일 햄버거 토글 -->
+        <button class="mobile-menu-toggle" id="mobileMenuBtn" aria-label="메뉴 토글">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- ============================================================================== -->
+  <!-- 2. 히어로 섹션 (PLAY WITH THE MEDALISTS)                                       -->
+  <!-- ============================================================================== -->
+  <section class="hero-section" id="hero">
+    
+    <!-- 앰비언트 배경 레이어 -->
+    <div class="hero-media-wrapper">
+      <canvas id="ambientCanvas"></canvas>
+      
+      <!-- 5가지 국대 승리/환호 사진 교차 슬라이드쇼 배경 -->
+      <div class="hero-slideshow" id="heroSlideshow">
+        <div class="hero-slide active" style="background-image: url('assets/hero/hero_slide_1.png');"></div>
+        <div class="hero-slide" style="background-image: url('assets/hero/hero_slide_2.png');"></div>
+        <div class="hero-slide" style="background-image: url('assets/hero/hero_slide_3.png');"></div>
+        <div class="hero-slide" style="background-image: url('assets/hero/hero_slide_4.png');"></div>
+        <div class="hero-slide" style="background-image: url('assets/hero/hero_slide_5.png');"></div>
+      </div>
+
+      <div class="court-grid-overlay"></div>
+      <div class="red-spotlight"></div>
+      <div class="hero-vignette"></div>
+    </div>
+
+    <!-- 히어로 텍스트 & 카피 -->
+    <div class="hero-content-container">
+      
+      <!-- 에이전시 뱃지 -->
+      <div class="agency-badge">
+        <span class="badge-dot"></span>
+        <span class="badge-text">ELITE BASKETBALL & ATHLETE MANAGEMENT</span>
+      </div>
+
+      <!-- 메인 슬로건 -->
+      <h1 class="main-slogan">
+        PLAY WITH THE<br>
+        <span style="color: var(--finela-red); text-shadow: 0 0 35px rgba(230,0,18,0.7);">MEDALISTS</span>
+      </h1>
+
+      <!-- 서브 카피 -->
+      <p class="hero-sub-copy">
+        우리는 선수의 한계를 넘어, <strong>새로운 브랜드 가치</strong>를 창출합니다.
+        <span class="sub-copy-en">KBL · 해외 리그 · 국가대표 엘리트 선수를 위한 프리미엄 통합 솔루션</span>
+      </p>
+
+      <!-- CTA 버튼 그룹 -->
+      <div class="hero-cta-group">
+        <a href="#roster" class="btn-explore-roster">
+          <span>EXPLORE ROSTER</span>
+        </a>
+        <a href="#services" class="btn-about-finela">
+          <span>ABOUT FINELA</span>
+        </a>
+      </div>
+
+      <!-- 히어로 슬라이드 인디케이터 도트 -->
+      <div class="hero-slide-dots" id="heroSlideDots">
+        <button class="slide-dot active" data-index="0" title="사진 1: 팀 포옹 세레머니"></button>
+        <button class="slide-dot" data-index="1" title="사진 2: 금메달 & 태극기"></button>
+        <button class="slide-dot" data-index="2" title="사진 3: 환호하는 메달리스트"></button>
+        <button class="slide-dot" data-index="3" title="사진 4: 승리의 헹가래"></button>
+        <button class="slide-dot" data-index="4" title="사진 5: 2026 아시안게임 시상대"></button>
+      </div>
+
+      <!-- 핵심 지표 메트릭 바 -->
+      <div class="hero-metrics-bar">
+        <div class="metric-item">
+          <div class="metric-val">28<span class="metric-accent">+</span></div>
+          <div class="metric-label">SIGNED ROSTER</div>
+        </div>
+        <div class="metric-divider"></div>
+        <div class="metric-item">
+          <div class="metric-val">$18.5M<span class="metric-accent">+</span></div>
+          <div class="metric-label">CONTRACT VALUE</div>
+        </div>
+        <div class="metric-divider"></div>
+        <div class="metric-item">
+          <div class="metric-val">8<span class="metric-star">★</span></div>
+          <div class="metric-label">NATIONAL MEDALISTS</div>
+        </div>
+        <div class="metric-divider"></div>
+        <div class="metric-item">
+          <div class="metric-val">100<span class="metric-accent">%</span></div>
+          <div class="metric-label">CAREER CARE</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- 바닥 스크롤 인디케이터 -->
+    <a href="#roster" class="scroll-down-indicator" title="선수단으로 이동">
+      <span>SCROLL DOWN</span>
+      <div class="scroll-mouse">
+        <div class="scroll-wheel"></div>
+      </div>
+      <i class="fa-solid fa-chevron-down scroll-arrow"></i>
+    </a>
+
+  </section>
+
+  <!-- ============================================================================== -->
+  <!-- 3. 선수단 섹션 (OUR ATHLETES - ROSTER)                                         -->
+  <!-- ============================================================================== -->
+  <section class="section roster-section" id="roster">
+    <div class="section-container">
+      
+      <!-- 섹션 헤더 -->
+      <div class="section-header">
+        <div class="section-tag">01 / ATHLETES ROSTER</div>
+        <h2 class="section-title">OUR ATHLETES</h2>
+        <p class="section-desc" style="color: var(--finela-red); font-weight: 700; letter-spacing: 1px;">
+          2026 AICHI-NAGOYA ASIAN GAMES ROSTER
+        </p>
+      </div>
+
+      <!-- 서브 내비게이션 & 필터 -->
+      <div class="roster-subnav">
+        <!-- 포지션 필터 버튼 -->
+        <div class="roster-filters">
+          <button class="filter-btn active" data-filter="all">ALL (12)</button>
+          <button class="filter-btn" data-filter="guard">GUARD</button>
+          <button class="filter-btn" data-filter="forward">FORWARD</button>
+          <button class="filter-btn" data-filter="center">CENTER</button>
+        </div>
+
+        <!-- 퀵 링크 -->
+        <div class="roster-links">
+          <a href="#services" class="roster-link-btn">EXPLORE SERVICES <i class="fa-solid fa-arrow-right"></i></a>
+          <a href="#store" class="roster-link-btn">VIEW STORE <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+      </div>
+
+      <!-- 12인 선수단 카드 그리드 (JS 동적 렌더링) -->
+      <div class="roster-grid" id="rosterGrid">
+        <!-- main.js에서 PLAYERS_DATA를 기반으로 12장의 카드가 자동 렌더링됩니다 -->
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============================================================================== -->
+  <!-- 4. 통합 서비스 섹션 (CORE SOLUTIONS)                                          -->
+  <!-- ============================================================================== -->
+  <section class="section services-section" id="services">
+    <div class="section-container">
+      
+      <div class="section-header">
+        <div class="section-tag">02 / CORE SOLUTIONS</div>
+        <h2 class="section-title">TOTAL MANAGEMENT SERVICES</h2>
+        <p class="section-desc">
+          선수로서의 전성기뿐 아니라 평생의 브랜드 가치를 구축하는 FINELA만의 3단계 프리미엄 솔루션
+        </p>
+      </div>
+
+      <!-- 3대 서비스 탭 내비게이션 -->
+      <div class="services-tab-nav">
+        <button class="svc-tab-btn active" data-tab="training">Performance Training</button>
+        <button class="svc-tab-btn" data-tab="accommodation">Premium Accommodation</button>
+        <button class="svc-tab-btn" data-tab="management">Management & Legal</button>
+      </div>
+
+      <!-- 탭 1: 퍼포먼스 트레이닝 -->
+      <div class="svc-tab-panel active" id="tab-training">
+        
+        <!-- 최첨단 시설 카드 -->
+        <div class="facility-feature-box">
+          <div class="facility-img-wrap">
+            <img src="assets/services/facility_hightech.jpg" alt="최첨단 퍼포먼스 센터" class="facility-img" loading="lazy">
+          </div>
+          <div class="facility-info-wrap">
+            <h3>최첨단 퍼포먼스 센터</h3>
+            <div class="facility-sub">데이터 기반의 체계적인 4단계 훈련 프로세스</div>
+            <p class="facility-desc">
+              FINELA 전용 훈련 센터는 NBA 및 유럽 명문 구단에서 사용하는 최신 모션 트래킹 시스템과 생체 데이터 분석 장비를 완비하고 있습니다. '정밀 분석 ➔ 맞춤형 프로그램 설계 ➔ 실전 적용 ➔ 피드백'의 체계적 프로세스로 선수의 약점을 지우고 강점을 극대화합니다.
+            </p>
+          </div>
+        </div>
+
+        <!-- 3인 전담 코치진 그리드 -->
+        <div class="coaches-grid">
+          <div class="coach-card">
+            <div class="coach-icon-box"><i class="fa-solid fa-dumbbell"></i></div>
+            <h4 class="coach-title">피지컬 트레이닝 코치</h4>
+            <div class="coach-sub">근력 강화 및 부상 방지</div>
+            <p class="coach-desc">개인별 신체 데이터(근력, 유연성, 체공 시간 등)를 정밀 분석하여 최적화된 웨이트 트레이닝과 가동성 훈련을 전담합니다.</p>
+          </div>
+
+          <div class="coach-card">
+            <div class="coach-icon-box"><i class="fa-solid fa-basketball"></i></div>
+            <h4 class="coach-title">스킬 & 전술 트레이너</h4>
+            <div class="coach-sub">포지션별 맞춤 실전 기술</div>
+            <p class="coach-desc">슈팅 폼 교정, 드리블 스킬, 포지션별 맞춤 전술 등 코트 위에서 즉시 활용 가능한 디테일한 기술 향상을 1:1 지도합니다.</p>
+          </div>
+
+          <div class="coach-card">
+            <div class="coach-icon-box"><i class="fa-solid fa-brain"></i></div>
+            <h4 class="coach-title">멘탈 퍼포먼스 코치</h4>
+            <div class="coach-sub">심리 상담 및 마인드 컨트롤</div>
+            <p class="coach-desc">큰 경기를 앞둔 중압감 극복, 슬럼프 탈출, 번아웃 방지를 위한 전문적인 스포츠 심리 상담을 정기적으로 지원합니다.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- 탭 2: 프리미엄 숙소 및 편의시설 -->
+      <div class="svc-tab-panel" id="tab-accommodation">
+        <div class="accommodation-grid">
+          
+          <!-- 숙소 및 F&B 블록 -->
+          <div class="acc-card">
+            <div class="acc-sub-block">
+              <h3 class="acc-title"><i class="fa-solid fa-bed text-red-500 mr-2" style="color: var(--finela-red);"></i> 프라이빗 하이엔드 숙소</h3>
+              <p class="acc-desc">최상의 수면과 완전한 휴식을 위해 인체공학적으로 설계된 1인 1실 프리미엄 룸을 제공합니다. 최고급 매트리스와 방음 설계로 완벽한 사생활을 보장합니다.</p>
+              <div class="acc-img-frame">
+                <img src="assets/services/facility_suite.jpg" alt="프라이빗 숙소" class="acc-img" loading="lazy">
+              </div>
+            </div>
+
+            <div class="acc-sub-block" style="border-top: 1px solid var(--border-subtle); padding-top: 24px;">
+              <h3 class="acc-title"><i class="fa-solid fa-utensils text-red-500 mr-2" style="color: var(--finela-red);"></i> 맞춤형 식음료 (F&B) 케어</h3>
+              <p class="acc-desc">전담 호텔 셰프와 스포츠 전문 영양사가 상주하여 맞춤형 식단을 제공합니다.</p>
+              <div class="bullet-list">
+                <div class="bullet-item"><i class="fa-solid fa-circle-check"></i> 정밀 혈액 검사 및 체성분 기반 식단 설계</div>
+                <div class="bullet-item"><i class="fa-solid fa-circle-check"></i> 훈련/경기 당일 컨디션에 맞춘 칼로리 및 수분 공급</div>
+                <div class="bullet-item"><i class="fa-solid fa-circle-check"></i> 도핑 프리(Doping-Free) 인증 커스텀 보충제 제작</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 부대시설 블록 -->
+          <div class="acc-card">
+            <h3 class="acc-title">최고급 부대시설 (Amenities)</h3>
+            <div class="amenities-list">
+              
+              <div class="amenity-row">
+                <div class="amenity-icon-box"><i class="fa-solid fa-person-swimming"></i></div>
+                <div class="amenity-content">
+                  <h4>인피니티 풀 & 하이드로 테라피</h4>
+                  <p>관절에 무리를 주지 않는 수중 재활 훈련과 빠른 젖산 분해를 돕는 냉온욕 교대 테라피 시설을 완비하고 있습니다.</p>
+                </div>
+              </div>
+
+              <div class="amenity-row">
+                <div class="amenity-icon-box"><i class="fa-solid fa-dumbbell"></i></div>
+                <div class="amenity-content">
+                  <h4>24h 프라이빗 헬스장</h4>
+                  <p>일반인의 출입이 완벽히 통제된 선수 전용 프리웨이트 및 유산소 존입니다. 언제든 원하는 시간에 개인 훈련이 가능합니다.</p>
+                </div>
+              </div>
+
+              <div class="amenity-row">
+                <div class="amenity-icon-box"><i class="fa-solid fa-snowflake"></i></div>
+                <div class="amenity-content">
+                  <h4>크라이오테라피 & 건식 사우나</h4>
+                  <p>영하 130도의 환경에서 극도로 지친 근육의 염증을 3분 만에 치료하는 첨단 장비와 혈액순환 사우나를 운영합니다.</p>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- 탭 3: 매니지먼트 및 법률 자문 -->
+      <div class="svc-tab-panel" id="tab-management">
+        <div class="management-grid">
+          
+          <div class="mgmt-card">
+            <div class="mgmt-icon"><i class="fa-solid fa-calendar-check"></i></div>
+            <h3 class="mgmt-title">1:1 라이프스타일 매니저</h3>
+            <div class="mgmt-sub">오직 경기에만 집중할 수 있는 완벽한 일상 지원</div>
+            <p class="mgmt-desc">운동 외적인 모든 행정적, 일상적 번거로움을 전담 매니저가 직접 해결합니다. 선수는 오직 코트 위 승리에만 집중하면 됩니다.</p>
+            
+            <div class="mgmt-items-list">
+              <div class="mgmt-item-box">
+                <i class="fa-solid fa-plane-departure"></i>
+                <span>전용 차량 지원, 항공권 및 원정 숙박 완벽 대행</span>
+              </div>
+              <div class="mgmt-item-box">
+                <i class="fa-solid fa-camera"></i>
+                <span>광고 화보 촬영 및 미디어 방송 인터뷰 일정 조율</span>
+              </div>
+              <div class="mgmt-item-box">
+                <i class="fa-solid fa-calculator"></i>
+                <span>파트너 세무사 연계를 통한 종합소득세 및 자산 관리</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="mgmt-card">
+            <div class="mgmt-icon"><i class="fa-solid fa-scale-balanced"></i></div>
+            <h3 class="mgmt-title">스포츠 법률 및 계약 자문단</h3>
+            <div class="mgmt-sub">최고의 대우와 철저한 권익 리스크 관리</div>
+            <p class="mgmt-desc">국제 스포츠 중재 재단(CAS) 규정 및 각 리그 샐러리캡에 정통한 스포츠 전문 변호인단이 가장 유리한 조건으로 선수의 권리를 보호합니다.</p>
+            
+            <div class="mgmt-items-list">
+              <div class="mgmt-item-box">
+                <i class="fa-solid fa-file-signature"></i>
+                <span>국내외 구단 연봉 협상, FA 이적 및 바이아웃 조율</span>
+              </div>
+              <div class="mgmt-item-box">
+                <i class="fa-solid fa-copyright"></i>
+                <span>브랜드 스폰서십, 초상권 및 상업 광고 계약 검토</span>
+              </div>
+              <div class="mgmt-item-box">
+                <i class="fa-solid fa-shield-halved"></i>
+                <span>악성 루머, 명예훼손에 대한 신속한 법적 대응 및 권익 보호</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============================================================================== -->
+  <!-- 5. 공식 스토어 섹션 (FINELA STORE)                                            -->
+  <!-- ============================================================================== -->
+  <section class="section store-section" id="store">
+    <div class="section-container">
+      
+      <div class="section-header">
+        <div class="section-tag">03 / OFFICIAL MERCHANDISE</div>
+        <h2 class="section-title">FINELA STORE</h2>
+        <p class="section-desc">
+          에이전시 공식 시그니처 굿즈 및 2026 아시안게임 국가대표 선수단 어센틱 컬렉션
+        </p>
+      </div>
+
+      <!-- 굿즈 상품 카드 그리드 (JS 동적 렌더링) -->
+      <div class="products-grid" id="productsGrid">
+        <!-- main.js에서 PRODUCTS_DATA 기반으로 6개 상품이 자동 렌더링됩니다 -->
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============================================================================== -->
+  <!-- 6. 공식 파트너사 섹션 (OUR PARTNERS & SPONSORS)                                -->
+  <!-- ============================================================================== -->
+  <section class="section sponsors-section" id="partners">
+    <div class="section-container">
+      
+      <div class="section-header">
+        <div class="section-tag">04 / BRAND PARTNERS</div>
+        <h2 class="section-title">OUR PARTNERS</h2>
+        <p class="section-desc">
+          FINELA와 함께 선수의 한계를 넘어, 새로운 브랜드 가치를 창출하는 글로벌 공식 후원사
+        </p>
+      </div>
+
+      <!-- 파트너 브랜드 카드 그리드 (JS 동적 렌더링) -->
+      <div class="sponsors-grid" id="sponsorsGrid">
+        <!-- main.js에서 SPONSORS_DATA 기반으로 8개 파트너사가 자동 렌더링됩니다 -->
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============================================================================== -->
+  <!-- 7. 문의 및 고객센터 섹션 (CONTACT US)                                         -->
+  <!-- ============================================================================== -->
+  <section class="section contact-section" id="contact">
+    <div class="section-container">
+      
+      <div class="section-header">
+        <div class="section-tag">05 / GET IN TOUCH</div>
+        <h2 class="section-title">CONTACT US</h2>
+        <p class="section-desc">
+          소속 선수 입단 문의, 브랜드 파트너십 및 스폰서십 제안 등 FINELA와의 협력을 기다립니다.
+        </p>
+      </div>
+
+      <div class="contact-split-grid">
+        
+        <!-- 좌측: 연락처 정보 및 소셜 링크 -->
+        <div class="contact-info-col">
+          <div>
+            <h3 class="contact-col-title">CONTACT INFORMATION</h3>
+            
+            <div class="contact-list">
+              <div class="contact-item">
+                <div class="contact-icon-box"><i class="fa-solid fa-location-dot"></i></div>
+                <div>
+                  <div class="contact-label">HEADQUARTERS</div>
+                  <div class="contact-val">서울특별시 강남구 테헤란로 123<br>FINELA 타워 15층 (우: 06234)</div>
+                </div>
+              </div>
+
+              <div class="contact-item">
+                <div class="contact-icon-box"><i class="fa-solid fa-phone"></i></div>
+                <div>
+                  <div class="contact-label">PHONE / FAX</div>
+                  <div class="contact-val">T: +82 2-1234-5678</div>
+                  <div class="contact-sub-val">F: +82 2-1234-5679</div>
+                </div>
+              </div>
+
+              <div class="contact-item">
+                <div class="contact-icon-box"><i class="fa-solid fa-envelope"></i></div>
+                <div>
+                  <div class="contact-label">EMAIL</div>
+                  <div class="contact-val">contact@finela-agency.com</div>
+                  <div class="contact-sub-val">파트너십 문의: partner@finela-agency.com</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 소셜 미디어 링크 -->
+          <div class="contact-social-wrap">
+            <div class="social-title">CONNECT WITH US</div>
+            <div class="social-links-row">
+              <a href="https://instagram.com" target="_blank" class="social-circle-link" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+              <a href="https://youtube.com" target="_blank" class="social-circle-link" title="YouTube"><i class="fa-brands fa-youtube"></i></a>
+              <a href="https://x.com" target="_blank" class="social-circle-link" title="X (Twitter)"><i class="fa-brands fa-x-twitter"></i></a>
+              <a href="https://linkedin.com" target="_blank" class="social-circle-link" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+            </div>
+          </div>
+        </div>
+
+        <!-- 우측: 문의 작성 폼 -->
+        <div class="contact-form-card">
+          <h3 class="contact-col-title" style="margin-bottom: 28px;">SEND A MESSAGE</h3>
+          
+          <form class="contact-form" id="contactForm">
+            <div class="form-row-2col">
+              <div class="form-group">
+                <label class="form-label" for="contactName">Name / Company</label>
+                <input type="text" id="contactName" class="form-input" placeholder="성함 또는 기업명" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="contactEmail">Email Address</label>
+                <input type="email" id="contactEmail" class="form-input" placeholder="회신받을 이메일" required>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="contactSubject">Subject</label>
+              <select id="contactSubject" class="form-select">
+                <option value="partnership">브랜드 파트너십 / 스폰서십 제안</option>
+                <option value="scout">선수 입단 및 매니지먼트 문의</option>
+                <option value="media">방송 출연 및 미디어 화보 촬영</option>
+                <option value="store">공식 스토어 대량 구매 / B2B</option>
+                <option value="other">기타 일반 문의</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="contactMsg">Message</label>
+              <textarea id="contactMsg" rows="5" class="form-textarea" placeholder="문의하실 내용을 상세히 기재해 주세요." required></textarea>
+            </div>
+
+            <button type="submit" class="btn-send-message" id="btnSendMessage">
+              <i class="fa-solid fa-paper-plane"></i> SEND MESSAGE
+            </button>
+
+            <!-- 전송 완료 피드백 알림 배너 -->
+            <div class="form-success-banner" id="formSuccessBanner">
+              <i class="fa-solid fa-circle-check mr-2"></i> 성공적으로 메시지가 전송되었습니다. 담당자가 빠른 시일 내에 회신드리겠습니다.
+            </div>
+          </form>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============================================================================== -->
+  <!-- 8. 글로벌 푸터 (GLOBAL FOOTER)                                                 -->
+  <!-- ============================================================================== -->
+  <footer class="global-footer" id="agency-footer">
+    <div class="footer-container">
+      
+      <div class="footer-top">
+        <div class="footer-brand">
+          <img src="FINELA agent.svg" alt="FINELA" class="footer-logo">
+          <p class="footer-company-info">
+            주식회사 피넬라 스포츠 에이전시 (FINELA SPORTS AGENCY)<br>
+            서울특별시 강남구 테헤란로 123 FINELA 타워 15층 | 대표이사: 김정현<br>
+            사업자등록번호: 120-88-12345 | 대표전화: 02-1234-5678<br>
+            이메일: contact@finela-agency.com
+          </p>
+        </div>
+
+        <div class="footer-links-group">
+          <div class="footer-col">
+            <h4>NAVIGATION</h4>
+            <ul>
+              <li><a href="#hero">HOME</a></li>
+              <li><a href="#roster">ROSTER</a></li>
+              <li><a href="#services">SERVICES</a></li>
+              <li><a href="#store">STORE</a></li>
+              <li><a href="#partners">PARTNERS</a></li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4>CONTACT</h4>
+            <ul>
+              <li><a href="#contact">GET IN TOUCH</a></li>
+              <li><a href="mailto:partner@finela-agency.com">PARTNERSHIP</a></li>
+              <li><a href="mailto:scout@finela-agency.com">SCOUT & CAREER</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div class="copyright">
+          &copy; 2026 FINELA SPORTS AGENCY. ALL RIGHTS RESERVED.
+        </div>
+        <div class="footer-terms">
+          <a href="#">개인정보처리방침</a>
+          <a href="#">이용약관</a>
+          <span style="color: #444;">|</span>
+          <span style="color: #555;">포트폴리오 가상 프로젝트</span>
+        </div>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- ============================================================================== -->
+  <!-- 9. 인터랙티브 모달 및 드로어 모듈                                              -->
+  <!-- ============================================================================== -->
+
+  <!-- A. 선수 상세 모달 (PLAYER DETAIL MODAL) -->
+  <div class="player-modal" id="playerModal">
+    <!-- 모달 좌우 넘김 버튼 -->
+    <button class="modal-nav-arrow modal-nav-prev" id="modalNavPrev" title="이전 선수 (왼쪽 화살표)"><i class="fa-solid fa-chevron-left"></i></button>
+    <button class="modal-nav-arrow modal-nav-next" id="modalNavNext" title="다음 선수 (오른쪽 화살표)"><i class="fa-solid fa-chevron-right"></i></button>
+
+    <div class="player-modal-container">
+      <button class="modal-close-btn" id="closePlayerModal" title="닫기">&times;</button>
+      
+      <!-- 상단: 선수 비주얼, 영상, 4대 스탯 -->
+      <div class="modal-hero-split">
+        
+        <!-- 좌측: 선수 실사 & 대형 등번호 워터마크 -->
+        <div class="modal-visual-col">
+          <div class="modal-watermark-number" id="modalWatermarkNum">1</div>
+          <div class="modal-athlete-figure">
+            <img src="assets/players/player_1_photo.jpg" alt="Player" class="modal-athlete-img" id="modalPlayerImg">
+          </div>
+          <div class="modal-player-header-box">
+            <h2 class="modal-player-name" id="modalPlayerName">LEE HYUN JUNG</h2>
+            <div class="modal-player-subinfo" id="modalPlayerKo">이현중 · 포워드 · #1</div>
+          </div>
+        </div>
+
+        <!-- 우측: 하이라이트 영상 박스 & 스탯 그리드 -->
+        <div class="modal-stats-col">
+          
+          <!-- 하이라이트 비디오 박스 -->
+          <div class="modal-video-card">
+            <img src="assets/detail/video_highlight_thumb.jpg" alt="Highlight Thumbnail" class="modal-video-thumbnail">
+            <div class="video-play-overlay" id="modalVideoPlayBtn">
+              <div class="video-play-btn"><i class="fa-solid fa-play"></i></div>
+            </div>
+            <div class="video-control-bar">
+              <span><i class="fa-solid fa-film mr-2 text-red-500"></i> OFFICIAL 4K GAME HIGHLIGHTS</span>
+              <span>03:45 / HD</span>
+            </div>
+          </div>
+
+          <!-- 4대 핵심 스탯 카드 -->
+          <div class="modal-stats-grid">
+            <div class="stat-metric-card">
+              <div class="stat-metric-label">PTS (득점)</div>
+              <div class="stat-metric-val" id="statPts">22.4</div>
+            </div>
+            <div class="stat-metric-card">
+              <div class="stat-metric-label">AST (도움)</div>
+              <div class="stat-metric-val" id="statAst">8.2</div>
+            </div>
+            <div class="stat-metric-card">
+              <div class="stat-metric-label">REB (리바운드)</div>
+              <div class="stat-metric-val" id="statReb">6.8</div>
+            </div>
+            <div class="stat-metric-card">
+              <div class="stat-metric-label">STL (스틸)</div>
+              <div class="stat-metric-val" id="statStl">1.8</div>
+            </div>
+          </div>
+
+          <!-- 신체 프로필 & 최근 뉴스 -->
+          <div class="modal-profile-news-grid">
+            <div class="profile-spec-card">
+              <div class="card-mini-title">PLAYER PROFILE</div>
+              <div class="spec-rows">
+                <div class="spec-item">
+                  <span class="spec-label">HEIGHT</span>
+                  <span class="spec-val" id="specHeight">201CM</span>
+                </div>
+                <div class="spec-item">
+                  <span class="spec-label">WEIGHT</span>
+                  <span class="spec-val" id="specWeight">95KG</span>
+                </div>
+                <div class="spec-item">
+                  <span class="spec-label">AGE</span>
+                  <span class="spec-val" id="specAge">24</span>
+                </div>
+              </div>
+              <div style="margin-top: 12px; font-size: 12px; color: var(--text-muted);" id="specTeam">
+                국가대표 · 일라와라 호크스
+              </div>
+            </div>
+
+            <div class="recent-news-card">
+              <div class="card-mini-title">RECENT NEWS</div>
+              <div class="news-list" id="modalNewsList">
+                <!-- JS 바인딩 -->
+              </div>
+            </div>
+          </div>
+
+          <!-- 액션 버튼 -->
+          <div class="modal-action-buttons">
+            <button class="btn-watch-highlight" onclick="alert('풀타임 경기 영상 링크로 이동합니다.')"><i class="fa-solid fa-play mr-2"></i> WATCH HIGHLIGHTS</button>
+            <button class="btn-career-stats" onclick="alert('선수 상세 커리어 기록 PDF를 다운로드합니다.')"><i class="fa-solid fa-chart-simple mr-2"></i> VIEW CAREER STATS</button>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- 하단: CF & 방송 출연 및 인스타그램 소식 -->
+      <div class="modal-extra-section">
+        
+        <!-- 방송 & CF -->
+        <div>
+          <h3 class="extra-group-title">COMMERCIAL & BROADCAST</h3>
+          <div class="extra-group-sub">브랜드 앰버서더 및 주요 방송 출연 활동</div>
+          <div class="cf-cards-grid" id="modalCfGrid">
+            <!-- JS 바인딩 -->
+          </div>
+        </div>
+
+        <!-- 공식 소셜 미디어 -->
+        <div>
+          <div class="insta-header-row">
+            <div>
+              <h3 class="extra-group-title">OFFICIAL SOCIAL MEDIA</h3>
+              <div class="extra-group-sub">인스타그램 피드 및 최신 경기장 소식</div>
+            </div>
+            <span class="follow-badge">FOLLOW @ATHLETE</span>
+          </div>
+          <div class="insta-cards-grid" id="modalInstaGrid">
+            <!-- JS 바인딩 -->
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <!-- B. 상품 상세 퀵뷰 모달 (PRODUCT MODAL) -->
+  <div class="product-modal" id="productModal">
+    <div class="product-modal-box">
+      <button class="modal-close-btn" id="closeProdModal">&times;</button>
+      
+      <div class="prod-modal-img-wrap">
+        <img src="" alt="Product" class="prod-modal-img" id="prodModalImg">
+      </div>
+
+      <div class="prod-modal-info">
+        <h3 class="prod-modal-title" id="prodModalTitle">Product Name</h3>
+        <div class="prod-modal-price" id="prodModalPrice">₩0</div>
+        <p class="prod-modal-desc" id="prodModalDesc">Product Description</p>
+
+        <!-- 사이즈 선택기 -->
+        <div class="size-selector-group" id="prodModalSizeGroup">
+          <div class="size-label">SELECT SIZE</div>
+          <div class="size-options" id="prodSizeOptions">
+            <!-- JS 바인딩 -->
+          </div>
+        </div>
+
+        <button class="btn-add-cart" id="btnAddCart">
+          <i class="fa-solid fa-cart-plus"></i> ADD TO CART
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- C. 슬라이딩 장바구니 드로어 (CART DRAWER) -->
+  <div class="cart-drawer-overlay" id="cartOverlay"></div>
+  <div class="cart-drawer" id="cartDrawer">
+    <div class="cart-drawer-header">
+      <h3 class="cart-drawer-title"><i class="fa-solid fa-bag-shopping text-red-500 mr-2" style="color: var(--finela-red);"></i> YOUR CART</h3>
+      <button class="modal-close-btn" style="position: static;" id="closeCartBtn">&times;</button>
+    </div>
+
+    <div class="cart-items-list" id="cartItemsList">
+      <!-- 장바구니 아이템들 -->
+    </div>
+
+    <div class="cart-drawer-footer">
+      <div class="cart-total-row">
+        <span>TOTAL (배송비 무료)</span>
+        <span class="cart-total-price" id="cartTotalPrice">₩0</span>
+      </div>
+      <button class="btn-checkout" id="btnCheckout">
+        PROCEED TO CHECKOUT
+      </button>
+    </div>
+  </div>
+
+  <!-- 데이터 및 메인 JS 로드 (순서 중요: finela-data.js -> main.js) -->
+  <script src="finela-data.js"></script>
+  <script src="main.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>FINELA Services</title>
+    <!-- Tailwind CSS for rapid styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700;900&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { 
+                        finelaRed: '#e60012', 
+                        darkBg: '#0a0a0a', 
+                        cardBg: '#141414',
+                        cardHover: '#1f1f1f'
+                    },
+                    fontFamily: { 
+                        sans: ['"Noto Sans KR"', 'sans-serif'], 
+                        display: ['Oswald', 'sans-serif'] 
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body { 
+            background-color: #0a0a0a; 
+            color: white; 
+        }
+        /* Tab Content Animation */
+        .tab-content { 
+            display: none; 
+            animation: fadeIn 0.5s ease-out forwards; 
+        }
+        .tab-content.active { 
+            display: block; 
+        }
+        /* Tab Button Styling */
+        .tab-btn { 
+            position: relative; 
+            transition: all 0.3s ease; 
+        }
+        .tab-btn::after {
+            content: ''; 
+            position: absolute; 
+            bottom: -2px; 
+            left: 0; 
+            width: 0%; 
+            height: 3px; 
+            background-color: #e60012; 
+            transition: all 0.3s ease;
+        }
+        .tab-btn.active::after { 
+            width: 100%; 
+        }
+        .tab-btn.active { 
+            color: #e60012; 
+        }
+        
+        @keyframes fadeIn { 
+            from { opacity: 0; transform: translateY(15px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
+    </style>
+</head>
+<body class="min-h-screen p-8 lg:p-20 bg-darkBg text-white antialiased font-sans flex flex-col items-center">
+    
+    <!-- Page Header -->
+    <div class="w-full max-w-6xl mb-12 flex flex-col border-b border-gray-800 pb-8">
+        <h1 class="text-finelaRed font-display text-5xl md:text-6xl font-bold tracking-wider mb-4">OUR SERVICES</h1>
+        <p class="text-gray-400 text-lg md:text-xl">선수의 가치를 극대화하는 FINELA만의 프리미엄 통합 솔루션</p>
+    </div>
+
+    <!-- Tab Navigation -->
+    <div class="w-full max-w-6xl flex flex-wrap gap-8 md:gap-12 mb-12 border-b border-gray-800 pb-2 text-xl font-bold text-gray-600">
+        <button onclick="openTab('training')" id="btn-training" class="tab-btn active pb-4 hover:text-gray-200 uppercase tracking-wide">Performance Training</button>
+        <button onclick="openTab('accommodation')" id="btn-accommodation" class="tab-btn pb-4 hover:text-gray-200 uppercase tracking-wide">Premium Accommodation</button>
+        <button onclick="openTab('management')" id="btn-management" class="tab-btn pb-4 hover:text-gray-200 uppercase tracking-wide">Management & Legal</button>
+    </div>
+
+    <!-- Tab Contents Container -->
+    <div class="w-full max-w-6xl relative">
+        
+        <!-- ==========================================
+             TAB 1: TRAINING 
+             ========================================== -->
+        <div id="training" class="tab-content active">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                
+                <!-- Training Center Info -->
+                <div class="col-span-1 lg:col-span-3 bg-cardBg p-8 lg:p-12 rounded-xl border border-gray-800 flex flex-col md:flex-row gap-8 items-center mb-4">
+                    <div class="w-full md:w-5/12 h-64 bg-gray-900 rounded-lg flex flex-col items-center justify-center text-gray-600 border border-gray-800 relative overflow-hidden">
+                        <i class="fa-solid fa-chart-line text-7xl mb-4 text-gray-700"></i>
+                        <span class="text-sm font-bold tracking-widest uppercase">High-Tech Facility</span>
+                    </div>
+                    <div class="w-full md:w-7/12">
+                        <h2 class="text-3xl font-bold mb-4 text-white">최첨단 퍼포먼스 센터</h2>
+                        <h3 class="text-finelaRed font-bold mb-4">데이터 기반의 체계적인 훈련 프로세스</h3>
+                        <p class="text-gray-400 leading-relaxed mb-6">FINELA 전용 훈련 센터는 NBA 및 유럽 명문 구단에서 사용하는 최신 모션 트래킹 시스템과 생체 데이터 분석 장비를 갖추고 있습니다. '정밀 분석 ➔ 맞춤형 프로그램 설계 ➔ 실전 적용 ➔ 피드백'의 4단계 훈련 프로세스를 통해 선수의 약점을 지우고 강점을 극대화합니다.</p>
+                    </div>
+                </div>
+
+                <!-- Coaches -->
+                <div class="bg-cardBg p-8 rounded-xl border border-gray-800 text-center hover:bg-cardHover transition-colors">
+                    <div class="w-20 h-20 bg-gray-900 rounded-full mx-auto mb-6 border border-finelaRed flex items-center justify-center">
+                        <i class="fa-solid fa-dumbbell text-2xl text-finelaRed"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-1">피지컬 트레이닝 코치</h3>
+                    <p class="text-finelaRed text-sm mb-4 font-bold">근력 강화 및 부상 방지</p>
+                    <p class="text-gray-400 text-sm leading-relaxed">개인별 신체 데이터(근력, 유연성, 체공 시간 등)를 분석하여 최적화된 웨이트 트레이닝과 가동성 훈련을 전담합니다.</p>
+                </div>
+                
+                <div class="bg-cardBg p-8 rounded-xl border border-gray-800 text-center hover:bg-cardHover transition-colors">
+                    <div class="w-20 h-20 bg-gray-900 rounded-full mx-auto mb-6 border border-finelaRed flex items-center justify-center">
+                        <i class="fa-solid fa-basketball text-2xl text-finelaRed"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-1">스킬 & 전술 트레이너</h3>
+                    <p class="text-finelaRed text-sm mb-4 font-bold">포지션별 맞춤 실전 기술</p>
+                    <p class="text-gray-400 text-sm leading-relaxed">슈팅 폼 교정, 드리블 스킬, 포지션별 맞춤 전술 등 코트 위에서 즉시 활용 가능한 디테일한 기술 향상을 지도합니다.</p>
+                </div>
+                
+                <div class="bg-cardBg p-8 rounded-xl border border-gray-800 text-center hover:bg-cardHover transition-colors">
+                    <div class="w-20 h-20 bg-gray-900 rounded-full mx-auto mb-6 border border-finelaRed flex items-center justify-center">
+                        <i class="fa-solid fa-brain text-2xl text-finelaRed"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-1">멘탈 퍼포먼스 코치</h3>
+                    <p class="text-finelaRed text-sm mb-4 font-bold">심리 상담 및 마인드 컨트롤</p>
+                    <p class="text-gray-400 text-sm leading-relaxed">큰 경기를 앞둔 중압감 극복, 슬럼프 탈출, 번아웃 방지를 위한 전문적인 스포츠 심리 상담을 정기적으로 진행합니다.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==========================================
+             TAB 2: ACCOMMODATION 
+             ========================================== -->
+        <div id="accommodation" class="tab-content">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                
+                <!-- Room & F&B -->
+                <div class="bg-cardBg p-8 lg:p-12 rounded-xl border border-gray-800 flex flex-col justify-between">
+                    <div class="mb-10">
+                        <i class="fa-solid fa-bed text-finelaRed text-4xl mb-6"></i>
+                        <h3 class="text-3xl font-bold mb-4">프라이빗 하이엔드 숙소</h3>
+                        <p class="text-gray-400 leading-relaxed">최상의 수면과 완전한 휴식을 위해 인체공학적으로 설계된 1인 1실 프리미엄 룸을 제공합니다. 최고급 매트리스와 방음 설계로 훈련 외 시간에는 완벽한 사생활과 재충전의 시간을 보장합니다.</p>
+                    </div>
+                    
+                    <div class="border-t border-gray-800 pt-10">
+                        <i class="fa-solid fa-utensils text-finelaRed text-4xl mb-6"></i>
+                        <h3 class="text-3xl font-bold mb-4">맞춤형 식음료 (F&B) 케어</h3>
+                        <p class="text-gray-400 leading-relaxed mb-4">전담 호텔 셰프와 스포츠 전문 영양사가 상주합니다.</p>
+                        <ul class="text-gray-400 text-sm space-y-2">
+                            <li><i class="fa-solid fa-circle-check text-finelaRed mr-2"></i> 정밀 혈액 검사 및 체성분 기반 식단 설계</li>
+                            <li><i class="fa-solid fa-circle-check text-finelaRed mr-2"></i> 훈련/경기 당일 컨디션에 맞춘 칼로리 및 수분 공급</li>
+                            <li><i class="fa-solid fa-circle-check text-finelaRed mr-2"></i> 도핑 프리(Doping-Free) 인증 커스텀 보충제 제작</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Amenities -->
+                <div class="bg-cardBg p-8 lg:p-12 rounded-xl border border-gray-800">
+                    <h3 class="text-3xl font-bold mb-8">최고급 부대시설 (Amenities)</h3>
+                    <div class="space-y-8">
+                        <div class="flex items-start gap-6">
+                            <div class="w-16 h-16 rounded-lg bg-gray-900 border border-gray-800 flex items-center justify-center shrink-0">
+                                <i class="fa-solid fa-person-swimming text-finelaRed text-2xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-xl mb-2">인피니티 풀 & 하이드로 테라피</h4>
+                                <p class="text-gray-400 text-sm leading-relaxed">관절에 무리를 주지 않는 수중 재활 훈련과 빠른 젖산 분해를 돕는 냉온욕 교대 테라피 시설을 완비하고 있습니다.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start gap-6">
+                            <div class="w-16 h-16 rounded-lg bg-gray-900 border border-gray-800 flex items-center justify-center shrink-0">
+                                <i class="fa-solid fa-dumbbell text-finelaRed text-2xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-xl mb-2">24h 프라이빗 헬스장</h4>
+                                <p class="text-gray-400 text-sm leading-relaxed">일반인의 출입이 완벽히 통제된 선수 전용 프리웨이트 및 유산소 존입니다. 언제든 원하는 시간에 개인 훈련이 가능합니다.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start gap-6">
+                            <div class="w-16 h-16 rounded-lg bg-gray-900 border border-gray-800 flex items-center justify-center shrink-0">
+                                <i class="fa-solid fa-snowflake text-finelaRed text-2xl"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-xl mb-2">크라이오테라피 & 건식 사우나</h4>
+                                <p class="text-gray-400 text-sm leading-relaxed">영하 130도의 환경에서 극도로 지친 근육의 염증을 3분 만에 치료하는 첨단 장비와 혈액순환을 돕는 사우나를 운영합니다.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+
+        <!-- ==========================================
+             TAB 3: MANAGEMENT 
+             ========================================== -->
+        <div id="management" class="tab-content">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                
+                <!-- Lifestyle Managers -->
+                <div class="bg-cardBg p-8 lg:p-12 rounded-xl border border-gray-800 relative overflow-hidden group hover:border-gray-600 transition-colors">
+                    <i class="fa-solid fa-calendar-check text-finelaRed text-5xl mb-6"></i>
+                    <h3 class="text-3xl font-bold mb-4">1:1 라이프스타일 매니저</h3>
+                    <h4 class="text-finelaRed font-bold mb-6">오직 경기에만 집중할 수 있는 완벽한 일상</h4>
+                    <p class="text-gray-400 mb-8 leading-relaxed">운동 외적인 모든 행정적, 일상적 번거로움을 매니저가 직접 해결합니다. 선수는 오직 코트 위에서의 퍼포먼스에만 집중하면 됩니다.</p>
+                    
+                    <ul class="space-y-4 text-gray-300">
+                        <li class="flex items-center gap-3 bg-gray-900 p-3 rounded-md border border-gray-800">
+                            <i class="fa-solid fa-plane-departure text-finelaRed w-5 text-center"></i> 
+                            <span>차량 지원, 항공권 및 원정 숙박 완벽 대행</span>
+                        </li>
+                        <li class="flex items-center gap-3 bg-gray-900 p-3 rounded-md border border-gray-800">
+                            <i class="fa-solid fa-camera text-finelaRed w-5 text-center"></i> 
+                            <span>광고 화보 촬영 및 미디어 인터뷰 일정 조율</span>
+                        </li>
+                        <li class="flex items-center gap-3 bg-gray-900 p-3 rounded-md border border-gray-800">
+                            <i class="fa-solid fa-calculator text-finelaRed w-5 text-center"></i> 
+                            <span>파트너 세무사 연계를 통한 종합소득세 및 자산 관리</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Legal & Contract -->
+                <div class="bg-cardBg p-8 lg:p-12 rounded-xl border border-gray-800 relative overflow-hidden group hover:border-gray-600 transition-colors">
+                    <i class="fa-solid fa-scale-balanced text-finelaRed text-5xl mb-6"></i>
+                    <h3 class="text-3xl font-bold mb-4">스포츠 법률 및 계약 자문단</h3>
+                    <h4 class="text-finelaRed font-bold mb-6">최고의 대우와 철저한 리스크 관리</h4>
+                    <p class="text-gray-400 mb-8 leading-relaxed">국제 스포츠 중재 재단(CAS) 규정 및 각 리그 샐러리캡에 정통한 변호인단이 가장 유리한 조건으로 선수의 권리를 입증하고 보호합니다.</p>
+                    
+                    <ul class="space-y-4 text-gray-300">
+                        <li class="flex items-center gap-3 bg-gray-900 p-3 rounded-md border border-gray-800">
+                            <i class="fa-solid fa-file-signature text-finelaRed w-5 text-center"></i> 
+                            <span>국내외 구단 연봉 협상, FA 이적 및 바이아웃 조율</span>
+                        </li>
+                        <li class="flex items-center gap-3 bg-gray-900 p-3 rounded-md border border-gray-800">
+                            <i class="fa-solid fa-copyright text-finelaRed w-5 text-center"></i> 
+                            <span>브랜드 스폰서십, 초상권 및 상업 광고 계약 검토</span>
+                        </li>
+                        <li class="flex items-center gap-3 bg-gray-900 p-3 rounded-md border border-gray-800">
+                            <i class="fa-solid fa-shield-halved text-finelaRed w-5 text-center"></i> 
+                            <span>악플러 고소, 명예훼손 등 위기 발생 시 즉각적 법적 대응</span>
+                        </li>
+                    </ul>
+                </div>
+                
+            </div>
+        </div>
+
+    </div>
+
+    <!-- JavaScript for Tab Interaction -->
+    <script>
+        function openTab(tabName) {
+            // 1. 모든 탭 콘텐츠 숨기기
+            var contents = document.getElementsByClassName("tab-content");
+            for (var i = 0; i < contents.length; i++) {
+                contents[i].classList.remove("active");
+            }
+            
+            // 2. 모든 탭 버튼에서 활성화 스타일 제거
+            var buttons = document.getElementsByClassName("tab-btn");
+            for (var i = 0; i < buttons.length; i++) {
+                buttons[i].classList.remove("active");
+            }
+            
+            // 3. 클릭한 탭 콘텐츠 보이기 및 버튼 활성화
+            document.getElementById(tabName).classList.add("active");
+            document.getElementById("btn-" + tabName).classList.add("active");
+        }
+    </script>
+</body>
+</html>

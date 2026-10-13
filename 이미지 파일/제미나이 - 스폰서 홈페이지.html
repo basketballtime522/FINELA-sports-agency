@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FINELA - Our Partners</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700;900&family=Oswald:wght@500;700&family=Permanent+Marker&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { 
+                        finelaRed: '#e60012', 
+                        darkBg: '#0a0a0a', 
+                        cardBg: '#141414',
+                        cardBorder: '#222222'
+                    },
+                    fontFamily: { 
+                        sans: ['"Noto Sans KR"', 'sans-serif'], 
+                        display: ['Oswald', 'sans-serif'],
+                        brush: ['"Permanent Marker"', 'cursive'] 
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body { 
+            background-color: #0a0a0a; 
+            color: white; 
+        }
+        
+        /* Smooth Scroll */
+        html { scroll-behavior: smooth; }
+
+        /* Custom Grayscale to Color & Glow Transition */
+        .partner-card {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            filter: grayscale(100%) opacity(60%);
+        }
+        
+        .partner-card:hover {
+            filter: grayscale(0%) opacity(100%);
+            transform: translateY(-8px) scale(1.02);
+            border-color: #e60012;
+            box-shadow: 0 0 25px rgba(230, 0, 18, 0.4);
+        }
+        
+        /* Custom Brand Colors on Hover (applied to icons via group-hover in HTML) */
+        .hover-nike:hover i { color: #ffffff; }
+        .hover-gatorade:hover i { color: #ff5e00; }
+        .hover-samsung:hover i { color: #1428a0; }
+        .hover-skt:hover i { color: #e60012; }
+        .hover-kb:hover i { color: #ffbc00; }
+        .hover-koreanair:hover i { color: #00256c; text-shadow: 0 0 10px rgba(0, 193, 255, 0.5); }
+    </style>
+</head>
+<body class="min-h-screen font-sans antialiased flex flex-col">
+
+    <nav class="fixed w-full z-50 bg-darkBg/90 backdrop-blur-md border-b border-gray-800">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8 h-20 flex items-center justify-between">
+            <!-- FINELA Logo -->
+            <a href="#" class="font-brush text-4xl text-finelaRed tracking-wider hover:scale-105 transition-transform">FINELA</a>
+            
+            <!-- Menu Links -->
+            <div class="hidden md:flex space-x-8 font-display font-bold text-lg tracking-widest text-gray-400 uppercase">
+                <a href="#" class="hover:text-white transition-colors">Roster</a>
+                <a href="#" class="hover:text-white transition-colors">Services</a>
+                <a href="#" class="hover:text-white transition-colors">Shop</a>
+                <a href="#" class="text-finelaRed border-b-2 border-finelaRed pb-1">Sponsors</a>
+            </div>
+            
+            <!-- Mobile Menu Icon (Visual Only) -->
+            <button class="md:hidden text-gray-300 hover:text-white text-2xl">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <header class="pt-40 pb-16 px-6 text-center max-w-4xl mx-auto">
+        <h1 class="text-5xl md:text-6xl font-bold font-display text-finelaRed mb-6 tracking-wider uppercase">Our Partners</h1>
+        <p class="text-gray-400 text-lg md:text-xl leading-relaxed">
+            FINELA와 함께 선수의 한계를 넘어, 새로운 브랜드 가치를 창출하는 공식 후원사입니다. <br class="hidden md:block">
+            세계 최고의 기업들이 FINELA의 철학과 선수들의 비전을 지지합니다.
+        </p>
+    </header>
+
+    <main class="flex-grow max-w-7xl mx-auto px-6 pb-32 w-full">
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8">
+            
+            <!-- Partner 1: NIKE -->
+            <a href="https://www.nike.com/kr" target="_blank" class="group partner-card hover-nike flex flex-col items-center justify-center bg-cardBg border border-cardBorder rounded-2xl p-8 aspect-square text-center">
+                <i class="fa-solid fa-check text-5xl md:text-6xl text-gray-500 transition-colors duration-300 mb-6"></i>
+                <h2 class="font-display font-bold text-2xl tracking-widest text-white">NIKE</h2>
+                <p class="text-xs text-gray-500 mt-2 font-bold uppercase tracking-widest">Official Kit Sponsor</p>
+            </a>
+
+            <!-- Partner 2: GATORADE -->
+            <a href="https://gatorade.co.kr/" target="_blank" class="group partner-card hover-gatorade flex flex-col items-center justify-center bg-cardBg border border-cardBorder rounded-2xl p-8 aspect-square text-center">
+                <i class="fa-solid fa-bolt text-5xl md:text-6xl text-gray-500 transition-colors duration-300 mb-6"></i>
+                <h2 class="font-display font-bold text-2xl tracking-widest text-white">GATORADE</h2>
+                <p class="text-xs text-gray-500 mt-2 font-bold uppercase tracking-widest">Beverage Partner</p>
+            </a>
+
+            <!-- Partner 3: SAMSUNG -->
+            <a href="https://www.samsung.com/" target="_blank" class="group partner-card hover-samsung flex flex-col items-center justify-center bg-cardBg border border-cardBorder rounded-2xl p-8 aspect-square text-center">
+                <i class="fa-solid fa-mobile-screen-button text-5xl md:text-6xl text-gray-500 transition-colors duration-300 mb-6"></i>
+                <h2 class="font-display font-bold text-2xl tracking-widest text-white">SAMSUNG</h2>
+                <p class="text-xs text-gray-500 mt-2 font-bold uppercase tracking-widest">Main Sponsor</p>
+            </a>
+
+            <!-- Partner 4: SK TELECOM -->
+            <a href="https://www.sktelecom.com/" target="_blank" class="group partner-card hover-skt flex flex-col items-center justify-center bg-cardBg border border-cardBorder rounded-2xl p-8 aspect-square text-center">
+                <i class="fa-solid fa-signal text-5xl md:text-6xl text-gray-500 transition-colors duration-300 mb-6"></i>
+                <h2 class="font-display font-bold text-2xl tracking-widest text-white">SK TELECOM</h2>
+                <p class="text-xs text-gray-500 mt-2 font-bold uppercase tracking-widest">5G & Tech Partner</p>
+            </a>
+
+            <!-- Partner 5: KB KOOKMIN BANK -->
+            <a href="https://www.kbstar.com/" target="_blank" class="group partner-card hover-kb flex flex-col items-center justify-center bg-cardBg border border-cardBorder rounded-2xl p-8 aspect-square text-center">
+                <i class="fa-solid fa-building-columns text-5xl md:text-6xl text-gray-500 transition-colors duration-300 mb-6"></i>
+                <h2 class="font-display font-bold text-2xl tracking-widest text-white">KB BANK</h2>
+                <p class="text-xs text-gray-500 mt-2 font-bold uppercase tracking-widest">Financial Partner</p>
+            </a>
+
+            <!-- Partner 6: KOREAN AIR -->
+            <a href="https://www.koreanair.com/" target="_blank" class="group partner-card hover-koreanair flex flex-col items-center justify-center bg-cardBg border border-cardBorder rounded-2xl p-8 aspect-square text-center">
+                <i class="fa-solid fa-plane-up text-5xl md:text-6xl text-gray-500 transition-colors duration-300 mb-6"></i>
+                <h2 class="font-display font-bold text-2xl tracking-widest text-white">KOREAN AIR</h2>
+                <p class="text-xs text-gray-500 mt-2 font-bold uppercase tracking-widest">Official Airline</p>
+            </a>
+
+            <!-- Partner 7: HYUNDAI MOTORS -->
+            <a href="https://www.hyundai.com/" target="_blank" class="group partner-card flex flex-col items-center justify-center bg-cardBg border border-cardBorder rounded-2xl p-8 aspect-square text-center">
+                <i class="fa-solid fa-car text-5xl md:text-6xl text-gray-500 group-hover:text-gray-300 transition-colors duration-300 mb-6"></i>
+                <h2 class="font-display font-bold text-2xl tracking-widest text-white">HYUNDAI</h2>
+                <p class="text-xs text-gray-500 mt-2 font-bold uppercase tracking-widest">Mobility Partner</p>
+            </a>
+
+            <!-- Partner 8: RED BULL -->
+            <a href="https://www.redbull.com/" target="_blank" class="group partner-card flex flex-col items-center justify-center bg-cardBg border border-cardBorder rounded-2xl p-8 aspect-square text-center">
+                <i class="fa-solid fa-bullhorn text-5xl md:text-6xl text-gray-500 group-hover:text-red-500 transition-colors duration-300 mb-6"></i>
+                <h2 class="font-display font-bold text-2xl tracking-widest text-white">RED BULL</h2>
+                <p class="text-xs text-gray-500 mt-2 font-bold uppercase tracking-widest">Energy Partner</p>
+            </a>
+            
+        </div>
+    </main>
+
+    <footer class="border-t border-gray-900 bg-[#050505] py-12 text-center text-gray-600 text-sm">
+        <p>&copy; 2026 FINELA Sports Agency. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>

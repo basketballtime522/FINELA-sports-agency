@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FINELA - Premium Sports Management</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700;900&family=Oswald:wght@500;700&family=Permanent+Marker&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { 
+                        finelaRed: '#e60012', 
+                        darkBg: '#0a0a0a', 
+                        cardBg: '#141414',
+                        cardHover: '#1f1f1f',
+                        cardBorder: '#222222',
+                        inputBg: '#1a1a1a'
+                    },
+                    fontFamily: { 
+                        sans: ['"Noto Sans KR"', 'sans-serif'], 
+                        display: ['Oswald', 'sans-serif'],
+                        brush: ['"Permanent Marker"', 'cursive'] 
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body { 
+            background-color: #0a0a0a; 
+            color: white; 
+            overflow-y: scroll;
+            overflow-x: hidden;
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0a0a0a; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #e60012; }
+
+        /* Page Transition Animation */
+        .page-section {
+            display: none;
+            animation: fadeIn 0.4s ease-out forwards;
+        }
+        .page-section.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn { 
+            from { opacity: 0; transform: translateY(15px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
+
+        /* GNB Link Active State */
+        .nav-link.active {
+            color: #e60012;
+            border-bottom: 2px solid #e60012;
+            padding-bottom: 4px;
+        }
+
+        /* Sponsors Hover */
+        .partner-card {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            filter: grayscale(100%) opacity(60%);
+        }
+        .partner-card:hover {
+            filter: grayscale(0%) opacity(100%);
+            transform: translateY(-8px) scale(1.02);
+            border-color: #e60012;
+            box-shadow: 0 0 25px rgba(230, 0, 18, 0.4);
+        }
+
+        /* Services Tab Animation */
+        .tab-content { display: none; animation: fadeIn 0.5s ease-out forwards; }
+        .tab-content.active { display: block; }
+        .tab-btn { position: relative; transition: all 0.3s ease; }
+        .tab-btn::after {
+            content: ''; position: absolute; bottom: -2px; left: 0; width: 0%; height: 3px; background-color: #e60012; transition: all 0.3s ease;
+        }
+        .tab-btn.active::after { width: 100%; }
+        .tab-btn.active { color: #e60012; }
+        
+        /* Utility */
+        .bg-overlay { background: linear-gradient(to bottom, rgba(10,10,10,0.3) 0%, rgba(10,10,10,1) 100%); }
+    </style>
+</head>
+<body class="min-h-screen font-sans antialiased flex flex-col">
+
+    <!-- Global Navigation Bar -->
+    <nav class="fixed w-full z-50 bg-darkBg/95 backdrop-blur-md border-b border-gray-800 transition-all duration-300 h-20">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8 h-full flex items-center justify-between">
+            <a href="#" onclick="navigate('home')" class="font-brush text-4xl text-finelaRed tracking-wider hover:scale-105 transition-transform">FINELA</a>
+            
+            <div class="hidden md:flex space-x-6 lg:space-x-8 font-display font-bold text-base lg:text-lg tracking-widest text-gray-400 uppercase">
+                <a href="#" onclick="navigate('home')" class="nav-link hover:text-white transition-colors" data-target="home">Home</a>
+                <a href="#" onclick="navigate('athletes')" class="nav-link hover:text-white transition-colors" data-target="athletes">Athletes</a>
+                <a href="#" onclick="navigate('services')" class="nav-link hover:text-white transition-colors" data-target="services">Services</a>
+                <a href="#" onclick="navigate('shopping')" class="nav-link hover:text-white transition-colors" data-target="shopping">Shopping</a>
+                <a href="#" onclick="navigate('sponsors')" class="nav-link hover:text-white transition-colors" data-target="sponsors">Sponsors</a>
+                <a href="#" onclick="navigate('contact')" class="nav-link hover:text-white transition-colors" data-target="contact">Contact Us</a>
+            </div>
+            
+            <button class="md:hidden text-gray-300 hover:text-white text-2xl">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Content Container -->
+    <main id="app-content" class="flex-grow pt-20 w-full">
+
+        <!-- ==========================================
+             1. HOME VIEW 
+             ========================================== -->
+        <section id="view-home" class="page-section active h-[calc(100vh-80px)] relative flex items-center justify-center overflow-hidden">
+            <!-- Background Image Placeholder -->
+            <div class="absolute inset-0 z-0">
+                <img src="https://placehold.co/1920x1080/1a1a1a/333333?text=BASKETBALL+GAME+BACKGROUND" alt="Background" class="w-full h-full object-cover opacity-50 grayscale mix-blend-overlay">
+                <div class="absolute inset-0 bg-overlay"></div>
+            </div>
+            
+            <div class="relative z-10 text-center px-6 max-w-5xl mx-auto flex flex-col items-center">
+                <h1 class="font-display text-6xl md:text-8xl lg:text-9xl font-bold text-white mb-6 tracking-tighter uppercase drop-shadow-2xl">
+                    Play With The <br/> Medalists
+                </h1>
+                <p class="text-xl md:text-2xl text-gray-300 mb-12 font-light">
+                    우리는 선수의 한계를 넘어, 새로운 브랜드 가치를 창출합니다.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-6">
+                    <button onclick="navigate('athletes')" class="px-10 py-4 bg-finelaRed hover:bg-red-700 text-white font-bold rounded-lg uppercase tracking-widest transition-all shadow-[0_0_20px_rgba(230,0,18,0.4)] hover:shadow-[0_0_30px_rgba(230,0,18,0.7)]">
+                        Explore Roster
+                    </button>
+                    <button onclick="navigate('services')" class="px-10 py-4 bg-transparent border border-gray-500 hover:border-white text-white font-bold rounded-lg uppercase tracking-widest transition-all hover:bg-white/10">
+                        About Finela
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             2. ATHLETES VIEW (ROSTER)
+             ========================================== -->
+        <section id="view-athletes" class="page-section min-h-screen py-16 px-6 lg:px-20 max-w-7xl mx-auto">
+            <div class="text-center mb-16 border-b border-gray-800 pb-8">
+                <h2 class="text-finelaRed font-display text-5xl md:text-6xl font-bold tracking-wider mb-4 uppercase">Our Athletes</h2>
+                <p class="text-gray-400 text-lg md:text-xl uppercase tracking-widest">2026 Aichi-Nagoya Asian Games Roster</p>
+            </div>
+            
+            <!-- Player Grid -->
+            <div id="roster-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                <!-- Injected via JS -->
+            </div>
+        </section>
+
+        <!-- ==========================================
+             3. PLAYER DETAIL VIEW
+             ========================================== -->
+        <section id="view-player-detail" class="page-section min-h-screen py-10 px-6 lg:px-20 max-w-7xl mx-auto">
+            <button onclick="navigate('athletes')" class="group flex items-center text-gray-400 hover:text-white transition-colors mb-8 text-sm font-bold tracking-widest uppercase">
+                <i class="fa-solid fa-arrow-left mr-3 group-hover:-translate-x-1 transition-transform"></i> Back to Roster
+            </button>
+
+            <!-- Top Section: Profile & Stats -->
+            <div class="flex flex-col lg:flex-row gap-10 border-b border-gray-800 pb-16">
+                <!-- Left: Big Player Image -->
+                <div class="w-full lg:w-5/12 relative">
+                    <img id="detail-player-img" src="" alt="Player" class="w-full aspect-[3/4] object-cover rounded-2xl bg-cardBg border border-gray-800 grayscale">
+                    <div class="absolute bottom-6 left-6 z-10">
+                        <h2 id="detail-player-name" class="font-display text-4xl lg:text-5xl font-bold text-white uppercase leading-none drop-shadow-lg">NAME</h2>
+                        <p class="text-gray-300 font-bold tracking-widest mt-2 uppercase text-sm"><span id="detail-player-pos">POS</span> | <span class="text-finelaRed">#<span id="detail-player-num">0</span></span></p>
+                    </div>
+                    <!-- Giant background number -->
+                    <div id="detail-bg-num" class="absolute -right-4 bottom-0 font-display text-[15rem] font-bold text-finelaRed opacity-20 leading-none pointer-events-none">0</div>
+                </div>
+
+                <!-- Right: Media & Stats -->
+                <div class="w-full lg:w-7/12 flex flex-col gap-6">
+                    <!-- Video Placeholder -->
+                    <div class="w-full aspect-video bg-cardBg border border-gray-800 rounded-2xl relative flex items-center justify-center overflow-hidden shadow-2xl group cursor-pointer">
+                        <img src="https://placehold.co/800x450/111111/444444?text=HIGHLIGHT+VIDEO" class="w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-700">
+                        <div class="absolute w-16 h-16 bg-finelaRed/90 rounded-full flex items-center justify-center shadow-[0_0_20px_rgba(230,0,18,0.6)] group-hover:bg-red-500 transition-colors">
+                            <i class="fa-solid fa-play text-white text-xl ml-1"></i>
+                        </div>
+                    </div>
+
+                    <!-- Stats Grid -->
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <div class="bg-cardBg border border-cardBorder rounded-xl p-6 text-center">
+                            <span class="text-finelaRed font-bold text-xs uppercase tracking-widest block mb-2">PTS</span>
+                            <span id="stat-pts" class="font-display text-4xl font-bold text-white">00.0</span>
+                        </div>
+                        <div class="bg-cardBg border border-cardBorder rounded-xl p-6 text-center">
+                            <span class="text-finelaRed font-bold text-xs uppercase tracking-widest block mb-2">AST</span>
+                            <span id="stat-ast" class="font-display text-4xl font-bold text-white">0.0</span>
+                        </div>
+                        <div class="bg-cardBg border border-cardBorder rounded-xl p-6 text-center">
+                            <span class="text-finelaRed font-bold text-xs uppercase tracking-widest block mb-2">REB</span>
+                            <span id="stat-reb" class="font-display text-4xl font-bold text-white">0.0</span>
+                        </div>
+                        <div class="bg-cardBg border border-cardBorder rounded-xl p-6 text-center">
+                            <span class="text-finelaRed font-bold text-xs uppercase tracking-widest block mb-2">STL</span>
+                            <span id="stat-stl" class="font-display text-4xl font-bold text-white">0.0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bottom Section: Commercial & Social (Scroll to reveal content) -->
+            <div class="py-16 space-y-16">
+                <!-- Commercials -->
+                <div>
+                    <h3 class="font-display text-3xl font-bold text-white mb-2 uppercase">Commercial & Broadcast</h3>
+                    <p class="text-gray-400 text-sm mb-6">브랜드 앰버서더 및 주요 방송 출연</p>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="aspect-video bg-cardBg border border-gray-800 rounded-xl relative overflow-hidden group">
+                            <img src="https://placehold.co/600x338/1a1a1a/444444?text=SPORTS+CF" class="w-full h-full object-cover opacity-50 group-hover:opacity-80 transition-opacity">
+                            <div class="absolute bottom-0 w-full p-4 bg-black/80"><p class="text-sm font-bold">스포츠 브랜드 공식 캠페인</p></div>
+                        </div>
+                        <div class="aspect-video bg-cardBg border border-gray-800 rounded-xl relative overflow-hidden group">
+                            <img src="https://placehold.co/600x338/1a1a1a/444444?text=TV+SHOW" class="w-full h-full object-cover opacity-50 group-hover:opacity-80 transition-opacity">
+                            <div class="absolute bottom-0 w-full p-4 bg-black/80"><p class="text-sm font-bold">예능 프로그램 특별 출연</p></div>
+                        </div>
+                        <div class="aspect-video bg-cardBg border border-gray-800 rounded-xl relative overflow-hidden group">
+                            <img src="https://placehold.co/600x338/1a1a1a/444444?text=BEVERAGE+AD" class="w-full h-full object-cover opacity-50 group-hover:opacity-80 transition-opacity">
+                            <div class="absolute bottom-0 w-full p-4 bg-black/80"><p class="text-sm font-bold">음료 브랜드 앰버서더 활동</p></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Social Media -->
+                <div>
+                    <div class="flex items-center gap-4 mb-2">
+                        <h3 class="font-display text-3xl font-bold text-white uppercase">Official Social Media</h3>
+                        <button class="bg-finelaRed text-white text-xs font-bold px-3 py-1.5 rounded uppercase tracking-widest hover:bg-red-700 transition">Follow @Athlete</button>
+                    </div>
+                    <p class="text-gray-400 text-sm mb-6">인스타그램 피드 및 소식</p>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 lg:gap-6">
+                        <div class="aspect-square bg-cardBg border border-gray-800 rounded-xl flex items-center justify-center hover:border-gray-500 transition"><i class="fa-brands fa-instagram text-4xl text-gray-700"></i></div>
+                        <div class="aspect-square bg-cardBg border border-gray-800 rounded-xl flex items-center justify-center hover:border-gray-500 transition"><i class="fa-brands fa-instagram text-4xl text-gray-700"></i></div>
+                        <div class="aspect-square bg-cardBg border border-gray-800 rounded-xl flex items-center justify-center hover:border-gray-500 transition"><i class="fa-brands fa-instagram text-4xl text-gray-700"></i></div>
+                        <div class="aspect-square bg-cardBg border border-gray-800 rounded-xl flex items-center justify-center hover:border-gray-500 transition"><i class="fa-brands fa-instagram text-4xl text-gray-700"></i></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             4. SERVICES VIEW 
+             ========================================== -->
+        <section id="view-services" class="page-section min-h-screen py-16 px-6 lg:px-20 max-w-6xl mx-auto">
+            <div class="mb-12 border-b border-gray-800 pb-8">
+                <h2 class="text-finelaRed font-display text-5xl md:text-6xl font-bold tracking-wider mb-4 uppercase">Our Services</h2>
+                <p class="text-gray-400 text-lg md:text-xl">선수의 가치를 극대화하는 FINELA만의 프리미엄 통합 솔루션</p>
+            </div>
+
+            <!-- Tabs -->
+            <div class="flex flex-wrap gap-8 mb-12 border-b border-gray-800 pb-2 text-lg font-bold text-gray-600">
+                <button onclick="switchServiceTab('training')" id="tab-btn-training" class="tab-btn active pb-4 hover:text-gray-200 uppercase tracking-wide">Performance Training</button>
+                <button onclick="switchServiceTab('accommodation')" id="tab-btn-accommodation" class="tab-btn pb-4 hover:text-gray-200 uppercase tracking-wide">Premium Accommodation</button>
+                <button onclick="switchServiceTab('management')" id="tab-btn-management" class="tab-btn pb-4 hover:text-gray-200 uppercase tracking-wide">Management & Legal</button>
+            </div>
+
+            <!-- Content Container -->
+            <div class="relative">
+                <!-- Training -->
+                <div id="tab-training" class="tab-content active">
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        <div class="col-span-1 lg:col-span-3 bg-cardBg p-8 lg:p-10 rounded-xl border border-gray-800 flex flex-col md:flex-row gap-8 items-center">
+                            <div class="w-full md:w-1/3 h-48 bg-gray-900 rounded-lg flex flex-col items-center justify-center text-gray-600 border border-gray-800">
+                                <i class="fa-solid fa-chart-line text-5xl mb-4"></i>
+                                <span class="text-sm font-bold tracking-widest uppercase">High-Tech Facility</span>
+                            </div>
+                            <div class="w-full md:w-2/3">
+                                <h3 class="text-2xl font-bold mb-3">최첨단 퍼포먼스 센터</h3>
+                                <p class="text-finelaRed font-bold mb-3">데이터 기반의 체계적인 훈련 프로세스</p>
+                                <p class="text-gray-400 leading-relaxed text-sm">FINELA 전용 훈련 센터는 NBA 및 유럽 명문 구단에서 사용하는 최신 모션 트래킹 시스템과 생체 데이터 분석 장비를 갖추고 있습니다. 정밀 분석부터 맞춤형 프로그램 설계까지 선수의 약점을 지우고 강점을 극대화합니다.</p>
+                            </div>
+                        </div>
+                        <div class="bg-cardBg p-8 rounded-xl border border-gray-800 text-center hover:bg-cardHover transition">
+                            <i class="fa-solid fa-dumbbell text-3xl text-finelaRed mb-4"></i>
+                            <h4 class="text-lg font-bold mb-1">피지컬 코칭</h4>
+                            <p class="text-gray-500 text-xs mb-3">근력 강화 및 부상 방지</p>
+                            <p class="text-gray-400 text-sm leading-relaxed">최적화된 웨이트 트레이닝과 가동성 훈련 전담.</p>
+                        </div>
+                        <div class="bg-cardBg p-8 rounded-xl border border-gray-800 text-center hover:bg-cardHover transition">
+                            <i class="fa-solid fa-basketball text-3xl text-finelaRed mb-4"></i>
+                            <h4 class="text-lg font-bold mb-1">스킬 & 전술</h4>
+                            <p class="text-gray-500 text-xs mb-3">포지션별 맞춤 실전 기술</p>
+                            <p class="text-gray-400 text-sm leading-relaxed">슈팅 폼, 드리블 스킬 등 디테일한 기술 향상 지도.</p>
+                        </div>
+                        <div class="bg-cardBg p-8 rounded-xl border border-gray-800 text-center hover:bg-cardHover transition">
+                            <i class="fa-solid fa-brain text-3xl text-finelaRed mb-4"></i>
+                            <h4 class="text-lg font-bold mb-1">멘탈 케어</h4>
+                            <p class="text-gray-500 text-xs mb-3">심리 상담 및 마인드 컨트롤</p>
+                            <p class="text-gray-400 text-sm leading-relaxed">슬럼프 탈출 및 중압감 극복을 위한 심리 상담 지원.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Accommodation -->
+                <div id="tab-accommodation" class="tab-content">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-cardBg p-8 rounded-xl border border-gray-800">
+                            <i class="fa-solid fa-bed text-finelaRed text-3xl mb-4"></i>
+                            <h3 class="text-2xl font-bold mb-3">프라이빗 하이엔드 숙소</h3>
+                            <p class="text-gray-400 leading-relaxed text-sm mb-8">인체공학적으로 설계된 1인 1실 프리미엄 룸 제공. 완벽한 사생활과 재충전 보장.</p>
+                            <i class="fa-solid fa-utensils text-finelaRed text-3xl mb-4"></i>
+                            <h3 class="text-2xl font-bold mb-3">맞춤형 식음료 케어</h3>
+                            <ul class="text-gray-400 text-sm space-y-2">
+                                <li><i class="fa-solid fa-check text-finelaRed mr-2"></i> 정밀 혈액 검사 기반 식단 설계</li>
+                                <li><i class="fa-solid fa-check text-finelaRed mr-2"></i> 도핑 프리 인증 커스텀 보충제</li>
+                            </ul>
+                        </div>
+                        <div class="bg-cardBg p-8 rounded-xl border border-gray-800">
+                            <h3 class="text-2xl font-bold mb-6">부대시설 (Amenities)</h3>
+                            <div class="space-y-6">
+                                <div class="flex items-start gap-4">
+                                    <i class="fa-solid fa-person-swimming text-finelaRed text-xl mt-1 w-6"></i>
+                                    <div><h4 class="font-bold mb-1">인피니티 풀 & 스파</h4><p class="text-gray-400 text-xs">수중 재활 및 냉온욕 테라피 시설</p></div>
+                                </div>
+                                <div class="flex items-start gap-4">
+                                    <i class="fa-solid fa-dumbbell text-finelaRed text-xl mt-1 w-6"></i>
+                                    <div><h4 class="font-bold mb-1">24h 프라이빗 헬스장</h4><p class="text-gray-400 text-xs">선수 전용 프리웨이트 및 유산소 존</p></div>
+                                </div>
+                                <div class="flex items-start gap-4">
+                                    <i class="fa-solid fa-snowflake text-finelaRed text-xl mt-1 w-6"></i>
+                                    <div><h4 class="font-bold mb-1">크라이오테라피</h4><p class="text-gray-400 text-xs">첨단 피로 회복 장비 운영</p></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Management -->
+                <div id="tab-management" class="tab-content">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-cardBg p-8 rounded-xl border border-gray-800">
+                            <i class="fa-solid fa-calendar-check text-finelaRed text-4xl mb-4"></i>
+                            <h3 class="text-2xl font-bold mb-2">라이프스타일 매니저</h3>
+                            <p class="text-finelaRed font-bold text-sm mb-4">완벽한 일상 지원</p>
+                            <ul class="text-gray-400 text-sm space-y-3 mt-6">
+                                <li><i class="fa-solid fa-plane text-gray-500 mr-2"></i> 차량 지원 및 원정 숙박 완벽 대행</li>
+                                <li><i class="fa-solid fa-camera text-gray-500 mr-2"></i> 화보 촬영 및 미디어 인터뷰 일정 조율</li>
+                                <li><i class="fa-solid fa-calculator text-gray-500 mr-2"></i> 파트너 세무사 연계 자산 관리</li>
+                            </ul>
+                        </div>
+                        <div class="bg-cardBg p-8 rounded-xl border border-gray-800">
+                            <i class="fa-solid fa-scale-balanced text-finelaRed text-4xl mb-4"></i>
+                            <h3 class="text-2xl font-bold mb-2">법률 및 계약 자문</h3>
+                            <p class="text-finelaRed font-bold text-sm mb-4">리스크 관리 및 권리 보호</p>
+                            <ul class="text-gray-400 text-sm space-y-3 mt-6">
+                                <li><i class="fa-solid fa-file-signature text-gray-500 mr-2"></i> 국내외 구단 연봉 협상 및 이적 조율</li>
+                                <li><i class="fa-solid fa-copyright text-gray-500 mr-2"></i> 브랜드 스폰서십 및 초상권 계약 검토</li>
+                                <li><i class="fa-solid fa-shield text-gray-500 mr-2"></i> 위기 발생 시 즉각적 법적 대응</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             5. SHOPPING VIEW
+             ========================================== -->
+        <section id="view-shopping" class="page-section min-h-screen py-16 px-6 lg:px-20 max-w-7xl mx-auto">
+            <div id="shop-main">
+                <div class="mb-12 border-b border-gray-800 pb-8">
+                    <h2 class="text-finelaRed font-display text-5xl md:text-6xl font-bold tracking-wider mb-4 uppercase">Finela Store</h2>
+                    <p class="text-gray-400 text-lg md:text-xl">Official Agency & Player Merchandise</p>
+                </div>
+                <!-- Product Grid -->
+                <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- JS Injected -->
+                </div>
+            </div>
+
+            <!-- Product Detail Sub-view (Hidden by default inside Shopping) -->
+            <div id="shop-detail" class="hidden">
+                <button onclick="toggleShopView(false)" class="group flex items-center text-gray-400 hover:text-white transition-colors mb-10 text-sm font-bold tracking-widest uppercase">
+                    <i class="fa-solid fa-arrow-left mr-3 group-hover:-translate-x-1 transition-transform"></i> Back to Shop
+                </button>
+                <div class="flex flex-col md:flex-row gap-10 lg:gap-16">
+                    <div class="w-full md:w-1/2">
+                        <div class="aspect-square bg-cardBg border border-gray-800 rounded-2xl overflow-hidden">
+                            <img id="prod-detail-img" src="" class="w-full h-full object-cover">
+                        </div>
+                    </div>
+                    <div class="w-full md:w-1/2 flex flex-col justify-center">
+                        <h2 id="prod-detail-title" class="text-3xl md:text-4xl font-bold mb-4">Title</h2>
+                        <div id="prod-detail-price" class="text-finelaRed font-display text-3xl font-bold mb-6">₩0</div>
+                        <div class="w-full h-px bg-gray-800 mb-6"></div>
+                        <p id="prod-detail-desc" class="text-gray-400 leading-relaxed mb-8">Description</p>
+                        
+                        <div id="size-selector" class="mb-10">
+                            <h3 class="text-sm font-bold text-gray-500 tracking-widest mb-4 uppercase">Select Size</h3>
+                            <div class="flex gap-4">
+                                <button class="w-12 h-12 rounded border border-gray-700 font-bold hover:border-finelaRed hover:text-finelaRed transition">S</button>
+                                <button class="w-12 h-12 rounded border border-gray-700 font-bold hover:border-finelaRed hover:text-finelaRed transition">M</button>
+                                <button class="w-12 h-12 rounded border border-gray-700 font-bold hover:border-finelaRed hover:text-finelaRed transition">L</button>
+                            </div>
+                        </div>
+                        <button class="w-full bg-finelaRed hover:bg-red-700 text-white font-bold py-4 rounded-lg uppercase tracking-widest transition shadow-lg">
+                            <i class="fa-solid fa-cart-shopping mr-3"></i> Add To Cart
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             6. SPONSORS VIEW
+             ========================================== -->
+        <section id="view-sponsors" class="page-section min-h-screen py-16 px-6 lg:px-20 max-w-7xl mx-auto text-center">
+            <h2 class="text-finelaRed font-display text-5xl md:text-6xl font-bold tracking-wider mb-6 uppercase">Our Partners</h2>
+            <p class="text-gray-400 text-lg mb-16 max-w-2xl mx-auto">FINELA와 함께 선수의 한계를 넘어, 새로운 브랜드 가치를 창출하는 공식 후원사입니다.</p>
+            
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                <!-- Generics mapped via JS or static HTML -->
+                <div class="partner-card bg-cardBg border border-cardBorder rounded-2xl p-10 flex flex-col items-center justify-center aspect-square cursor-pointer">
+                    <i class="fa-solid fa-check text-5xl text-white mb-4"></i><h3 class="font-display font-bold text-xl">BRAND A</h3><p class="text-xs text-gray-500 mt-2">Kit Sponsor</p>
+                </div>
+                <div class="partner-card bg-cardBg border border-cardBorder rounded-2xl p-10 flex flex-col items-center justify-center aspect-square cursor-pointer">
+                    <i class="fa-solid fa-bolt text-5xl text-white mb-4"></i><h3 class="font-display font-bold text-xl">BRAND B</h3><p class="text-xs text-gray-500 mt-2">Beverage</p>
+                </div>
+                <div class="partner-card bg-cardBg border border-cardBorder rounded-2xl p-10 flex flex-col items-center justify-center aspect-square cursor-pointer">
+                    <i class="fa-solid fa-mobile-screen text-5xl text-white mb-4"></i><h3 class="font-display font-bold text-xl">BRAND C</h3><p class="text-xs text-gray-500 mt-2">Main Sponsor</p>
+                </div>
+                <div class="partner-card bg-cardBg border border-cardBorder rounded-2xl p-10 flex flex-col items-center justify-center aspect-square cursor-pointer">
+                    <i class="fa-solid fa-building-columns text-5xl text-white mb-4"></i><h3 class="font-display font-bold text-xl">BRAND D</h3><p class="text-xs text-gray-500 mt-2">Financial</p>
+                </div>
+                <div class="partner-card bg-cardBg border border-cardBorder rounded-2xl p-10 flex flex-col items-center justify-center aspect-square cursor-pointer">
+                    <i class="fa-solid fa-plane text-5xl text-white mb-4"></i><h3 class="font-display font-bold text-xl">BRAND E</h3><p class="text-xs text-gray-500 mt-2">Airline</p>
+                </div>
+                <div class="partner-card bg-cardBg border border-cardBorder rounded-2xl p-10 flex flex-col items-center justify-center aspect-square cursor-pointer">
+                    <i class="fa-solid fa-car text-5xl text-white mb-4"></i><h3 class="font-display font-bold text-xl">BRAND F</h3><p class="text-xs text-gray-500 mt-2">Mobility</p>
+                </div>
+                <div class="partner-card bg-cardBg border border-cardBorder rounded-2xl p-10 flex flex-col items-center justify-center aspect-square cursor-pointer">
+                    <i class="fa-solid fa-burger text-5xl text-white mb-4"></i><h3 class="font-display font-bold text-xl">BRAND G</h3><p class="text-xs text-gray-500 mt-2">F&B</p>
+                </div>
+                <div class="partner-card bg-cardBg border border-cardBorder rounded-2xl p-10 flex flex-col items-center justify-center aspect-square cursor-pointer">
+                    <i class="fa-solid fa-gamepad text-5xl text-white mb-4"></i><h3 class="font-display font-bold text-xl">BRAND H</h3><p class="text-xs text-gray-500 mt-2">Entertainment</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             7. CONTACT US VIEW
+             ========================================== -->
+        <section id="view-contact" class="page-section min-h-screen py-16 px-6 lg:px-20 max-w-7xl mx-auto">
+            <h2 class="text-finelaRed font-display text-5xl md:text-6xl font-bold tracking-wider mb-12 uppercase">Get in Touch</h2>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
+                <!-- Info Left -->
+                <div class="flex flex-col">
+                    <h3 class="font-display text-2xl font-bold text-white border-b border-gray-800 pb-4 mb-8">CONTACT INFORMATION</h3>
+                    <ul class="space-y-8 flex-grow">
+                        <li class="flex items-start">
+                            <div class="w-12 h-12 rounded-full border border-gray-800 flex items-center justify-center mr-6 text-finelaRed"><i class="fa-solid fa-location-dot"></i></div>
+                            <div><p class="text-gray-500 text-xs font-bold uppercase mb-1">Headquarters</p><p class="text-gray-200">서울특별시 강남구 테헤란로 123<br>FINELA 타워 15층</p></div>
+                        </li>
+                        <li class="flex items-start">
+                            <div class="w-12 h-12 rounded-full border border-gray-800 flex items-center justify-center mr-6 text-finelaRed"><i class="fa-solid fa-phone"></i></div>
+                            <div><p class="text-gray-500 text-xs font-bold uppercase mb-1">Phone</p><p class="text-gray-200">+82 2-1234-5678</p></div>
+                        </li>
+                        <li class="flex items-start">
+                            <div class="w-12 h-12 rounded-full border border-gray-800 flex items-center justify-center mr-6 text-finelaRed"><i class="fa-solid fa-envelope"></i></div>
+                            <div><p class="text-gray-500 text-xs font-bold uppercase mb-1">Email</p><p class="text-gray-200">contact@finela.com</p></div>
+                        </li>
+                    </ul>
+                </div>
+                <!-- Form Right -->
+                <div class="bg-cardBg p-8 rounded-2xl border border-gray-800">
+                    <form class="space-y-6" onsubmit="event.preventDefault(); alert('Message sent!');">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div><label class="block text-xs font-bold text-gray-500 uppercase mb-2">Name</label><input type="text" required class="w-full bg-inputBg border border-gray-800 rounded p-3 text-white focus:border-finelaRed outline-none transition"></div>
+                            <div><label class="block text-xs font-bold text-gray-500 uppercase mb-2">Email</label><input type="email" required class="w-full bg-inputBg border border-gray-800 rounded p-3 text-white focus:border-finelaRed outline-none transition"></div>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase mb-2">Subject</label>
+                            <select class="w-full bg-inputBg border border-gray-800 rounded p-3 text-white focus:border-finelaRed outline-none transition appearance-none">
+                                <option>Partnership / Sponsorship</option><option>Player Scouting</option><option>Media Inquiry</option>
+                            </select>
+                        </div>
+                        <div><label class="block text-xs font-bold text-gray-500 uppercase mb-2">Message</label><textarea rows="4" required class="w-full bg-inputBg border border-gray-800 rounded p-3 text-white focus:border-finelaRed outline-none transition resize-none"></textarea></div>
+                        <button type="submit" class="w-full bg-finelaRed hover:bg-red-700 text-white font-bold py-4 rounded uppercase tracking-widest transition shadow-lg">Send Message</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Global Footer -->
+    <footer class="border-t border-gray-900 bg-[#050505] py-8 text-center text-gray-600 text-xs mt-auto">
+        <p><span class="font-brush text-lg text-gray-700 mr-2">FINELA</span> &copy; 2026 Sports Agency. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // --- DATA ---
+        const players = [
+            { id: 1, name: "LEE HYUN JUNG", nameKo: "이현중", num: "1", pos: "SG", pts: "22.4", ast: "5.2", reb: "4.5", stl: "1.2", img: "https://placehold.co/400x500/141414/666666?text=LEE" },
+            { id: 2, name: "CHOI JUN YONG", nameKo: "최준용", num: "2", pos: "SF", pts: "15.8", ast: "6.1", reb: "7.0", stl: "1.5", img: "https://placehold.co/400x500/141414/666666?text=CHOI" },
+            { id: 3, name: "HEO HOON", nameKo: "허훈", num: "5", pos: "PG", pts: "18.2", ast: "8.5", reb: "2.5", stl: "2.1", img: "https://placehold.co/400x500/141414/666666?text=HEO" },
+            { id: 4, name: "LEE JUNG HYUN", nameKo: "이정현", num: "6", pos: "PG", pts: "16.5", ast: "7.2", reb: "3.1", stl: "1.8", img: "https://placehold.co/400x500/141414/666666?text=L.J.H" },
+            { id: 5, name: "YEO JUN SEOK", nameKo: "여준석", num: "22", pos: "SF", pts: "14.3", ast: "2.0", reb: "8.5", stl: "1.0", img: "https://placehold.co/400x500/141414/666666?text=YEO" },
+            { id: 6, name: "RA GUN A", nameKo: "라건아", num: "20", pos: "C", pts: "20.1", ast: "1.5", reb: "12.4", stl: "0.8", img: "https://placehold.co/400x500/141414/666666?text=RA" }
+        ];
+
+        const products = [
+            { id: 1, title: "Official T-shirt", price: "39,000", size: true, img: "https://placehold.co/500x500/111111/444444?text=T-SHIRT" },
+            { id: 2, title: "Replica Jersey", price: "89,000", size: true, img: "https://placehold.co/500x500/111111/444444?text=JERSEY" },
+            { id: 3, title: "Signature Basketball", price: "65,000", size: false, img: "https://placehold.co/500x500/111111/444444?text=BALL" },
+            { id: 4, title: "Logo Hoodie", price: "75,000", size: true, img: "https://placehold.co/500x500/111111/444444?text=HOODIE" },
+            { id: 5, title: "Cheering Towel", price: "15,000", size: false, img: "https://placehold.co/500x500/111111/444444?text=TOWEL" },
+            { id: 6, title: "Photo Card Set", price: "25,000", size: false, img: "https://placehold.co/500x500/111111/444444?text=CARDS" }
+        ];
+
+        // --- NAVIGATION ---
+        function navigate(targetId) {
+            // Hide all views
+            document.querySelectorAll('.page-section').forEach(el => el.classList.remove('active'));
+            // Show target
+            const targetView = document.getElementById(`view-${targetId}`);
+            if (targetView) targetView.classList.add('active');
+            
+            // Update Nav Links
+            document.querySelectorAll('.nav-link').forEach(el => {
+                el.classList.remove('active');
+                if(el.getAttribute('data-target') === targetId) el.classList.add('active');
+            });
+
+            // Specific resets
+            if (targetId === 'shopping') toggleShopView(false); // Ensure shop main is visible, not detail
+
+            window.scrollTo(0, 0);
+        }
+
+        // --- ATHLETES ---
+        function renderAthletes() {
+            const grid = document.getElementById('roster-grid');
+            let html = '';
+            players.forEach(p => {
+                html += `
+                <div onclick="showPlayerDetail(${p.id})" class="group cursor-pointer bg-cardBg rounded-xl overflow-hidden border border-gray-800 hover:border-finelaRed transition-colors relative">
+                    <img src="${p.img}" class="w-full aspect-[4/5] object-cover grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500">
+                    <div class="absolute bottom-0 w-full p-4 bg-gradient-to-t from-black to-transparent">
+                        <p class="font-display font-bold text-white text-lg leading-tight">${p.name}</p>
+                        <p class="text-sm text-gray-400">${p.nameKo} <span class="text-finelaRed font-bold font-display ml-1 text-lg">#${p.num}</span></p>
+                    </div>
+                </div>`;
+            });
+            grid.innerHTML = html;
+        }
+
+        function showPlayerDetail(id) {
+            const p = players.find(x => x.id === id);
+            if(!p) return;
+            
+            document.getElementById('detail-player-img').src = p.img;
+            document.getElementById('detail-player-name').innerText = p.name;
+            document.getElementById('detail-player-name').innerHTML += `<br/><span class="text-2xl text-gray-400 font-sans tracking-normal">${p.nameKo}</span>`;
+            document.getElementById('detail-player-pos').innerText = p.pos;
+            document.getElementById('detail-player-num').innerText = p.num;
+            document.getElementById('detail-bg-num').innerText = p.num;
+            
+            document.getElementById('stat-pts').innerText = p.pts;
+            document.getElementById('stat-ast').innerText = p.ast;
+            document.getElementById('stat-reb').innerText = p.reb;
+            document.getElementById('stat-stl').innerText = p.stl;
+            
+            // Hide athletes grid, show detail
+            document.querySelectorAll('.page-section').forEach(el => el.classList.remove('active'));
+            document.getElementById('view-player-detail').classList.add('active');
+            window.scrollTo(0, 0);
+        }
+
+        // --- SERVICES ---
+        function switchServiceTab(tab) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+            document.getElementById(`tab-${tab}`).classList.add('active');
+            document.getElementById(`tab-btn-${tab}`).classList.add('active');
+        }
+
+        // --- SHOPPING ---
+        function renderShopping() {
+            const grid = document.getElementById('product-grid');
+            let html = '';
+            products.forEach(p => {
+                html += `
+                <div onclick="showProductDetail(${p.id})" class="group cursor-pointer bg-cardBg rounded-xl overflow-hidden border border-gray-800 hover:border-finelaRed transition-all">
+                    <div class="aspect-square relative bg-[#111] flex items-center justify-center p-6">
+                        <img src="${p.img}" class="w-full h-full object-contain opacity-80 group-hover:scale-105 transition-transform duration-500">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2 group-hover:text-finelaRed transition-colors">${p.title}</h3>
+                        <div class="text-gray-300 font-display text-xl">₩${p.price}</div>
+                    </div>
+                </div>`;
+            });
+            grid.innerHTML = html;
+        }
+
+        function showProductDetail(id) {
+            const p = products.find(x => x.id === id);
+            if(!p) return;
+            
+            document.getElementById('prod-detail-img').src = p.img;
+            document.getElementById('prod-detail-title').innerText = p.title;
+            document.getElementById('prod-detail-price').innerText = `₩${p.price}`;
+            document.getElementById('size-selector').style.display = p.size ? 'block' : 'none';
+            
+            toggleShopView(true);
+        }
+
+        function toggleShopView(showDetail) {
+            document.getElementById('shop-main').style.display = showDetail ? 'none' : 'block';
+            document.getElementById('shop-detail').style.display = showDetail ? 'block' : 'none';
+            if(!showDetail) window.scrollTo(0, 0);
+        }
+
+        // --- INIT ---
+        window.onload = () => {
+            renderAthletes();
+            renderShopping();
+            // Start on home
+            navigate('home');
+        };
+    </script>
+</body>
+</html>
