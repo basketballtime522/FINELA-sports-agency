@@ -711,6 +711,69 @@ button {
    3. 선수단 섹션 (OUR ATHLETES - ROSTER)
    ============================================================================== */
 .roster-section {
+  position: relative;
+  background-color: #07080c;
+  background-image:
+    radial-gradient(circle at 50% 25%, rgba(230, 0, 18, 0.14) 0%, transparent 65%),
+    radial-gradient(circle at 85% 75%, rgba(230, 0, 18, 0.08) 0%, transparent 55%),
+    linear-gradient(rgba(230, 0, 18, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(230, 0, 18, 0.04) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 100%, 60px 60px, 60px 60px;
+  overflow: hidden;
+}
+
+/* Roster 섹션 타이틀 대형화 및 임팩트 강화 */
+.roster-section .section-title {
+  font-size: clamp(3.2rem, 5.5vw, 5rem);
+  font-weight: 700;
+  letter-spacing: 2px;
+  line-height: 1;
+  text-shadow: 0 0 35px rgba(230, 0, 18, 0.35);
+}
+
+/* BACK TO HOME 버튼 스타일 */
+.roster-top-nav {
+  margin-bottom: 24px;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.btn-back-home {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-en);
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: var(--text-muted);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-subtle);
+  padding: 10px 22px;
+  border-radius: 30px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: var(--transition-smooth);
+}
+
+.btn-back-home:hover {
+  background: rgba(230, 0, 18, 0.15);
+  border-color: var(--finela-red);
+  color: #fff;
+  transform: translateX(-5px);
+  box-shadow: 0 0 20px rgba(230, 0, 18, 0.3);
+}
+
+.btn-back-home i {
+  color: var(--finela-red);
+  transition: transform 0.3s ease;
+}
+
+.btn-back-home:hover i {
+  transform: translateX(-3px);
+}
+
+.old-roster-bg-placeholder {
   background-color: var(--bg-surface-dark);
   background-image:
     radial-gradient(circle at 50% 50%, rgba(230, 0, 18, 0.08) 0%, transparent 60%),
@@ -857,22 +920,25 @@ button {
 }
 
 .card-info {
-  padding: 14px 16px 18px;
+  padding: 16px 18px 20px;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
   position: relative;
   z-index: 2;
+  background: rgba(10, 11, 16, 0.96); /* 어둡고 불투명하게 처리하여 가시성 확보 */
+  border-top: 2px solid var(--finela-red); /* 사진과 정보 영역의 명확한 붉은 경계선 */
+  box-shadow: 0 -10px 25px rgba(0, 0, 0, 0.8);
 }
 
 .player-name-en {
   font-family: var(--font-display);
-  font-size: 17px;
+  font-size: 20px; /* 폰트 확대 (17px -> 20px) */
   font-weight: 700;
-  letter-spacing: 0.8px;
+  letter-spacing: 1px;
   color: #fff;
   line-height: 1.15;
-  margin-bottom: 2px;
+  margin-bottom: 4px;
   text-transform: uppercase;
 }
 
@@ -884,9 +950,9 @@ button {
 }
 
 .player-name-ko {
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--text-muted);
+  font-size: 15px; /* 폰트 확대 (13px -> 15px) */
+  font-weight: 700;
+  color: #ffffff;
 }
 
 .player-pos-tag {
@@ -923,6 +989,7 @@ button {
 
 /* 고정 상단 헤더 바 */
 .modal-fixed-header {
+  display: none !important; /* 메인 홈페이지의 고정 글래스모피즘 GNB 헤더를 그대로 사용 */
   position: fixed;
   top: 0;
   /* 화면 최상단 고정 */
@@ -1013,7 +1080,7 @@ button {
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  padding: 100px 70px 30px;
+  padding: calc(var(--header-height) + 28px) 60px 40px; /* 상단 고정 GNB 헤더와 겹치지 않도록 여백 확보 */
   box-sizing: border-box;
   background-color: #08090e;
   background-image:
@@ -1209,32 +1276,40 @@ button {
 }
 
 /* 4대 핵심 스탯 카드 그리드 */
+/* 2x2 핵심 스탯 카드 (PTS, AST, REB, STL 모던 그리드) */
 .modal-stats-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 10px;
+  grid-template-columns: repeat(2, 1fr); /* 2x2 배치 */
+  gap: 14px;
 }
 
 .stat-metric-card {
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid var(--border-subtle);
   border-radius: 12px;
-  padding: 12px 8px;
+  padding: 18px 16px;
   text-align: center;
+  transition: var(--transition-smooth);
+}
+
+.stat-metric-card:hover {
+  background: rgba(230, 0, 18, 0.06);
+  border-color: rgba(230, 0, 18, 0.4);
 }
 
 .stat-metric-label {
   font-family: var(--font-en);
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 800;
   color: var(--finela-red);
-  margin-bottom: 2px;
-  letter-spacing: 1px;
+  margin-bottom: 4px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
 }
 
 .stat-metric-val {
   font-family: var(--font-display);
-  font-size: 28px;
+  font-size: 34px;
   font-weight: 700;
   color: #fff;
   line-height: 1;
