@@ -925,6 +925,7 @@ button {
 .modal-fixed-header {
   position: fixed;
   top: 0;
+  /* 화면 최상단 고정 */
   left: 0;
   width: 100%;
   height: 64px;
@@ -933,10 +934,12 @@ button {
   align-items: center;
   justify-content: space-between;
   z-index: 3500;
-  background: rgba(8, 9, 14, 0.94);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
+  /* GNB 헤더(1000)보다 높게 설정하여 항상 위로 오도록 유지 */
+  background: rgba(8, 9, 14, 0.92);
+  /* 배경을 조금 더 불투명하게 주어 겹침 방지 */
+  backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border-subtle);
+}
 }
 
 .modal-header-brand {
@@ -1430,6 +1433,38 @@ button {
 }
 
 .extra-section-header {
+  border-bottom: 1px solid var(--border-subtle);
+  padding-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+}
+
+.close-detail-bottom-btn {
+  position: relative;
+  top: auto;
+  right: auto;
+  flex-shrink: 0;
+}
+
+.extra-footer-nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  margin-top: 10px;
+}
+
+.close-detail-footer-btn {
+  position: relative;
+  top: auto;
+  right: auto;
+  flex-shrink: 0;
+}
+
+/* 기존 정의 오버라이드용 */
+.old-extra-section-header-placeholder {
   border-bottom: 1px solid var(--border-subtle);
   padding-bottom: 20px;
 }

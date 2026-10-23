@@ -261,7 +261,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (idx === 0) heroTitle = "SPORTS CF";
       else if (idx === 1) heroTitle = "TV SHOW";
       else if (idx === 2) heroTitle = "BEVERAGE AD";
-      
+
       if (cf.tag === "TV CF") heroTitle = "SPORTS CF";
       else if (cf.tag === "BROADCAST") heroTitle = "TV SHOW";
       else if (cf.tag === "COMMERCIAL") heroTitle = "BEVERAGE AD";
@@ -337,14 +337,14 @@ document.addEventListener('DOMContentLoaded', () => {
   // 상단 고정 헤더 닫기 버튼
   if (modalCloseBtn) modalCloseBtn.addEventListener('click', closePlayerModalFunc);
 
-  // 하이라이트 영상 영역 X 닫기 버튼
-  const closeDetailBtn = document.getElementById('closeDetailBtn');
-  if (closeDetailBtn) {
-    closeDetailBtn.addEventListener('click', (e) => {
-      e.stopPropagation(); // 영상 재생 오버레이 클릭 방지
+  // 모든 선수 상세 X 닫기 버튼 (1페이지 상단 및 2페이지 하단 버튼 공통)
+  const allCloseDetailBtns = document.querySelectorAll('.close-detail-btn');
+  allCloseDetailBtns.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation(); // 클릭 이벤트 전파 차단
       closePlayerModalFunc();
     });
-  }
+  });
   if (playerModal) {
     playerModal.addEventListener('click', (e) => {
       if (e.target === playerModal) closePlayerModalFunc();

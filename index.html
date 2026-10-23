@@ -743,8 +743,11 @@
 
         <div class="extra-section-inner">
           <div class="extra-section-header">
-            <!-- <div class="extra-tag">02 / ATHLETE ACTIVITIES & MEDIA</div> (이 부분을 삭제) -->
-            <h2 class="extra-main-title" style="color: var(--finela-red);">02 / ATHLETE ACTIVITIES & MEDIA</h2>
+            <h2 class="extra-main-title" style="color: var(--finela-red);">02 / ATHLETE ACTIVITIES &amp; MEDIA</h2>
+            <!-- 2페이지 상단 우측 X 닫기 버튼 (1페이지와 동일한 우측 상단 위치) -->
+            <button id="closeDetailBottomBtn" class="close-detail-btn close-detail-bottom-btn" title="닫기 (ROSTER로 돌아가기)" aria-label="선수 상세 닫기">
+              <i class="fa-solid fa-xmark"></i>
+            </button>
           </div>
 
           <!-- 방송 & CF -->
@@ -773,10 +776,13 @@
             </div>
           </div>
 
-          <!-- 최상단으로 복귀 버튼 -->
+          <!-- 최상단으로 복귀 버튼 및 닫기 버튼 -->
           <div class="extra-footer-nav">
             <button class="btn-back-to-profile" onclick="scrollToTopSection()">
               <i class="fa-solid fa-arrow-up mr-2"></i> 선수 프로필 &amp; 하이라이트로 돌아가기
+            </button>
+            <button id="closeDetailFooterBtn" class="close-detail-btn close-detail-footer-btn" title="닫기 (ROSTER로 돌아가기)" aria-label="선수 상세 닫기">
+              <i class="fa-solid fa-xmark"></i>
             </button>
           </div>
         </div>
