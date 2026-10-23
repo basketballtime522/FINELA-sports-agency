@@ -254,26 +254,44 @@ document.addEventListener('DOMContentLoaded', () => {
       </div>
     `).join('');
 
-    // CF 및 방송 출연 썸네일
+    // CF 및 방송 출연 썸네일 (슬림 다크 카드 그리드 + 대형 영문 타이틀 + 하단 활동 바)
     const cfContainer = document.getElementById('modalCfGrid');
-    cfContainer.innerHTML = p.commercials.map(cf => `
-      <div class="cf-card">
-        <div class="cf-thumb-wrap">
-          <span class="cf-tag">${cf.tag}</span>
-          <img src="${cf.img}" alt="${cf.title}" class="cf-thumb-img">
-        </div>
-        <div class="cf-title">${cf.title}</div>
-      </div>
-    `).join('');
+    cfContainer.innerHTML = p.commercials.map((cf, idx) => {
+      let heroTitle = "SPORTS CF";
+      if (idx === 0) heroTitle = "SPORTS CF";
+      else if (idx === 1) heroTitle = "TV SHOW";
+      else if (idx === 2) heroTitle = "BEVERAGE AD";
+      
+      if (cf.tag === "TV CF") heroTitle = "SPORTS CF";
+      else if (cf.tag === "BROADCAST") heroTitle = "TV SHOW";
+      else if (cf.tag === "COMMERCIAL") heroTitle = "BEVERAGE AD";
 
-    // 공식 인스타그램 포스트 피드
+      return `
+        <div class="cf-card group">
+          <div class="cf-thumb-wrap">
+            <img src="${cf.img}" alt="${cf.title}" class="cf-thumb-img">
+            <div class="cf-center-overlay">
+              <span class="cf-hero-title">${heroTitle}</span>
+            </div>
+            <div class="cf-caption-bar">
+              <span class="cf-badge-tag">${cf.tag}</span>
+              <p class="cf-desc-text">${cf.title}</p>
+            </div>
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    // 공식 인스타그램 포스트 피드 (정사각형 직관적인 그리드 + 중앙 인스타그램 아이콘)
     const instaContainer = document.getElementById('modalInstaGrid');
     instaContainer.innerHTML = p.instagramPosts.map(post => `
-      <div class="insta-card">
-        <img src="${post.img}" alt="Instagram Post" class="insta-img">
-        <div class="insta-overlay">
-          <div class="insta-likes"><i class="fa-solid fa-heart mr-1"></i> ${post.likes}</div>
-          <div class="insta-caption">${post.caption}</div>
+      <div class="insta-card group">
+        <img src="${post.img}" alt="Instagram" class="insta-img">
+        <div class="insta-center-icon-wrap">
+          <i class="fa-brands fa-instagram insta-center-icon"></i>
+        </div>
+        <div class="insta-hover-bar">
+          <span class="insta-likes-pill"><i class="fa-solid fa-heart mr-1"></i> ${post.likes}</span>
         </div>
       </div>
     `).join('');
@@ -291,14 +309,14 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // 모달 내 스크롤 이동 헬퍼 함수
-  window.scrollToExtraSection = function() {
+  window.scrollToExtraSection = function () {
     const extra = document.getElementById('modalExtraSection');
     if (extra) {
       extra.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
-  window.scrollToTopSection = function() {
+  window.scrollToTopSection = function () {
     if (playerModal) {
       playerModal.scrollTo({ top: 0, behavior: 'smooth' });
     }
@@ -521,7 +539,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // 전역 삭제 함수
-  window.removeCartItem = function(index) {
+  window.removeCartItem = function (index) {
     cart.splice(index, 1);
     updateCartUI();
   };
@@ -599,3 +617,25 @@ document.addEventListener('DOMContentLoaded', () => {
   console.log('FINELA Sports Agency Controller successfully initialized.');
 });
 
+// ==============================================================================
+// 상단 탭 메뉴 클릭 시 선수 상세 모달 자동 닫기 기능
+// ==============================================================================
+document.addEventListener('DOMContentLoaded', () => {
+  // GNB 헤더의 메뉴 링크 및 페이지 내 해시(#) 이동 링크들을 모두 선택합니다.
+  const navLinks = document.querySelectorAll('.nav-link, .footer-col a, a[href^="#"]');
+
+  navLinks.forEach(link => {
+    link.addEventListener('click', () => {
+      const playerModal = document.getElementById('playerModal');
+
+      // 만약 선수 상세 모달이 열려 있는 상태라면(.active)
+      if (playerModal && playerModal.classList.contains('active')) {
+        // 모달을 닫고
+        playerModal.classList.remove('active');
+
+        // 배경 페이지의 스크롤 잠금을 해제하여 정상적으로 스크롤되도록 만듭니다.
+        document.body.style.overflow = 'auto';
+      }
+    });
+  });
+});
