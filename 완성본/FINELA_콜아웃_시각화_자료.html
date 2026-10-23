@@ -1,0 +1,1537 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FINELA SPORTS AGENCY - 페이지별 콜아웃(Callout) 시각화 프리젠테이션</title>
+  
+  <!-- 웹폰트: Pretendard, Montserrat, Oswald, Permanent Marker -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Oswald:wght@500;700&family=Permanent+Marker&family=Pretendard:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    :root {
+      --finela-red: #e60012;
+      --finela-red-glow: rgba(230, 0, 18, 0.45);
+      --bg-dark: #0a0b10;
+      --card-bg: rgba(18, 19, 26, 0.92);
+      --card-border: rgba(230, 0, 18, 0.85);
+      --text-main: #ffffff;
+      --text-muted: #8c93a4;
+      --text-desc: #d2d6e3;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      background-image: 
+        radial-gradient(circle at 80% 20%, rgba(230, 0, 18, 0.08) 0%, transparent 50%),
+        radial-gradient(circle at 20% 80%, rgba(20, 30, 70, 0.12) 0%, transparent 50%);
+      background-attachment: fixed;
+      color: var(--text-main);
+      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+      overflow-x: hidden;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* 상단 글로벌 툴바 */
+    .top-toolbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 64px;
+      background: rgba(10, 11, 16, 0.92);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 32px;
+      z-index: 100;
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .brand-logo {
+      font-family: 'Permanent Marker', cursive;
+      font-size: 26px;
+      color: var(--finela-red);
+      letter-spacing: 1px;
+      text-decoration: none;
+    }
+
+    .brand-badge {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-muted);
+      letter-spacing: 1.5px;
+      border-left: 1px solid rgba(255, 255, 255, 0.15);
+      padding-left: 14px;
+      text-transform: uppercase;
+    }
+
+    /* 6대 페이지 탭 내비게이션 */
+    .slide-tabs {
+      display: flex;
+      gap: 6px;
+      background: rgba(255, 255, 255, 0.04);
+      padding: 4px;
+      border-radius: 30px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .tab-btn {
+      background: transparent;
+      border: none;
+      color: #9aa1b2;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 7px 16px;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: 'Montserrat', sans-serif;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .tab-btn:hover {
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .tab-btn.active {
+      background: var(--finela-red);
+      color: #ffffff;
+      box-shadow: 0 0 15px rgba(230, 0, 18, 0.5);
+    }
+
+    .toolbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn-action {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: #ffffff;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 7px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-action:hover {
+      background: rgba(230, 0, 18, 0.2);
+      border-color: var(--finela-red);
+      color: #ffffff;
+    }
+
+    /* 메인 프리젠테이션 뷰포트 */
+    .viewport {
+      padding-top: 84px;
+      padding-bottom: 40px;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* 16:9 슬라이드 프레임 */
+    .slide-canvas {
+      width: 95vw;
+      max-width: 1600px;
+      aspect-ratio: 16 / 9;
+      background: #0d0f14;
+      background-image: 
+        radial-gradient(circle at 50% 10%, rgba(230,0,18,0.06) 0%, transparent 60%),
+        linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+      background-size: 100% 100%, 40px 40px, 40px 40px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8), 0 0 50px rgba(230, 0, 18, 0.08);
+      padding: 44px 56px 36px 56px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* 슬라이드 뷰 전환 처리 */
+    .slide-page {
+      display: none;
+      width: 100%;
+      height: 100%;
+      flex-direction: column;
+      justify-content: space-between;
+      animation: fadeInSlide 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    .slide-page.active {
+      display: flex;
+    }
+
+    @keyframes fadeInSlide {
+      from { opacity: 0; transform: scale(0.985); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    /* 슬라이드 헤더 */
+    .slide-header {
+      margin-bottom: 20px;
+    }
+
+    .slide-category {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-muted);
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .slide-category .sec-badge {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--finela-red);
+      box-shadow: 0 0 8px var(--finela-red);
+    }
+
+    .slide-title {
+      font-size: 34px;
+      font-weight: 800;
+      color: #ffffff;
+      letter-spacing: -0.5px;
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+    }
+
+    .slide-title .title-accent {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 900;
+      color: var(--finela-red);
+      font-size: 30px;
+    }
+
+    /* 2분할 콘텐츠 영역 (좌측 목업 58% : 우측 콜아웃 42%) */
+    .slide-body {
+      display: grid;
+      grid-template-columns: 1.38fr 1fr;
+      gap: 36px;
+      align-items: center;
+      flex: 1;
+      position: relative;
+    }
+
+    /* 좌측 웹 화면 목업 프레임 */
+    .mockup-container {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border-radius: 14px;
+      background: #000000;
+      border: 1.5px solid rgba(255, 255, 255, 0.14);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 35px rgba(230, 0, 18, 0.12);
+      overflow: hidden;
+    }
+
+    .mockup-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.4s ease;
+    }
+
+    .mockup-container:hover .mockup-img {
+      transform: scale(1.015);
+    }
+
+    /* 콜아웃 핀 (Callout Pin) */
+    .callout-pin {
+      position: absolute;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: var(--finela-red);
+      color: #ffffff;
+      font-size: 13px;
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid #ffffff;
+      box-shadow: 0 0 16px rgba(230, 0, 18, 1), 0 0 25px var(--finela-red);
+      cursor: pointer;
+      z-index: 30;
+      transform: translate(-50%, -50%);
+      transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      user-select: none;
+    }
+
+    .callout-pin::after {
+      content: '';
+      position: absolute;
+      inset: -5px;
+      border-radius: 50%;
+      border: 2px solid var(--finela-red);
+      animation: pulse-ring 2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+      pointer-events: none;
+    }
+
+    @keyframes pulse-ring {
+      0% { transform: scale(0.85); opacity: 0.9; }
+      50% { transform: scale(1.5); opacity: 0.2; }
+      100% { transform: scale(1.9); opacity: 0; }
+    }
+
+    .callout-pin:hover, .callout-pin.active {
+      transform: translate(-50%, -50%) scale(1.35);
+      background: #ff2233;
+      box-shadow: 0 0 25px #ff2233, 0 0 0 3px #ffffff;
+      z-index: 40;
+    }
+
+    /* SVG 커넥터 오버레이 */
+    .connector-svg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 25;
+    }
+
+    .leader-line {
+      stroke: var(--finela-red);
+      stroke-width: 1.8;
+      stroke-dasharray: 4 2;
+      fill: none;
+      opacity: 0.75;
+      filter: drop-shadow(0 0 4px var(--finela-red));
+      transition: all 0.3s ease;
+    }
+
+    .leader-line.active {
+      stroke-width: 2.5;
+      stroke-dasharray: none;
+      opacity: 1;
+      filter: drop-shadow(0 0 8px #ff3344);
+    }
+
+    /* 우측 콜아웃 카드 스택 */
+    .callout-stack {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 100%;
+      gap: 12px;
+    }
+
+    .callout-card {
+      background: var(--card-bg);
+      border: 1.5px solid var(--card-border);
+      border-radius: 12px;
+      padding: 14px 18px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5), inset 0 0 15px rgba(230, 0, 18, 0.04);
+      backdrop-filter: blur(12px);
+      transition: all 0.25s ease;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .callout-card:hover, .callout-card.active {
+      transform: translateX(6px);
+      border-color: #ff3344;
+      background: rgba(26, 20, 28, 0.96);
+      box-shadow: 0 12px 30px rgba(230, 0, 18, 0.35), inset 0 0 20px rgba(230, 0, 18, 0.12);
+    }
+
+    .card-title-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 5px;
+    }
+
+    .card-num {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--finela-red);
+      color: #ffffff;
+      font-size: 11px;
+      font-weight: 900;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .card-title {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--finela-red);
+      letter-spacing: -0.2px;
+    }
+
+    .card-desc {
+      font-size: 13px;
+      line-height: 1.55;
+      color: var(--text-desc);
+      padding-left: 28px;
+      font-weight: 400;
+    }
+
+    .card-desc strong {
+      color: #ffffff;
+      font-weight: 700;
+    }
+
+    .card-desc .badge-tag {
+      display: inline-block;
+      background: rgba(230, 0, 18, 0.15);
+      border: 1px solid rgba(230, 0, 18, 0.35);
+      color: #ff4d5a;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 1px 6px;
+      border-radius: 4px;
+      margin-left: 4px;
+    }
+
+    /* 슬라이드 하단 푸터 */
+    .slide-footer {
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding-top: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 20px;
+    }
+
+    .footer-left {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+    }
+
+    .slide-num {
+      font-family: 'Oswald', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: #ffffff;
+      letter-spacing: 1px;
+    }
+
+    .footer-sep {
+      color: rgba(255, 255, 255, 0.3);
+      font-weight: 300;
+    }
+
+    .footer-text {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-muted);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    .footer-controls {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .btn-nav {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #ffffff;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 8px 18px;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-nav:hover {
+      background: var(--finela-red);
+      border-color: var(--finela-red);
+      box-shadow: 0 0 15px rgba(230, 0, 18, 0.5);
+    }
+
+    .key-hint {
+      font-size: 11px;
+      color: #636b7c;
+      letter-spacing: 0.5px;
+    }
+
+    /* 발표자 대본 드로어 (Drawer) */
+    .script-drawer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: rgba(14, 15, 22, 0.98);
+      backdrop-filter: blur(20px);
+      border-top: 2px solid var(--finela-red);
+      box-shadow: 0 -20px 50px rgba(0, 0, 0, 0.8);
+      padding: 24px 40px;
+      transform: translateY(105%);
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 200;
+      max-height: 40vh;
+      overflow-y: auto;
+    }
+
+    .script-drawer.open {
+      transform: translateY(0);
+    }
+
+    .script-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      pb: 10px;
+    }
+
+    .script-title {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--finela-red);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .script-content {
+      font-size: 14px;
+      line-height: 1.8;
+      color: #e0e4f0;
+    }
+
+    .script-content strong {
+      color: #ff4455;
+    }
+
+    /* 연속 펼쳐보기 모드 (Continuous View) */
+    body.continuous-mode .viewport {
+      display: block;
+      padding: 100px 32px 60px 32px;
+    }
+
+    body.continuous-mode .slide-canvas {
+      width: 100%;
+      margin: 0 auto 50px auto;
+      display: flex !important;
+    }
+
+    body.continuous-mode .slide-page {
+      display: flex !important;
+    }
+
+    /* 반응형 처리 */
+    @media (max-width: 1280px) {
+      .slide-canvas {
+        padding: 30px;
+        aspect-ratio: auto;
+        min-height: 85vh;
+      }
+      .slide-title { font-size: 26px; }
+      .slide-body {
+        grid-template-columns: 1fr;
+        gap: 24px;
+      }
+      .callout-stack {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .top-toolbar { padding: 0 16px; }
+      .slide-tabs { display: none; }
+      .callout-stack { grid-template-columns: 1fr; }
+    }
+
+    /* 인쇄 / PDF 저장 최적화 */
+    @media print {
+      .top-toolbar, .footer-controls, .key-hint { display: none !important; }
+      body { background: #000 !important; color: #fff !important; }
+      .viewport { padding: 0; }
+      .slide-canvas {
+        page-break-after: always;
+        border: none;
+        box-shadow: none;
+        width: 100%;
+        height: 100vh;
+        margin: 0;
+        padding: 30px;
+      }
+      .slide-page { display: flex !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ============================================================================== -->
+  <!-- 1. 최상단 네비게이션 툴바                                                      -->
+  <!-- ============================================================================== -->
+  <header class="top-toolbar">
+    <div class="brand-group">
+      <a href="index.html" class="brand-logo" title="홈페이지 메인으로 복귀">FINELA</a>
+      <span class="brand-badge">UI Callout Analysis Deck</span>
+    </div>
+
+    <!-- 6대 페이지 탭 전환 버튼 -->
+    <nav class="slide-tabs">
+      <button class="tab-btn active" onclick="goToSlide(1)">01 메인</button>
+      <button class="tab-btn" onclick="goToSlide(2)">02 선수단</button>
+      <button class="tab-btn" onclick="goToSlide(3)">03 서비스</button>
+      <button class="tab-btn" onclick="goToSlide(4)">04 스토어</button>
+      <button class="tab-btn" onclick="goToSlide(5)">05 스폰서</button>
+      <button class="tab-btn" onclick="goToSlide(6)">06 고객센터</button>
+    </nav>
+
+    <!-- 유틸리티 액션 버튼 -->
+    <div class="toolbar-actions">
+      <button class="btn-action" onclick="toggleContinuousMode()" id="viewModeBtn" title="전체 6개 슬라이드 한눈에 보기">
+        <i class="fa-solid fa-layer-group"></i> <span>전체 펼쳐보기</span>
+      </button>
+      <button class="btn-action" onclick="toggleScript()" title="발표자 대본 열기 (단축키: N)">
+        <i class="fa-solid fa-microphone-lines"></i> <span>대본 (N)</span>
+      </button>
+      <button class="btn-action" onclick="window.print()" title="PDF 저장 또는 인쇄 (단축키: P)">
+        <i class="fa-solid fa-print"></i> <span>인쇄/PDF</span>
+      </button>
+      <button class="btn-action" onclick="toggleFullscreen()" title="전체화면 전환 (단축키: F)">
+        <i class="fa-solid fa-expand"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- ============================================================================== -->
+  <!-- 2. 슬라이드 뷰포트 (16:9 메인 프리젠테이션 캔버스)                              -->
+  <!-- ============================================================================== -->
+  <main class="viewport">
+    <div class="slide-canvas">
+
+      <!-- ======================================================================== -->
+      <!-- SLIDE 01: 메인 홈 (Main / Hero Section)                                   -->
+      <!-- ======================================================================== -->
+      <section class="slide-page active" data-slide="1">
+        <!-- 슬라이드 헤더 -->
+        <div class="slide-header">
+          <div class="slide-category">
+            <span class="sec-badge"></span>
+            FINELA SPORTS AGENCY 의 웹사이트 메인 페이지
+          </div>
+          <h1 class="slide-title">
+            콜아웃(Callout)' 방식 시각화 자료
+            <span class="title-accent">/ 01 HERO</span>
+          </h1>
+        </div>
+
+        <!-- 슬라이드 2분할 바디 -->
+        <div class="slide-body" id="slide-body-1">
+          <svg class="connector-svg" id="svg-connectors-1"></svg>
+
+          <!-- 좌측 목업 프레임 -->
+          <div class="mockup-container" id="mockup-1">
+            <img src="assets/mockups/mockup_01_main.png" alt="FINELA 메인 홈페이지" class="mockup-img">
+            
+            <!-- 핀 1: GNB Contact Us CTA -->
+            <div class="callout-pin" id="pin-1-1" style="top: 8%; left: 88%;" onclick="highlightCard(1, 1)" title="1. 고정형 글래스모피즘 GNB">①</div>
+            
+            <!-- 핀 2: 메인 슬로건 & 타이포 -->
+            <div class="callout-pin" id="pin-1-2" style="top: 45%; left: 50%;" onclick="highlightCard(1, 2)" title="2. 브랜드 아이덴티티">②</div>
+            
+            <!-- 핀 3: 핵심 지표 메트릭 바 -->
+            <div class="callout-pin" id="pin-1-3" style="top: 81%; left: 62%;" onclick="highlightCard(1, 3)" title="3. 핵심 지표 메트릭 바">③</div>
+            
+            <!-- 핀 4: 마우스 스크롤 다운 가이드 -->
+            <div class="callout-pin" id="pin-1-4" style="top: 94%; left: 50%;" onclick="highlightCard(1, 4)" title="4. 인터랙티브 가이드">④</div>
+          </div>
+
+          <!-- 우측 콜아웃 4개 카드 스택 -->
+          <div class="callout-stack">
+            <div class="callout-card" id="card-1-1" onclick="highlightPin(1, 1)">
+              <div class="card-title-row">
+                <span class="card-num">1</span>
+                <h3 class="card-title">고정형 글래스모피즘 GNB:</h3>
+              </div>
+              <p class="card-desc">
+                장바구니 & <strong>'CONTACT US'</strong> CTA 알약 버튼으로 사용자 전환 유도 <span class="badge-tag">상단 고정</span>
+              </p>
+            </div>
+
+            <div class="callout-card" id="card-1-2" onclick="highlightPin(1, 2)">
+              <div class="card-title-row">
+                <span class="card-num">2</span>
+                <h3 class="card-title">브랜드 아이덴티티:</h3>
+              </div>
+              <p class="card-desc">
+                강렬한 네온 레드 컬러와 거친 텍스트로 <strong>엘리트 스포츠의 역동성</strong> 강조 <span class="badge-tag">퍼스트 임팩트</span>
+              </p>
+            </div>
+
+            <div class="callout-card" id="card-1-3" onclick="highlightPin(1, 3)">
+              <div class="card-title-row">
+                <span class="card-num">3</span>
+                <h3 class="card-title">핵심 지표 메트릭 바:</h3>
+              </div>
+              <p class="card-desc">
+                신뢰도를 높이는 4대 성과 데이터(<strong>28+ Roster, $18.5M+ 등</strong>)를 첫 화면에 즉시 노출 <span class="badge-tag">공신력 증명</span>
+              </p>
+            </div>
+
+            <div class="callout-card" id="card-1-4" onclick="highlightPin(1, 4)">
+              <div class="card-title-row">
+                <span class="card-num">4</span>
+                <h3 class="card-title">인터랙티브 가이드:</h3>
+              </div>
+              <p class="card-desc">
+                <strong>'SCROLL DOWN'</strong> 마우스 애니메이션으로 자연스러운 탐색 유도 <span class="badge-tag">시선 유도</span>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 슬라이드 하단 푸터 -->
+        <div class="slide-footer">
+          <div class="footer-left">
+            <span class="slide-num">01</span>
+            <span class="footer-sep">|</span>
+            <span class="footer-text">FINELA SPORTS AGENCY WEBSITE ANALYSIS</span>
+          </div>
+          <div class="footer-controls">
+            <span class="key-hint">단축키: [← / →] 슬라이드 이동, [1~6] 직행</span>
+            <button class="btn-nav" onclick="nextSlide()">
+              <span>다음: 선수단</span> <i class="fa-solid fa-arrow-right"></i>
+            </button>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ======================================================================== -->
+      <!-- SLIDE 02: 선수단 로스터 (Roster / Athletes Section)                      -->
+      <!-- ======================================================================== -->
+      <section class="slide-page" data-slide="2">
+        <div class="slide-header">
+          <div class="slide-category">
+            <span class="sec-badge"></span>
+            FINELA SPORTS AGENCY 의 웹사이트 선수단 (Roster) 페이지
+          </div>
+          <h1 class="slide-title">
+            콜아웃(Callout)' 방식 시각화 자료
+            <span class="title-accent">/ 02 ROSTER</span>
+          </h1>
+        </div>
+
+        <div class="slide-body" id="slide-body-2">
+          <svg class="connector-svg" id="svg-connectors-2"></svg>
+          <div class="mockup-container" id="mockup-2">
+            <img src="assets/mockups/mockup_02_roster.png" alt="FINELA 선수단 로스터" class="mockup-img">
+            
+            <!-- 핀 1: 공식 라인업 타이틀 -->
+            <div class="callout-pin" id="pin-2-1" style="top: 23%; left: 50%;" onclick="highlightCard(2, 1)">①</div>
+            
+            <!-- 핀 2: 트레이딩 카드 그리드 -->
+            <div class="callout-pin" id="pin-2-2" style="top: 52%; left: 16%;" onclick="highlightCard(2, 2)">②</div>
+            
+            <!-- 핀 3: 흑백-풀컬러 호버 인터랙션 -->
+            <div class="callout-pin" id="pin-2-3" style="top: 52%; left: 30%;" onclick="highlightCard(2, 3)">③</div>
+            
+            <!-- 핀 4: 시그니처 레드 등번호 & 한영 병기 -->
+            <div class="callout-pin" id="pin-2-4" style="top: 80%; left: 33%;" onclick="highlightCard(2, 4)">④</div>
+          </div>
+
+          <div class="callout-stack">
+            <div class="callout-card" id="card-2-1" onclick="highlightPin(2, 1)">
+              <div class="card-title-row">
+                <span class="card-num">1</span>
+                <h3 class="card-title">국가대표 공식 라인업 헤더:</h3>
+              </div>
+              <p class="card-desc">
+                <strong>'2026 Aichi-Nagoya Asian Games Roster'</strong> 명시로 소속 선수단이 아시아 최정상급 엘리트임을 단번에 증명 <span class="badge-tag">국대 공인</span>
+              </p>
+            </div>
+
+            <div class="callout-card" id="card-2-2" onclick="highlightPin(2, 2)">
+              <div class="card-title-row">
+                <span class="card-num">2</span>
+                <h3 class="card-title">스포츠 트레이딩 카드 그리드:</h3>
+              </div>
+              <p class="card-desc">
+                단순 증명사진 나열을 탈피하여 팬덤의 수집 욕구를 자극하는 <strong>4:5 세로형 프리미엄 카드 포맷</strong> 적용 <span class="badge-tag">스타성 강조</span>
+              </p>
+            </div>
+
+            <div class="callout-card" id="card-2-3" onclick="highlightPin(2, 3)">
+              <div class="card-title-row">
+                <span class="card-num">3</span>
+                <h3 class="card-title">인터랙티브 호버 (흑백 ➔ 풀컬러):</h3>
+              </div>
+              <p class="card-desc">
+                절제된 흑백 톤에서 마우스 오버 시 <strong>생생한 컬러와 네온 보더</strong>가 점등되며 선수의 잠재력이 깨어나는 감성 연출 <span class="badge-tag">호버 효과</span>
+              </p>
+            </div>
+
+            <div class="callout-card" id="card-2-4" onclick="highlightPin(2, 4)">
+              <div class="card-title-row">
+                <span class="card-num">4</span>
+                <h3 class="card-title">시그니처 레드 등번호 & 성명 병기:</h3>
+              </div>
+              <p class="card-desc">
+                글로벌 스카우터와 팬을 위한 <strong>국·영문 동시 표기</strong> 및 선수의 상징인 백넘버(#1, #2, #22)를 시그니처 레드로 각인 <span class="badge-tag">글로벌 식별</span>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="slide-footer">
+          <div class="footer-left">
+            <span class="slide-num">02</span>
+            <span class="footer-sep">|</span>
+            <span class="footer-text">FINELA SPORTS AGENCY WEBSITE ANALYSIS</span>
+          </div>
+          <div class="footer-controls">
+            <button class="btn-nav" onclick="prevSlide()"><i class="fa-solid fa-arrow-left"></i> 이전</button>
+            <button class="btn-nav" onclick="nextSlide()">다음: 서비스 <i class="fa-solid fa-arrow-right"></i></button>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ======================================================================== -->
+      <!-- SLIDE 03: 서비스 (Services / Total Management Section)                   -->
+      <!-- ======================================================================== -->
+      <section class="slide-page" data-slide="3">
+        <div class="slide-header">
+          <div class="slide-category">
+            <span class="sec-badge"></span>
+            FINELA SPORTS AGENCY 의 웹사이트 서비스 (Services) 페이지
+          </div>
+          <h1 class="slide-title">
+            콜아웃(Callout)' 방식 시각화 자료
+            <span class="title-accent">/ 03 SERVICES</span>
+          </h1>
+        </div>
+
+        <div class="slide-body" id="slide-body-3">
+          <svg class="connector-svg" id="svg-connectors-3"></svg>
+          <div class="mockup-container" id="mockup-3">
+            <img src="assets/mockups/mockup_03_services.png" alt="FINELA 토털 매니지먼트 서비스" class="mockup-img">
+            
+            <!-- 핀 1: 3대 서브탭 네비게이션 -->
+            <div class="callout-pin" id="pin-3-1" style="top: 25%; left: 35%;" onclick="highlightCard(3, 1)">①</div>
+            
+            <!-- 핀 2: 첨단 퍼포먼스 센터 -->
+            <div class="callout-pin" id="pin-3-2" style="top: 55%; left: 29%;" onclick="highlightCard(3, 2)">②</div>
+            
+            <!-- 핀 3: 3대 전문 코치진 분과 -->
+            <div class="callout-pin" id="pin-3-3" style="top: 89%; left: 49%;" onclick="highlightCard(3, 3)">③</div>
+            
+            <!-- 핀 4: 프리미엄 숙소 및 리커버리 -->
+            <div class="callout-pin" id="pin-3-4" style="top: 55%; left: 78%;" onclick="highlightCard(3, 4)">④</div>
+          </div>
+
+          <div class="callout-stack">
+            <div class="callout-card" id="card-3-1" onclick="highlightPin(3, 1)">
+              <div class="card-title-row">
+                <span class="card-num">1</span>
+                <h3 class="card-title">3단계 체계적 서브탭 네비게이션:</h3>
+              </div>
+              <p class="card-desc">
+                <strong>훈련(Training), 숙소(Accommodation), 법률(Legal)</strong>의 3대 축으로 정보를 분리하여 탐색 피로도 해소 <span class="badge-tag">체계적 IA</span>
+              </p>
+            </div>
+
+            <div class="callout-card" id="card-3-2" onclick="highlightPin(3, 2)">
+              <div class="card-title-row">
+                <span class="card-num">2</span>
+                <h3 class="card-title">데이터 기반 첨단 퍼포먼스 센터:</h3>
+              </div>
+              <p class="card-desc">
+                NBA급 <strong>3D 모션 트래킹 & 생체 데이터 센서</strong>로 과학적 훈련 인프라를 증명하고 부상 리스크 원천 차단 <span class="badge-tag">과학적 분석</span>
+              </p>
+            </div>
+
+            <div class="callout-card" id="card-3-3" onclick="highlightPin(3, 3)">
+              <div class="card-title-row">
+                <span class="card-num">3</span>
+                <h3 class="card-title">3대 전문 코치진 분과 체계:</h3>
+              </div>
+              <p class="card-desc">
+                <strong>피지컬(근력), 스킬(1:1 슈팅 전술), 멘탈(심리 상담)</strong>의 3인 전문 코칭팀을 가시화하여 맞춤 케어 제공 <span class="badge-tag">전문성 강조</span>
+              </p>
+            </div>
+
+            <div class="callout-card" id="card-3-4" onclick="highlightPin(3, 4)">
+              <div class="card-title-row">
+                <span class="card-num">4</span>
+                <h3 class="card-title">360° 의식주 및 럭셔리 회복 인프라:</h3>
+              </div>
+              <p class="card-desc">
+                <strong>1인 1실 호텔급 룸, 도핑프리 셰프 식단, -130°C 크라이오테라피</strong>로 선수와 학부모의 두터운 신뢰 확보 <span class="badge-tag">프리미엄 케어</span>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="slide-footer">
+          <div class="footer-left">
+            <span class="slide-num">03</span>
+            <span class="footer-sep">|</span>
+            <span class="footer-text">FINELA SPORTS AGENCY WEBSITE ANALYSIS</span>
+          </div>
+          <div class="footer-controls">
+            <button class="btn-nav" onclick="prevSlide()"><i class="fa-solid fa-arrow-left"></i> 이전</button>
+            <button class="btn-nav" onclick="nextSlide()">다음: 스토어 <i class="fa-solid fa-arrow-right"></i></button>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ======================================================================== -->
+      <!-- SLIDE 04: 스토어 (Store / Official Merchandise Section)                  -->
+      <!-- ======================================================================== -->
+      <section class="slide-page" data-slide="4">
+        <div class="slide-header">
+          <div class="slide-category">
+            <span class="sec-badge"></span>
+            FINELA SPORTS AGENCY 의 웹사이트 스토어 (Store) 페이지
+          </div>
+          <h1 class="slide-title">
+            콜아웃(Callout)' 방식 시각화 자료
+            <span class="title-accent">/ 04 STORE</span>
+          </h1>
+        </div>
+
+        <div class="slide-body" id="slide-body-4">
+          <svg class="connector-svg" id="svg-connectors-4"></svg>
+          <div class="mockup-container" id="mockup-4">
+            <img src="assets/mockups/mockup_04_store.png" alt="FINELA 공식 스토어" class="mockup-img">
+            
+            <!-- 핀 1: 스토어 헤더 및 카트 뱃지 -->
+            <div class="callout-pin" id="pin-4-1" style="top: 7%; left: 88%;" onclick="highlightCard(4, 1)">①</div>
+            
+            <!-- 핀 2: 6종 공식 굿즈 라인업 -->
+            <div class="callout-pin" id="pin-4-2" style="top: 48%; left: 24%;" onclick="highlightCard(4, 2)">②</div>
+            
+            <!-- 핀 3: 인-페이지 사이즈 선택 토글 -->
+            <div class="callout-pin" id="pin-4-3" style="top: 66%; left: 83%;" onclick="highlightCard(4, 3)">③</div>
+            
+            <!-- 핀 4: ADD TO CART 최종 액션 버튼 -->
+            <div class="callout-pin" id="pin-4-4" style="top: 79%; left: 83%;" onclick="highlightCard(4, 4)">④</div>
+          </div>
+
+          <div class="callout-stack">
+            <div class="callout-card" id="card-4-1" onclick="highlightPin(4, 1)">
+              <div class="card-title-row">
+                <span class="card-num">1</span>
+                <h3 class="card-title">공식 D2C 머천다이징 커머스:</h3>
+              </div>
+              <p class="card-desc">
+                외부 쇼핑몰 연결 없이 에이전시 공식 플랫폼 내에서 <strong>선수 IP 기반 자체 굿즈</strong>를 유통하는 원스톱 D2C 쇼핑 구축 <span class="badge-tag">D2C 직판</span>
+              </p>
+            </div>
+
+            <div class="callout-card" id="card-4-2" onclick="highlightPin(4, 2)">
+              <div class="card-title-row">
+                <span class="card-num">2</span>
+                <h3 class="card-title">팬덤 맞춤형 6종 굿즈 라인업:</h3>
+              </div>
+              <p class="card-desc">
+                유니폼, 후디, 공식구부터 타월, <strong>국대 12인 친필싸인 포토카드</strong>까지 폭넓은 가격대(1.5만~8.9만원) 만족 <span class="badge-tag">IP 수익화</span>
+              </p>
+            </div>
+
+            <div class="callout-card" id="card-4-3" onclick="highlightPin(4, 3)">
+              <div class="card-title-row">
+                <span class="card-num">3</span>
+                <h3 class="card-title">인-페이지 퀵 셀렉트 & 사이즈 선택:</h3>
+              </div>
+              <p class="card-desc">
+                페이지 이동 없이 단일 화면에서 <strong>S, M, L, XL 사이즈</strong>를 즉각 고르고 수량을 설정하는 매끄러운 퀵 셀렉트 UX <span class="badge-tag">Seamless UX</span>
+              </p>
+            </div>
+
+            <div class="callout-card" id="card-4-4" onclick="highlightPin(4, 4)">
+              <div class="card-title-row">
+                <span class="card-num">4</span>
+                <h3 class="card-title">고전환 'ADD TO CART' 장바구니 버튼:</h3>
+              </div>
+              <p class="card-desc">
+                선명한 네온 레드 컬러와 장바구니 아이콘으로 <strong>시각적 전환 앵커</strong> 역할을 수행하여 이탈률 최소화 <span class="badge-tag">매출 전환</span>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="slide-footer">
+          <div class="footer-left">
+            <span class="slide-num">04</span>
+            <span class="footer-sep">|</span>
+            <span class="footer-text">FINELA SPORTS AGENCY WEBSITE ANALYSIS</span>
+          </div>
+          <div class="footer-controls">
+            <button class="btn-nav" onclick="prevSlide()"><i class="fa-solid fa-arrow-left"></i> 이전</button>
+            <button class="btn-nav" onclick="nextSlide()">다음: 스폰서 <i class="fa-solid fa-arrow-right"></i></button>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ======================================================================== -->
+      <!-- SLIDE 05: 스폰서 (Sponsors / Partners Section)                            -->
+      <!-- ======================================================================== -->
+      <section class="slide-page" data-slide="5">
+        <div class="slide-header">
+          <div class="slide-category">
+            <span class="sec-badge"></span>
+            FINELA SPORTS AGENCY 의 웹사이트 스폰서 (Sponsors) 페이지
+          </div>
+          <h1 class="slide-title">
+            콜아웃(Callout)' 방식 시각화 자료
+            <span class="title-accent">/ 05 SPONSORS</span>
+          </h1>
+        </div>
+
+        <div class="slide-body" id="slide-body-5">
+          <svg class="connector-svg" id="svg-connectors-5"></svg>
+          <div class="mockup-container" id="mockup-5">
+            <img src="assets/mockups/mockup_05_sponsors.png" alt="FINELA 공식 파트너사" class="mockup-img">
+            
+            <!-- 핀 1: 파트너십 가치 선언문 -->
+            <div class="callout-pin" id="pin-5-1" style="top: 17%; left: 50%;" onclick="highlightCard(5, 1)">①</div>
+            
+            <!-- 핀 2: 8대 글로벌 탑티어 브랜드 쇼케이스 -->
+            <div class="callout-pin" id="pin-5-2" style="top: 48%; left: 38%;" onclick="highlightCard(5, 2)">②</div>
+            
+            <!-- 핀 3: 호버 시 CI 브랜드 컬러 점등 -->
+            <div class="callout-pin" id="pin-5-3" style="top: 48%; left: 58%;" onclick="highlightCard(5, 3)">③</div>
+            
+            <!-- 핀 4: 스폰서십 세부 롤 태그 -->
+            <div class="callout-pin" id="pin-5-4" style="top: 72%; left: 58%;" onclick="highlightCard(5, 4)">④</div>
+          </div>
+
+          <div class="callout-stack">
+            <div class="callout-card" id="card-5-1" onclick="highlightPin(5, 1)">
+              <div class="card-title-row">
+                <span class="card-num">1</span>
+                <h3 class="card-title">글로벌 파트너십 가치 선언문:</h3>
+              </div>
+              <p class="card-desc">
+                단순 협찬 나열을 넘어 세계적 기업들과 비전을 공유하는 <strong>'비즈니스 동반자적 연대'</strong>임을 공식 선언 <span class="badge-tag">신뢰도 제고</span>
+              </p>
+            </div>
+
+            <div class="callout-card" id="card-5-2" onclick="highlightPin(5, 2)">
+              <div class="card-title-row">
+                <span class="card-num">2</span>
+                <h3 class="card-title">8대 글로벌 탑티어 브랜드 쇼케이스:</h3>
+              </div>
+              <p class="card-desc">
+                <strong>나이키, 게토레이, 삼성, SKT, KB금융 등</strong> 스포츠·IT·금융을 대표하는 최고 브랜드로 공신력 증명 <span class="badge-tag">압도적 위상</span>
+              </p>
+            </div>
+
+            <div class="callout-card" id="card-5-3" onclick="highlightPin(5, 3)">
+              <div class="card-title-row">
+                <span class="card-num">3</span>
+                <h3 class="card-title">인터랙티브 브랜드 리스펙트 (CI 컬러 점등):</h3>
+              </div>
+              <p class="card-desc">
+                평소 흑백으로 다크 테마를 유지하다가 호버 시 <strong>각 기업 고유의 CI 컬러(삼성 블루 등)</strong>가 발광하는 시각적 예우 <span class="badge-tag">인터랙션</span>
+              </p>
+            </div>
+
+            <div class="callout-card" id="card-5-4" onclick="highlightPin(5, 4)">
+              <div class="card-title-row">
+                <span class="card-num">4</span>
+                <h3 class="card-title">스폰서십 분야별 세부 롤(Role) 태그:</h3>
+              </div>
+              <p class="card-desc">
+                <strong>Kit Sponsor, Beverage, AI Data Partner</strong> 등 후원 분야를 명시해 신규 기업에 다각화된 협찬 모델 제시 <span class="badge-tag">비즈니스 확장</span>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="slide-footer">
+          <div class="footer-left">
+            <span class="slide-num">05</span>
+            <span class="footer-sep">|</span>
+            <span class="footer-text">FINELA SPORTS AGENCY WEBSITE ANALYSIS</span>
+          </div>
+          <div class="footer-controls">
+            <button class="btn-nav" onclick="prevSlide()"><i class="fa-solid fa-arrow-left"></i> 이전</button>
+            <button class="btn-nav" onclick="nextSlide()">다음: 고객센터 <i class="fa-solid fa-arrow-right"></i></button>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ======================================================================== -->
+      <!-- SLIDE 06: 고객센터 (Contact Us / Get In Touch Section)                   -->
+      <!-- ======================================================================== -->
+      <section class="slide-page" data-slide="6">
+        <div class="slide-header">
+          <div class="slide-category">
+            <span class="sec-badge"></span>
+            FINELA SPORTS AGENCY 의 웹사이트 고객센터 (Contact Us) 페이지
+          </div>
+          <h1 class="slide-title">
+            콜아웃(Callout)' 방식 시각화 자료
+            <span class="title-accent">/ 06 CONTACT US</span>
+          </h1>
+        </div>
+
+        <div class="slide-body" id="slide-body-6">
+          <svg class="connector-svg" id="svg-connectors-6"></svg>
+          <div class="mockup-container" id="mockup-6">
+            <img src="assets/mockups/mockup_06_contact.png" alt="FINELA 고객센터 및 제휴 문의" class="mockup-img">
+            
+            <!-- 핀 1: 테헤란로 본사 및 직통 연락처 -->
+            <div class="callout-pin" id="pin-6-1" style="top: 48%; left: 32%;" onclick="highlightCard(6, 1)">①</div>
+            
+            <!-- 핀 2: 4대 글로벌 SNS 옴니채널 -->
+            <div class="callout-pin" id="pin-6-2" style="top: 77%; left: 32%;" onclick="highlightCard(6, 2)">②</div>
+            
+            <!-- 핀 3: 스마트 비즈니스 라우팅 드롭다운 -->
+            <div class="callout-pin" id="pin-6-3" style="top: 55%; left: 69%;" onclick="highlightCard(6, 3)">③</div>
+            
+            <!-- 핀 4: SEND MESSAGE 최종 전환 버튼 -->
+            <div class="callout-pin" id="pin-6-4" style="top: 78%; left: 69%;" onclick="highlightCard(6, 4)">④</div>
+          </div>
+
+          <div class="callout-stack">
+            <div class="callout-card" id="card-6-1" onclick="highlightPin(6, 1)">
+              <div class="card-title-row">
+                <span class="card-num">1</span>
+                <h3 class="card-title">테헤란로 본사 거점 및 투명한 연락처:</h3>
+              </div>
+              <p class="card-desc">
+                강남 테헤란로 FINELA 타워 위치, 직통 전화, 이메일을 공개하여 <strong>물리적 실체감과 비즈니스 신뢰도</strong> 극대화 <span class="badge-tag">투명성</span>
+              </p>
+            </div>
+
+            <div class="callout-card" id="card-6-2" onclick="highlightPin(6, 2)">
+              <div class="card-title-row">
+                <span class="card-num">2</span>
+                <h3 class="card-title">4대 글로벌 SNS 연동 옴니채널:</h3>
+              </div>
+              <p class="card-desc">
+                <strong>인스타그램, 유튜브, X, 링크드인</strong> 원클릭 링크로 MZ세대 팬덤부터 해외 스카우터까지 다층적 소통 채널 제공 <span class="badge-tag">소통 창구</span>
+              </p>
+            </div>
+
+            <div class="callout-card" id="card-6-3" onclick="highlightPin(6, 3)">
+              <div class="card-title-row">
+                <span class="card-num">3</span>
+                <h3 class="card-title">스마트 비즈니스 라우팅 드롭다운:</h3>
+              </div>
+              <p class="card-desc">
+                문의 유형을 <strong>'스폰서십', '입단 스카우팅', '미디어 취재', '스토어'</strong>로 사전 분류하여 사내 전담팀으로 직결 <span class="badge-tag">자동 라우팅</span>
+              </p>
+            </div>
+
+            <div class="callout-card" id="card-6-4" onclick="highlightPin(6, 4)">
+              <div class="card-title-row">
+                <span class="card-num">4</span>
+                <h3 class="card-title">최종 비즈니스 전환 'SEND MESSAGE' CTA:</h3>
+              </div>
+              <p class="card-desc">
+                유효성 검증과 실시간 알림 피드백을 갖춘 시그니처 레드 버튼으로 <strong>단순 방문자를 실제 계약 리드(Lead)로 전환</strong> <span class="badge-tag">최종 전환</span>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="slide-footer">
+          <div class="footer-left">
+            <span class="slide-num">06</span>
+            <span class="footer-sep">|</span>
+            <span class="footer-text">FINELA SPORTS AGENCY WEBSITE ANALYSIS</span>
+          </div>
+          <div class="footer-controls">
+            <button class="btn-nav" onclick="prevSlide()"><i class="fa-solid fa-arrow-left"></i> 이전</button>
+            <button class="btn-nav" onclick="goToSlide(1)"><i class="fa-solid fa-rotate-left"></i> 처음으로</button>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- ============================================================================== -->
+  <!-- 3. 발표자 전용 대본 서랍 (단축키: N)                                           -->
+  <!-- ============================================================================== -->
+  <aside class="script-drawer" id="scriptDrawer">
+    <div class="script-header">
+      <div class="script-title">
+        <i class="fa-solid fa-microphone-lines"></i>
+        <span id="scriptSlideTitle">화면 01: 메인 홈 (Home View) 발표자 대본</span>
+      </div>
+      <button class="btn-action" onclick="toggleScript()" style="padding: 4px 10px;">
+        <i class="fa-solid fa-xmark"></i> 닫기 (Esc)
+      </button>
+    </div>
+    <div class="script-content" id="scriptBody">
+      <!-- 동적 스크립트 텍스트가 삽입됩니다 -->
+    </div>
+  </aside>
+
+  <!-- ============================================================================== -->
+  <!-- 4. 인터랙션 및 슬라이드 제어 자바스크립트                                       -->
+  <!-- ============================================================================== -->
+  <script>
+    let currentSlide = 1;
+    const totalSlides = 6;
+    let isContinuous = false;
+
+    // 슬라이드별 발표자 대본 데이터
+    const SCRIPTS = {
+      1: `<strong>[메인 홈 발표 멘트]</strong><br>
+      "방문자가 사이트에 접속했을 때 첫 3초 안에 FINELA의 압도적인 위상을 각인시키기 위해 <strong>PLAY WITH THE MEDALISTS</strong> 대형 타이포그래피와 강렬한 네온 레드를 적용했습니다.<br>
+      상단 GNB는 스크롤을 내려도 항상 고정되는 글래스모피즘으로 처리하여 장바구니와 문의하기로의 즉시 전환을 유도하며, 중앙 하단의 <strong>핵심 지표 바(28+ Roster, $18.5M+ Contract Value 등)</strong>를 통해 에이전시의 공신력을 데이터로 즉각 증명합니다."`,
+      
+      2: `<strong>[선수단 로스터 발표 멘트]</strong><br>
+      "선수단 페이지는 <strong>2026 나고야 아시안게임 출전 라인업</strong>임을 명시하여 국가대표급 위상을 입증합니다.<br>
+      선수 목록은 딱딱한 증명사진 대신 스포츠 팬덤에게 친숙한 <strong>4:5 수집형 트레이딩 카드 포맷</strong>을 적용했습니다. 평소 절제된 흑백 톤을 유지하다가 마우스를 올리면 풀컬러와 네온 레드 테두리가 켜지는 인터랙션을 통해 '팬과 유저의 관심이 닿았을 때 선수의 잠재력이 깨어난다'는 시각적 은유를 담았습니다."`,
+      
+      3: `<strong>[토털 매니지먼트 서비스 발표 멘트]</strong><br>
+      "FINELA의 지원 역량은 <strong>훈련, 의식주, 법률/관리의 3단계 서브탭</strong>으로 명확히 체계화했습니다.<br>
+      NBA급 3D 광학 모션 캡처 장비를 갖춘 첨단 퍼포먼스 센터와 피지컬·스킬·멘탈 3대 전문 코치진 분과를 가시화하여 부상 리스크를 원천 차단하는 과학적 트레이닝을 증명합니다. 아울러 1인 1실 호텔급 숙소와 도핑프리 셰프 식단을 통해 학부모와 구단의 절대적 신뢰를 얻습니다."`,
+      
+      4: `<strong>[공식 스토어 발표 멘트]</strong><br>
+      "FINELA Store는 외부 쇼핑몰로 이탈시키지 않고 공식 플랫폼 안에서 자체 선수 IP 상품을 판매하는 <strong>원스톱 D2C 커머스</strong>입니다.<br>
+      유니폼, 웜업 후디부터 국대 12인 친필싸인 포토카드까지 폭넓은 가격대(1.5만~8.9만원)의 6종 굿즈를 갖추었습니다. 상품 클릭 시 별도 페이지 이동 없이 단일 화면에서 사이즈를 고르고 담는 <strong>인-페이지 퀵 셀렉트 UX</strong>로 장바구니 전환율을 극대화했습니다."`,
+      
+      5: `<strong>[공식 스폰서십 발표 멘트]</strong><br>
+      "스폰서십 영역은 단순 후원사 로고 나열이 아니라, 세계 최고 기업들과 비전을 공유하는 <strong>'비즈니스 동반자적 연대'</strong>임을 선언합니다.<br>
+      나이키, 삼성, SKT 등 8대 글로벌 탑티어 브랜드를 배치하여 공신력을 증명하며, 마우스 오버 시 각 기업 고유의 CI 컬러(삼성 블루 등)가 네온 글로우로 켜지는 인터랙티브한 존중을 표했습니다. 하단 태그를 통해 Kit, 음료, IT 등 다각화된 스폰서십 기회를 신규 광고주에게 제안합니다."`,
+      
+      6: `<strong>[고객센터 및 제휴 발표 멘트]</strong><br>
+      "고객센터는 강남 테헤란로 FINELA 타워 본사 위치와 직통 연락처를 투명하게 공개하여 가상 프로젝트의 실체감과 신뢰도를 극대화했습니다.<br>
+      우측 온라인 폼의 <strong>Subject 드롭다운</strong>은 문의 목적을 '스폰서십', '선수 입단', '미디어 취재'로 사전에 자동 분류하여 사내 전담팀으로 지체 없이 연결하는 스마트 라우팅 시스템을 구현했습니다. 최종 Send Message 버튼으로 단순 방문자를 실제 계약 리드로 전환시킵니다."`
+    };
+
+    // SVG 커넥터 라인 동적 렌더링
+    function drawConnectorLines(slideNum) {
+      const svg = document.getElementById(`svg-connectors-${slideNum}`);
+      const body = document.getElementById(`slide-body-${slideNum}`);
+      const mockup = document.getElementById(`mockup-${slideNum}`);
+      if (!svg || !body || !mockup) return;
+
+      const bodyRect = body.getBoundingClientRect();
+      const mockupRect = mockup.getBoundingClientRect();
+
+      // SVG 초기화
+      svg.innerHTML = `
+        <defs>
+          <filter id="glow-${slideNum}" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur stdDeviation="3" result="blur" />
+            <feMerge>
+              <feMergeNode in="blur" />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
+        </defs>
+      `;
+
+      for (let i = 1; i <= 4; i++) {
+        const pin = document.getElementById(`pin-${slideNum}-${i}`);
+        const card = document.getElementById(`card-${slideNum}-${i}`);
+        if (!pin || !card) continue;
+
+        const pinRect = pin.getBoundingClientRect();
+        const cardRect = card.getBoundingClientRect();
+
+        const x1 = pinRect.left + pinRect.width / 2 - bodyRect.left;
+        const y1 = pinRect.top + pinRect.height / 2 - bodyRect.top;
+
+        const x2 = cardRect.left - bodyRect.left;
+        const y2 = cardRect.top + cardRect.height / 2 - bodyRect.top;
+
+        // 중간 꺾임점 (목업 우측 경계와 카드 좌측 사이)
+        const midX = (mockupRect.right - bodyRect.left + x2) / 2;
+
+        // 직교 엘보우 라인: M x1 y1 L midX y1 L midX y2 L x2 y2
+        const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        path.setAttribute('d', `M ${x1} ${y1} L ${midX} ${y1} L ${midX} ${y2} L ${x2} ${y2}`);
+        path.setAttribute('class', 'leader-line');
+        path.setAttribute('id', `line-${slideNum}-${i}`);
+        path.setAttribute('filter', `url(#glow-${slideNum})`);
+
+        // 핀 중심 앵커 점
+        const dot1 = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        dot1.setAttribute('cx', x1);
+        dot1.setAttribute('cy', y1);
+        dot1.setAttribute('r', '3');
+        dot1.setAttribute('fill', '#e60012');
+
+        // 카드 진입 앵커 점
+        const dot2 = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        dot2.setAttribute('cx', x2);
+        dot2.setAttribute('cy', y2);
+        dot2.setAttribute('r', '3');
+        dot2.setAttribute('fill', '#e60012');
+
+        svg.appendChild(path);
+        svg.appendChild(dot1);
+        svg.appendChild(dot2);
+      }
+    }
+
+    // 슬라이드 전환 함수
+    function goToSlide(n) {
+      if (n < 1 || n > totalSlides) return;
+      currentSlide = n;
+
+      // 슬라이드 페이지 노출/숨김
+      document.querySelectorAll('.slide-page').forEach(page => {
+        page.classList.remove('active');
+        if (parseInt(page.dataset.slide) === n) {
+          page.classList.add('active');
+        }
+      });
+
+      // 상단 탭 버튼 활성화
+      document.querySelectorAll('.tab-btn').forEach((btn, idx) => {
+        if (idx + 1 === n) {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
+      });
+
+      // 대본 텍스트 갱신
+      updateScriptText(n);
+
+      // SVG 커넥터 라인 계산 (렌더링 지연 감안)
+      requestAnimationFrame(() => {
+        setTimeout(() => {
+          drawConnectorLines(n);
+        }, 60);
+      });
+
+      // URL 해시 갱신
+      try {
+        history.replaceState(null, null, '#' + n);
+      } catch(e) {}
+    }
+
+    function nextSlide() {
+      if (currentSlide < totalSlides) goToSlide(currentSlide + 1);
+      else goToSlide(1);
+    }
+
+    function prevSlide() {
+      if (currentSlide > 1) goToSlide(currentSlide - 1);
+      else goToSlide(totalSlides);
+    }
+
+    // 핀 클릭/호버 시 우측 대응 카드 & 라인 하이라이트
+    function highlightCard(slideNum, itemNum) {
+      document.querySelectorAll('.callout-card').forEach(c => c.classList.remove('active'));
+      document.querySelectorAll('.leader-line').forEach(l => l.classList.remove('active'));
+      document.querySelectorAll('.callout-pin').forEach(p => p.classList.remove('active'));
+
+      const card = document.getElementById(`card-${slideNum}-${itemNum}`);
+      const line = document.getElementById(`line-${slideNum}-${itemNum}`);
+      const pin = document.getElementById(`pin-${slideNum}-${itemNum}`);
+
+      if (card) card.classList.add('active');
+      if (line) line.classList.add('active');
+      if (pin) pin.classList.add('active');
+    }
+
+    // 카드 클릭/호버 시 좌측 대응 핀 & 라인 하이라이트
+    function highlightPin(slideNum, itemNum) {
+      highlightCard(slideNum, itemNum);
+    }
+
+    // 카드 호버 인터랙션 바인딩
+    function bindCardHoverEvents() {
+      for (let s = 1; s <= totalSlides; s++) {
+        for (let i = 1; i <= 4; i++) {
+          const card = document.getElementById(`card-${s}-${i}`);
+          const pin = document.getElementById(`pin-${s}-${i}`);
+
+          if (card) {
+            card.addEventListener('mouseenter', () => highlightCard(s, i));
+            card.addEventListener('mouseleave', () => {
+              card.classList.remove('active');
+              const line = document.getElementById(`line-${s}-${i}`);
+              if (line) line.classList.remove('active');
+              if (pin) pin.classList.remove('active');
+            });
+          }
+
+          if (pin) {
+            pin.addEventListener('mouseenter', () => highlightCard(s, i));
+            pin.addEventListener('mouseleave', () => {
+              pin.classList.remove('active');
+              const line = document.getElementById(`line-${s}-${i}`);
+              if (line) line.classList.remove('active');
+              if (card) card.classList.remove('active');
+            });
+          }
+        }
+      }
+    }
+
+    // 발표자 대본 드로어 토글
+    function toggleScript() {
+      const drawer = document.getElementById('scriptDrawer');
+      drawer.classList.toggle('open');
+      updateScriptText(currentSlide);
+    }
+
+    function updateScriptText(n) {
+      const titleEl = document.getElementById('scriptSlideTitle');
+      const bodyEl = document.getElementById('scriptBody');
+      const titles = [
+        "화면 01: 메인 홈 (Home View)",
+        "화면 02: 선수단 로스터 (Athletes View)",
+        "화면 03: 서비스 (Services View)",
+        "화면 04: 스토어 (Store View)",
+        "화면 05: 스폰서 (Sponsors View)",
+        "화면 06: 고객센터 및 제휴 (Contact Us View)"
+      ];
+
+      if (titleEl) titleEl.innerText = `${titles[n - 1]} 발표자 대본`;
+      if (bodyEl) bodyEl.innerHTML = SCRIPTS[n] || "";
+    }
+
+    // 전체 펼쳐보기 모드 토글
+    function toggleContinuousMode() {
+      isContinuous = !isContinuous;
+      const body = document.body;
+      const btn = document.getElementById('viewModeBtn');
+
+      if (isContinuous) {
+        body.classList.add('continuous-mode');
+        btn.innerHTML = `<i class="fa-solid fa-desktop"></i> <span>슬라이드 모드</span>`;
+        // 모든 슬라이드의 커넥터 라인 동시 렌더링
+        setTimeout(() => {
+          for (let s = 1; s <= totalSlides; s++) {
+            drawConnectorLines(s);
+          }
+        }, 120);
+      } else {
+        body.classList.remove('continuous-mode');
+        btn.innerHTML = `<i class="fa-solid fa-layer-group"></i> <span>전체 펼쳐보기</span>`;
+        goToSlide(currentSlide);
+      }
+    }
+
+    // 전체화면 토글
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(err => {
+          alert(`전체화면 오류: ${err.message}`);
+        });
+      } else {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        }
+      }
+    }
+
+    // 리사이즈 시 커넥터 라인 재계산
+    window.addEventListener('resize', () => {
+      if (isContinuous) {
+        for (let s = 1; s <= totalSlides; s++) drawConnectorLines(s);
+      } else {
+        drawConnectorLines(currentSlide);
+      }
+    });
+
+    // 해시 변경 감지
+    window.addEventListener('hashchange', () => {
+      const hash = parseInt(window.location.hash.replace('#', ''));
+      if (hash >= 1 && hash <= totalSlides && hash !== currentSlide) {
+        goToSlide(hash);
+      }
+    });
+
+    // 키보드 단축키 핸들러
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') {
+        e.preventDefault();
+        nextSlide();
+      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+        e.preventDefault();
+        prevSlide();
+      } else if (e.key >= '1' && e.key <= '6') {
+        goToSlide(parseInt(e.key));
+      } else if (e.key.toLowerCase() === 'n') {
+        toggleScript();
+      } else if (e.key.toLowerCase() === 'f') {
+        toggleFullscreen();
+      } else if (e.key.toLowerCase() === 'p') {
+        window.print();
+      } else if (e.key === 'Escape') {
+        const drawer = document.getElementById('scriptDrawer');
+        if (drawer.classList.contains('open')) drawer.classList.remove('open');
+      }
+    });
+
+    // 초기화
+    window.addEventListener('DOMContentLoaded', () => {
+      const hash = parseInt(window.location.hash.replace('#', ''));
+      if (hash >= 1 && hash <= totalSlides) {
+        goToSlide(hash);
+      } else {
+        goToSlide(1);
+      }
+      bindCardHoverEvents();
+    });
+  </script>
+
+</body>
+</html>
+

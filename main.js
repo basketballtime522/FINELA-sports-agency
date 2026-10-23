@@ -171,22 +171,18 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ============================================================================
-  // 3. 선수단 12인 렌더링 & 필터링 (ROSTER)
+  // 3. 선수단 12인 렌더링 (ROSTER)
   // ============================================================================
   const rosterGrid = document.getElementById('rosterGrid');
   let currentModalPlayerIndex = 0;
 
-  function renderRoster(filter = 'all') {
+  function renderRoster() {
     if (!rosterGrid) return;
     rosterGrid.innerHTML = '';
 
-    const filtered = filter === 'all' 
-      ? PLAYERS_DATA 
-      : PLAYERS_DATA.filter(p => p.category === filter);
-
-    filtered.forEach((p, idx) => {
+    PLAYERS_DATA.forEach((p, idx) => {
       const card = document.createElement('div');
-      card.className = `roster-card ${p.isHighlighted ? 'highlighted' : ''}`;
+      card.className = 'roster-card';
       card.setAttribute('data-id', p.id);
       card.setAttribute('data-category', p.category);
 
@@ -213,18 +209,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // 포지션 필터 버튼 이벤트
-  const filterBtns = document.querySelectorAll('.filter-btn');
-  filterBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      filterBtns.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      const filter = btn.getAttribute('data-filter');
-      renderRoster(filter);
-    });
-  });
-
-  renderRoster('all');
+  renderRoster();
 
   // ============================================================================
   // 4. 선수 상세 모달 (PLAYER DETAIL MODAL)
@@ -293,10 +278,31 @@ document.addEventListener('DOMContentLoaded', () => {
       </div>
     `).join('');
 
-    // 모달 노출
+    // 카운터 업데이트
+    const counterEl = document.getElementById('modalAthleteCounter');
+    if (counterEl) {
+      counterEl.innerText = `ATHLETE ${String(index + 1).padStart(2, '0')} / ${String(PLAYERS_DATA.length).padStart(2, '0')}`;
+    }
+
+    // 모달 노출 및 스크롤 최상단(1페이지) 리셋
     playerModal.classList.add('active');
+    playerModal.scrollTop = 0;
     document.body.style.overflow = 'hidden';
   }
+
+  // 모달 내 스크롤 이동 헬퍼 함수
+  window.scrollToExtraSection = function() {
+    const extra = document.getElementById('modalExtraSection');
+    if (extra) {
+      extra.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  window.scrollToTopSection = function() {
+    if (playerModal) {
+      playerModal.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
 
   function closePlayerModalFunc() {
     playerModal.classList.remove('active');
@@ -592,3 +598,4 @@ document.addEventListener('DOMContentLoaded', () => {
 
   console.log('FINELA Sports Agency Controller successfully initialized.');
 });
+

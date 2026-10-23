@@ -64,7 +64,7 @@ const PLAYERS_DATA = [
     photo: "assets/players/player_1_photo.jpg",
     cardImg: "assets/players/player_1_card.jpg",
     actionHero: "assets/detail/athlete_hero_action.jpg",
-    isHighlighted: true,
+    isHighlighted: false,
     tag: "CAPTAIN & SHARPSHOOTER",
     summary: "2026 아시안게임 국가대표 핵심 에이스 · 압도적인 3점슛과 코트 비전",
     news: [
@@ -102,7 +102,7 @@ const PLAYERS_DATA = [
     photo: "assets/players/player_2_photo.jpg",
     cardImg: "assets/players/player_2_card.jpg",
     actionHero: "assets/detail/athlete_hero_action.jpg",
-    isHighlighted: true,
+    isHighlighted: false,
     tag: "POINT FORWARD",
     summary: "정규리그 MVP 출신 · 코트 전체를 지배하는 다재다능한 포인트 포워드",
     news: [
@@ -254,7 +254,7 @@ const PLAYERS_DATA = [
     photo: "assets/players/player_6_photo.jpg",
     cardImg: "assets/players/player_6_card.jpg",
     actionHero: "assets/detail/athlete_hero_action.jpg",
-    isHighlighted: true,
+    isHighlighted: false,
     tag: "ALL-ROUND FORWARD",
     summary: "골밑과 외곽을 넘나드는 탄탄한 체격과 다재다능한 연결고리 포워드",
     news: [
@@ -330,7 +330,7 @@ const PLAYERS_DATA = [
     photo: "assets/players/player_8_photo.jpg",
     cardImg: "assets/players/player_8_card.jpg",
     actionHero: "assets/detail/athlete_hero_action.jpg",
-    isHighlighted: true,
+    isHighlighted: false,
     tag: "HIGH FLYER",
     summary: "폭발적인 운동능력과 인유어페이스 덩크 · 대한민국 최고의 탄력 포워드",
     news: [

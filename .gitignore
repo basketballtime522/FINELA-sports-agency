@@ -20,3 +20,9 @@ dist/
 *.tmp
 *.bak
 *.log
+*.bat
+
+# Heavy Media & Video Pipelines (Keep repo lean for Vercel)
+*.mp4
+goods_video_pipeline/
+굿즈 광고 컨셉 기획/
