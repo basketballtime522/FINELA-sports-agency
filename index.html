@@ -613,49 +613,49 @@
         
         <div class="modal-hero-split">
           
-          <!-- 좌측: 선수 비주얼 카드 (이름, 등번호, 포지션 좌측 깔끔 정렬) -->
+          <!-- 좌측: 선수 실사 & 대형 등번호 워터마크 -->
           <div class="modal-visual-col">
+            <div class="modal-watermark-number" id="modalWatermarkNum">1</div>
             <div class="modal-athlete-figure">
-              <div class="modal-watermark-number" id="modalWatermarkNum">1</div>
               <img src="assets/players/player_1_photo.jpg" alt="Player" class="modal-athlete-img" id="modalPlayerImg">
-              <div class="modal-player-header-box">
-                <h2 class="modal-player-name" id="modalPlayerName">LEE HYUN JUNG</h2>
-                <div class="modal-player-subinfo" id="modalPlayerKo">이현중 · 포워드 · #1</div>
-              </div>
+            </div>
+            <div class="modal-player-header-box">
+              <h2 class="modal-player-name" id="modalPlayerName">LEE HYUN JUNG</h2>
+              <div class="modal-player-subinfo" id="modalPlayerKo">이현중 · 포워드 · #1</div>
             </div>
           </div>
 
-          <!-- 우측: 슬림 하이라이트 영상 박스 & 4대 스탯 그리드 -->
+          <!-- 우측: 하이라이트 영상 박스 & 스탯 그리드 -->
           <div class="modal-stats-col">
             
-            <!-- 슬림 하이라이트 비디오 박스 -->
+            <!-- 하이라이트 비디오 박스 -->
             <div class="modal-video-card">
               <img src="assets/detail/video_highlight_thumb.jpg" alt="Highlight Thumbnail" class="modal-video-thumbnail">
               <div class="video-play-overlay" id="modalVideoPlayBtn">
                 <div class="video-play-btn"><i class="fa-solid fa-play"></i></div>
               </div>
               <div class="video-control-bar">
-                <span><i class="fa-solid fa-film mr-2 text-red-500"></i> OFFICIAL GAME HIGHLIGHTS</span>
+                <span><i class="fa-solid fa-film mr-2 text-red-500"></i> OFFICIAL 4K GAME HIGHLIGHTS</span>
                 <span>03:45 / HD</span>
               </div>
             </div>
 
-            <!-- 4대 핵심 스탯 카드 (PTS, AST, REB, STL 모던 그리드) -->
+            <!-- 4대 핵심 스탯 카드 -->
             <div class="modal-stats-grid">
               <div class="stat-metric-card">
-                <div class="stat-metric-label">PTS</div>
+                <div class="stat-metric-label">PTS (득점)</div>
                 <div class="stat-metric-val" id="statPts">22.4</div>
               </div>
               <div class="stat-metric-card">
-                <div class="stat-metric-label">AST</div>
+                <div class="stat-metric-label">AST (도움)</div>
                 <div class="stat-metric-val" id="statAst">8.2</div>
               </div>
               <div class="stat-metric-card">
-                <div class="stat-metric-label">REB</div>
+                <div class="stat-metric-label">REB (리바운드)</div>
                 <div class="stat-metric-val" id="statReb">6.8</div>
               </div>
               <div class="stat-metric-card">
-                <div class="stat-metric-label">STL</div>
+                <div class="stat-metric-label">STL (스틸)</div>
                 <div class="stat-metric-val" id="statStl">1.8</div>
               </div>
             </div>
@@ -678,7 +678,7 @@
                     <span class="spec-val" id="specAge">24</span>
                   </div>
                 </div>
-                <div style="margin-top: 10px; font-size: 12px; color: var(--text-muted);" id="specTeam">
+                <div style="margin-top: 12px; font-size: 12px; color: var(--text-muted);" id="specTeam">
                   국가대표 · 일라와라 호크스
                 </div>
               </div>
@@ -703,8 +703,8 @@
 
         <!-- 스크롤 다운 안내 가이드 -->
         <div class="modal-scroll-guide" onclick="scrollToExtraSection()">
-          <span class="guide-text">SCROLL DOWN FOR COMMERCIALS &amp; SOCIAL</span>
-          <span class="guide-subtext">광고 및 소셜 미디어 활동 보기</span>
+          <span class="guide-text">SCROLL DOWN FOR ADDITIONAL INFO</span>
+          <span class="guide-subtext">방송 활동 및 SNS 피드 보기</span>
           <div class="scroll-mouse-icon">
             <div class="scroll-mouse-wheel"></div>
           </div>
