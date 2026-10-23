@@ -323,11 +323,28 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   function closePlayerModalFunc() {
+    if (!playerModal) return;
     playerModal.classList.remove('active');
     document.body.style.overflow = 'auto';
+
+    // Roster 섹션으로 즉시 부드럽게 복귀
+    const rosterSec = document.getElementById('roster');
+    if (rosterSec) {
+      rosterSec.scrollIntoView({ behavior: 'smooth' });
+    }
   }
 
+  // 상단 고정 헤더 닫기 버튼
   if (modalCloseBtn) modalCloseBtn.addEventListener('click', closePlayerModalFunc);
+
+  // 하이라이트 영상 영역 X 닫기 버튼
+  const closeDetailBtn = document.getElementById('closeDetailBtn');
+  if (closeDetailBtn) {
+    closeDetailBtn.addEventListener('click', (e) => {
+      e.stopPropagation(); // 영상 재생 오버레이 클릭 방지
+      closePlayerModalFunc();
+    });
+  }
   if (playerModal) {
     playerModal.addEventListener('click', (e) => {
       if (e.target === playerModal) closePlayerModalFunc();
