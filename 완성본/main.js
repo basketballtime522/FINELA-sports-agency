@@ -171,7 +171,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ============================================================================
-  // 3. 선수단 12인 렌더링 (ROSTER)
+  // 3. 선수단 12인 렌더링 (ROSTER - 1:1 시안)
   // ============================================================================
   const rosterGrid = document.getElementById('rosterGrid');
   let currentModalPlayerIndex = 0;
@@ -182,20 +182,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
     PLAYERS_DATA.forEach((p, idx) => {
       const card = document.createElement('div');
-      card.className = 'roster-card';
+      card.className = `roster-card ${idx === 1 || idx === 7 ? 'active-highlight' : ''}`;
       card.setAttribute('data-id', p.id);
       card.setAttribute('data-category', p.category);
 
       card.innerHTML = `
-        <div class="card-number-badge">#${p.number}</div>
         <div class="card-photo-box">
           <img src="${p.photo}" alt="${p.nameEn}" class="card-photo" loading="lazy">
         </div>
         <div class="card-info">
-          <h3 class="player-name-en">${p.nameEn}</h3>
-          <div class="player-meta-row">
+          <div class="card-info-left">
+            <h3 class="player-name-en">${p.nameEn}</h3>
             <span class="player-name-ko">${p.nameKo}</span>
-            <span class="player-pos-tag">${p.positionKo}</span>
+          </div>
+          <div class="card-info-right">
+            <span class="player-card-num">#${p.number}</span>
           </div>
         </div>
       `;
@@ -212,7 +213,7 @@ document.addEventListener('DOMContentLoaded', () => {
   renderRoster();
 
   // ============================================================================
-  // 4. 선수 상세 모달 (PLAYER DETAIL MODAL)
+  // 4. 선수 상세 모달 (PLAYER DETAIL MODAL - 전면 개편 1:1 시안)
   // ============================================================================
   const playerModal = document.getElementById('playerModal');
   const modalCloseBtn = document.getElementById('closePlayerModal');
@@ -227,74 +228,105 @@ document.addEventListener('DOMContentLoaded', () => {
     const p = PLAYERS_DATA[index];
     if (!p) return;
 
-    // 모달 데이터 바인딩
-    document.getElementById('modalWatermarkNum').innerText = p.number;
-    document.getElementById('modalPlayerImg').src = p.photo;
-    document.getElementById('modalPlayerName').innerText = p.nameEn;
-    document.getElementById('modalPlayerKo').innerText = `${p.nameKo} · ${p.positionKo} · #${p.number}`;
+    // 모달 데이터 바인딩: 대형 등번호 워터마크
+    const watermarkEl = document.getElementById('modalWatermarkNum');
+    if (watermarkEl) watermarkEl.innerText = p.number;
 
-    // 스탯 수치
-    document.getElementById('statPts').innerText = p.pts;
-    document.getElementById('statAst').innerText = p.ast;
-    document.getElementById('statReb').innerText = p.reb;
-    document.getElementById('statStl').innerText = p.stl;
+    // 선수 액션 포즈 사진 적용 (기존 증명사진 대신 액션 포즈 적용)
+    const actionImg = p.actionHero || 'assets/detail/athlete_hero_action.jpg';
+    const playerImgEl = document.getElementById('modalPlayerImg');
+    if (playerImgEl) playerImgEl.src = actionImg;
+
+    // 대형 영문 이름 (2줄 분할 렌더링)
+    const nameEl = document.getElementById('modalPlayerName');
+    if (nameEl) {
+      if (p.nameEn.includes(' ')) {
+        const parts = p.nameEn.split(' ');
+        nameEl.innerHTML = parts.join('<br>');
+      } else {
+        nameEl.innerText = p.nameEn;
+      }
+    }
+
+    // 포지션 및 등번호 서브타이틀
+    const subinfoEl = document.getElementById('modalPlayerSubinfo');
+    if (subinfoEl) {
+      const pos = p.position ? p.position : (p.positionKo || 'POINT GUARD');
+      subinfoEl.innerText = `${pos.toUpperCase()} | #${p.number}`;
+    }
+
+    // 4대 핵심 스탯 수치
+    const ptsEl = document.getElementById('statPts');
+    if (ptsEl) ptsEl.innerText = p.pts;
+    const astEl = document.getElementById('statAst');
+    if (astEl) astEl.innerText = p.ast;
+    const rebEl = document.getElementById('statReb');
+    if (rebEl) rebEl.innerText = p.reb;
+    const stlEl = document.getElementById('statStl');
+    if (stlEl) stlEl.innerText = p.stl;
 
     // 프로필 정보
-    document.getElementById('specHeight').innerText = p.height;
-    document.getElementById('specWeight').innerText = p.weight;
-    document.getElementById('specAge').innerText = p.age;
-    document.getElementById('specTeam').innerText = p.team;
+    const hEl = document.getElementById('specHeight');
+    if (hEl) hEl.innerText = p.height;
+    const wEl = document.getElementById('specWeight');
+    if (wEl) wEl.innerText = p.weight;
+    const aEl = document.getElementById('specAge');
+    if (aEl) aEl.innerText = p.age;
+    const teamEl = document.getElementById('specTeam');
+    if (teamEl) teamEl.innerText = p.team || '국가대표';
 
-    // 최근 뉴스
+    // 최근 뉴스 (붉은색 네모 블릿)
     const newsContainer = document.getElementById('modalNewsList');
-    newsContainer.innerHTML = p.news.map(n => `
-      <div class="news-item">
-        <span class="news-dot"></span>
-        <span>${n}</span>
-      </div>
-    `).join('');
+    if (newsContainer && p.news) {
+      newsContainer.innerHTML = p.news.map(n => `
+        <div class="news-item">
+          <span class="news-bullet">■</span>
+          <span class="news-text">${n}</span>
+        </div>
+      `).join('');
+    }
 
     // CF 및 방송 출연 썸네일 (슬림 다크 카드 그리드 + 대형 영문 타이틀 + 하단 활동 바)
     const cfContainer = document.getElementById('modalCfGrid');
-    cfContainer.innerHTML = p.commercials.map((cf, idx) => {
-      let heroTitle = "SPORTS CF";
-      if (idx === 0) heroTitle = "SPORTS CF";
-      else if (idx === 1) heroTitle = "TV SHOW";
-      else if (idx === 2) heroTitle = "BEVERAGE AD";
+    if (cfContainer && p.commercials) {
+      cfContainer.innerHTML = p.commercials.map((cf, idx) => {
+        let heroTitle = "SPORTS CF";
+        if (cf.tag === "TV CF") heroTitle = "SPORTS CF";
+        else if (cf.tag === "BROADCAST") heroTitle = "TV SHOW";
+        else if (cf.tag === "COMMERCIAL") heroTitle = "BEVERAGE AD";
 
-      if (cf.tag === "TV CF") heroTitle = "SPORTS CF";
-      else if (cf.tag === "BROADCAST") heroTitle = "TV SHOW";
-      else if (cf.tag === "COMMERCIAL") heroTitle = "BEVERAGE AD";
-
-      return `
-        <div class="cf-card group">
-          <div class="cf-thumb-wrap">
-            <img src="${cf.img}" alt="${cf.title}" class="cf-thumb-img">
-            <div class="cf-center-overlay">
-              <span class="cf-hero-title">${heroTitle}</span>
-            </div>
-            <div class="cf-caption-bar">
-              <span class="cf-badge-tag">${cf.tag}</span>
-              <p class="cf-desc-text">${cf.title}</p>
+        return `
+          <div class="cf-card group">
+            <div class="cf-thumb-wrap">
+              <img src="${cf.img}" alt="${cf.title}" class="cf-thumb-img">
+              <div class="cf-center-overlay">
+                <span class="cf-hero-title">${heroTitle}</span>
+              </div>
+              <div class="cf-caption-bar">
+                <span class="cf-badge-tag">${cf.tag}</span>
+                <p class="cf-desc-text">${cf.title}</p>
+              </div>
             </div>
           </div>
-        </div>
-      `;
-    }).join('');
+        `;
+      }).join('');
+    }
 
     // 공식 인스타그램 포스트 피드 (정사각형 직관적인 그리드 + 중앙 인스타그램 아이콘)
     const instaContainer = document.getElementById('modalInstaGrid');
-    instaContainer.innerHTML = p.instagramPosts.map(post => `
-      <div class="insta-card group">
-        <img src="${post.img}" alt="Instagram" class="insta-img">
-        <div class="insta-center-icon-wrap">
-          <i class="fa-brands fa-instagram insta-center-icon"></i>
+    if (instaContainer && p.instagramPosts) {
+      instaContainer.innerHTML = p.instagramPosts.map(post => `
+        <div class="insta-card group">
+          <img src="${post.img}" alt="Instagram" class="insta-img">
+          <div class="insta-center-icon-wrap">
+            <i class="fa-brands fa-instagram insta-center-icon"></i>
+          </div>
+          <div class="insta-hover-bar">
+            <span class="insta-likes-pill"><i class="fa-solid fa-heart mr-1"></i> ${post.likes}</span>
+          </div>
         </div>
-        <div class="insta-hover-bar">
-          <span class="insta-likes-pill"><i class="fa-solid fa-heart mr-1"></i> ${post.likes}</span>
-        </div>
-      </div>
-    `).join('');
+      `).join('');
+    }
 
     // 카운터 업데이트
     const counterEl = document.getElementById('modalAthleteCounter');

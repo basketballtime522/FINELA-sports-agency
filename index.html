@@ -167,36 +167,38 @@
   <!-- 3. 선수단 섹션 (OUR ATHLETES - ROSTER)                                         -->
   <!-- ============================================================================== -->
   <section class="section roster-section" id="roster">
-    <div class="section-container">
-      
-      <!-- BACK TO HOME 버튼 -->
-      <div class="roster-top-nav">
+    <!-- 농구 코트 전체 백그라운드 레이어 (탑뷰 벡터 코트) -->
+    <div class="roster-court-bg" aria-hidden="true"></div>
+
+    <div class="section-container roster-container">
+
+      <!-- 상단 컨트롤 바 (좌측 BACK TO HOME / 우측 서브 링크) -->
+      <div class="roster-top-bar">
         <a href="#hero" class="btn-back-home" title="메인 홈으로 이동">
           <i class="fa-solid fa-arrow-left"></i> BACK TO HOME
         </a>
-      </div>
-
-      <!-- 섹션 헤더 -->
-      <div class="section-header">
-        <div class="section-tag">01 / ATHLETES ROSTER</div>
-        <h2 class="section-title">OUR ATHLETES</h2>
-        <p class="section-desc" style="color: var(--finela-red); font-weight: 700; letter-spacing: 1px;">
-          2026 AICHI-NAGOYA ASIAN GAMES ROSTER
-        </p>
-      </div>
-
-      <!-- 서브 내비게이션 -->
-      <div class="roster-subnav">
-        <!-- 퀵 링크 -->
-        <div class="roster-links">
-          <a href="#services" class="roster-link-btn">EXPLORE SERVICES <i class="fa-solid fa-arrow-right"></i></a>
-          <a href="#store" class="roster-link-btn">VIEW STORE <i class="fa-solid fa-arrow-right"></i></a>
+        <div class="roster-quick-links">
+          <a href="#services" class="roster-quick-link">EXPLORE SERVICES</a>
+          <span class="roster-quick-divider"></span>
+          <a href="#media" class="roster-quick-link">VIEW MEDIA</a>
         </div>
       </div>
 
-      <!-- 12인 선수단 카드 그리드 (JS 동적 렌더링) -->
+      <!-- 섹션 헤더 (중앙 대형 타이틀) -->
+      <div class="roster-center-header">
+        <h2 class="roster-main-title">OUR ATHLETES</h2>
+        <p class="roster-sub-title">2026 AICHI-NAGOYA ASIAN GAMES ROSTER</p>
+      </div>
+
+      <!-- 12인 선수단 카드 그리드 (JS 동적 렌더링 - 6열 2행) -->
       <div class="roster-grid" id="rosterGrid">
         <!-- main.js에서 PLAYERS_DATA를 기반으로 12장의 카드가 자동 렌더링됩니다 -->
+      </div>
+
+      <!-- 바닥 스크롤 안내 인디케이터 -->
+      <div class="roster-scroll-footer">
+        <span class="roster-scroll-text">SCROLL FOR MORE</span>
+        <i class="fa-solid fa-chevron-down roster-scroll-icon"></i>
       </div>
 
     </div>
@@ -605,21 +607,29 @@
   <!-- 9. 인터랙티브 모달 및 드로어 모듈                                              -->
   <!-- ============================================================================== -->
 
-  <!-- A. 선수 상세 모달 (PLAYER DETAIL MODAL) -->
+  <!-- A. 선수 상세 모달 (PLAYER DETAIL MODAL - 전면 개편 1:1 시안) -->
   <div class="player-modal" id="playerModal">
-    <!-- 모달 고정 상단 네비게이션 헤더 -->
-    <div class="modal-fixed-header">
+    <!-- 농구 코트 전체 백그라운드 레이어 (탑뷰 벡터 코트) -->
+    <div class="modal-court-bg" aria-hidden="true"></div>
+
+    <!-- 모달 고정 상단 네비게이션 헤더 (글래스모피즘 GNB) -->
+    <header class="modal-fixed-header">
       <div class="modal-header-brand">
-        <span class="brand-text">FINELA</span>
-        <span class="brand-sub">ROSTER DETAIL</span>
+        <img src="finela-logo.png" alt="FINELA" class="modal-brand-logo">
       </div>
-      <div class="modal-header-counter" id="modalAthleteCounter">
-        ATHLETE 01 / 12
+      <nav class="modal-gnb-nav">
+        <a href="#roster" class="modal-nav-link active">PLAYERS</a>
+        <a href="#services" class="modal-nav-link">AGENCY</a>
+        <a href="#media" class="modal-nav-link">MEDIA</a>
+        <a href="#contact" class="modal-nav-link">CONTACT</a>
+      </nav>
+      <div class="modal-header-actions">
+        <span class="modal-header-counter" id="modalAthleteCounter">ATHLETE 01 / 12</span>
+        <button class="modal-close-pill-btn" id="closePlayerModal" title="닫기 (ESC)">
+          <i class="fa-solid fa-xmark"></i> CLOSE
+        </button>
       </div>
-      <button class="modal-close-btn" id="closePlayerModal" title="닫기 (ESC)">
-        <i class="fa-solid fa-xmark"></i> CLOSE
-      </button>
-    </div>
+    </header>
 
     <!-- 모달 좌우 넘김 버튼 (화면 양옆 고정) -->
     <button class="modal-nav-arrow modal-nav-prev" id="modalNavPrev" title="이전 선수 (왼쪽 화살표)"><i
@@ -636,95 +646,111 @@
 
         <div class="modal-hero-split">
 
-          <!-- 좌측: 선수 실사 & 대형 등번호 워터마크 -->
+          <!-- 좌측: 역동적 액션 포즈 실사 & 대형 붉은 등번호 & 대형 영문 이름 -->
           <div class="modal-visual-col">
             <div class="modal-watermark-number" id="modalWatermarkNum">1</div>
             <div class="modal-athlete-figure">
-              <img src="assets/players/player_1_photo.jpg" alt="Player" class="modal-athlete-img" id="modalPlayerImg">
+              <img src="assets/detail/athlete_hero_action.jpg" alt="Player Action Hero" class="modal-athlete-img" id="modalPlayerImg">
             </div>
             <div class="modal-player-header-box">
-              <h2 class="modal-player-name" id="modalPlayerName">LEE HYUN JUNG</h2>
-              <div class="modal-player-subinfo" id="modalPlayerKo">이현중 · 포워드 · #1</div>
+              <h2 class="modal-player-name" id="modalPlayerName">SIXNN<br>HMKTATOV</h2>
+              <div class="modal-player-subinfo" id="modalPlayerSubinfo">POINT GUARD | #1</div>
             </div>
           </div>
 
-          <!-- 우측: 하이라이트 영상 박스 & 스탯 그리드 -->
+          <!-- 우측: 하이라이트 영상 카드 & 2x2 스탯 & 프로필/뉴스 & 버튼 -->
           <div class="modal-stats-col">
 
-            <!-- 하이라이트 비디오 박스 -->
+            <!-- 4K 하이라이트 영상 박스 (우측 상단 X 닫기 버튼 포함) -->
             <div class="modal-video-card">
               <!-- X 닫기 버튼 (Roster 복귀) -->
               <button id="closeDetailBtn" class="close-detail-btn" title="닫기 (ROSTER로 돌아가기)" aria-label="선수 상세 닫기">
                 <i class="fa-solid fa-xmark"></i>
               </button>
-              <img src="assets/detail/video_highlight_thumb.jpg" alt="Highlight Thumbnail"
-                class="modal-video-thumbnail">
-              <div class="video-play-overlay" id="modalVideoPlayBtn">
-                <div class="video-play-btn"><i class="fa-solid fa-play"></i></div>
+              <div class="video-thumb-wrap">
+                <img src="assets/detail/video_highlight_thumb.jpg" alt="Highlight Thumbnail" class="modal-video-thumbnail">
+                <div class="video-play-overlay" id="modalVideoPlayBtn">
+                  <div class="video-play-btn"><i class="fa-solid fa-play"></i></div>
+                </div>
               </div>
               <div class="video-control-bar">
-                <span><i class="fa-solid fa-film mr-2 text-red-500"></i> OFFICIAL 4K GAME HIGHLIGHTS</span>
-                <span>03:45 / HD</span>
+                <button class="video-ctrl-play"><i class="fa-solid fa-play"></i></button>
+                <span class="video-time">00:00</span>
+                <div class="video-progress-bar">
+                  <div class="video-progress-fill"></div>
+                  <div class="video-progress-handle"></div>
+                </div>
+                <span class="video-time-total">-00:00</span>
+                <button class="video-ctrl-icon"><i class="fa-solid fa-volume-high"></i></button>
+                <button class="video-ctrl-icon"><i class="fa-solid fa-expand"></i></button>
               </div>
             </div>
 
-            <!-- 4대 핵심 스탯 카드 -->
-            <div class="modal-stats-grid">
-              <div class="stat-metric-card">
-                <div class="stat-metric-label">PTS (득점)</div>
-                <div class="stat-metric-val" id="statPts">22.4</div>
-              </div>
-              <div class="stat-metric-card">
-                <div class="stat-metric-label">AST (도움)</div>
-                <div class="stat-metric-val" id="statAst">8.2</div>
-              </div>
-              <div class="stat-metric-card">
-                <div class="stat-metric-label">REB (리바운드)</div>
-                <div class="stat-metric-val" id="statReb">6.8</div>
-              </div>
-              <div class="stat-metric-card">
-                <div class="stat-metric-label">STL (스틸)</div>
-                <div class="stat-metric-val" id="statStl">1.8</div>
-              </div>
-            </div>
+            <!-- 중단 2열 그리드: 좌측(2x2 스탯 + 버튼), 우측(프로필 + 최근 뉴스) -->
+            <div class="modal-middle-grid">
 
-            <!-- 신체 프로필 & 최근 뉴스 -->
-            <div class="modal-profile-news-grid">
-              <div class="profile-spec-card">
-                <div class="card-mini-title">PLAYER PROFILE</div>
-                <div class="spec-rows">
-                  <div class="spec-item">
-                    <span class="spec-label">HEIGHT</span>
-                    <span class="spec-val" id="specHeight">201CM</span>
+              <!-- 좌측 서브컬럼: 2x2 스탯 카드 & 액션 버튼 -->
+              <div class="modal-stats-subcol">
+                <div class="modal-stats-grid">
+                  <div class="stat-metric-card">
+                    <div class="stat-metric-label">PTS</div>
+                    <div class="stat-metric-val" id="statPts">22.4</div>
                   </div>
-                  <div class="spec-item">
-                    <span class="spec-label">WEIGHT</span>
-                    <span class="spec-val" id="specWeight">95KG</span>
+                  <div class="stat-metric-card">
+                    <div class="stat-metric-label">AST</div>
+                    <div class="stat-metric-val" id="statAst">8.2</div>
                   </div>
-                  <div class="spec-item">
-                    <span class="spec-label">AGE</span>
-                    <span class="spec-val" id="specAge">24</span>
+                  <div class="stat-metric-card">
+                    <div class="stat-metric-label">REB</div>
+                    <div class="stat-metric-val" id="statReb">4.5</div>
+                  </div>
+                  <div class="stat-metric-card">
+                    <div class="stat-metric-label">STL</div>
+                    <div class="stat-metric-val" id="statStl">1.8</div>
                   </div>
                 </div>
-                <div style="margin-top: 12px; font-size: 12px; color: var(--text-muted);" id="specTeam">
-                  국가대표 · 일라와라 호크스
+
+                <div class="modal-action-buttons">
+                  <button class="btn-watch-highlight" id="btnWatchHighlight" onclick="alert('하이라이트 풀 영상 링크로 이동합니다.')">
+                    WATCH HIGHLIGHTS
+                  </button>
+                  <button class="btn-career-stats" id="btnCareerStats" onclick="alert('선수 커리어 상세 기록 PDF를 다운로드합니다.')">
+                    VIEW CAREER STATS
+                  </button>
                 </div>
               </div>
 
-              <div class="recent-news-card">
-                <div class="card-mini-title">RECENT NEWS</div>
-                <div class="news-list" id="modalNewsList">
-                  <!-- JS 바인딩 -->
+              <!-- 우측 서브컬럼: PROFILE & RECENT NEWS -->
+              <div class="modal-profile-subcol">
+                <div class="profile-spec-card">
+                  <div class="card-mini-title">PROFILE</div>
+                  <div class="spec-items-row">
+                    <div class="spec-cell">
+                      <span class="spec-label">HEIGHT</span>
+                      <span class="spec-val" id="specHeight">188CM</span>
+                    </div>
+                    <div class="spec-cell">
+                      <span class="spec-label">WEIGHT</span>
+                      <span class="spec-val" id="specWeight">82KG</span>
+                    </div>
+                    <div class="spec-cell">
+                      <span class="spec-label">AGE</span>
+                      <span class="spec-val" id="specAge">25</span>
+                    </div>
+                  </div>
+                  <div class="spec-team-info" id="specTeam">
+                    국가대표 · 일라와라 호크스
+                  </div>
+                </div>
+
+                <div class="recent-news-card">
+                  <div class="card-mini-title">RECENT NEWS</div>
+                  <div class="news-list" id="modalNewsList">
+                    <!-- JS 바인딩: 붉은색 사각 블릿과 텍스트 -->
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <!-- 액션 버튼 -->
-            <div class="modal-action-buttons">
-              <button class="btn-watch-highlight" onclick="alert('풀타임 경기 영상 링크로 이동합니다.')"><i
-                  class="fa-solid fa-play mr-2"></i> WATCH HIGHLIGHTS</button>
-              <button class="btn-career-stats" onclick="alert('선수 상세 커리어 기록 PDF를 다운로드합니다.')"><i
-                  class="fa-solid fa-chart-simple mr-2"></i> VIEW CAREER STATS</button>
             </div>
 
           </div>
@@ -738,27 +764,28 @@
           <div class="scroll-mouse-icon">
             <div class="scroll-mouse-wheel"></div>
           </div>
-          <i class="fa-solid fa-chevron-down guide-chevron"></i>
+          <i class="fa-solid fa-chevron-down guide-arrow"></i>
         </div>
 
       </div>
 
       <!-- ========================================================== -->
-      <!-- 2페이지: 선수의 추가정보 (CF & 방송 활동, SNS 피드)       -->
+      <!-- 2페이지: 선수의 추가 정보 (CF & 방송 활동, SNS 피드)       -->
       <!-- ========================================================== -->
       <div class="modal-extra-section" id="modalExtraSection">
 
         <div class="extra-section-inner">
           <div class="extra-section-header">
-            <h2 class="extra-main-title" style="color: var(--finela-red);">02 / ATHLETE ACTIVITIES &amp; MEDIA</h2>
-            <!-- 2페이지 상단 우측 X 닫기 버튼 (1페이지와 동일한 우측 상단 위치) -->
-            <button id="closeDetailBottomBtn" class="close-detail-btn close-detail-bottom-btn" title="닫기 (ROSTER로 돌아가기)" aria-label="선수 상세 닫기">
+            <h2 class="extra-main-title">02 / ATHLETE ACTIVITIES &amp; MEDIA</h2>
+            <!-- 2페이지 상단 우측 X 닫기 버튼 (동일 위치) -->
+            <button id="closeDetailBottomBtn" class="close-detail-btn close-detail-bottom-btn" title="닫기 (ROSTER로 돌아가기)"
+              aria-label="선수 상세 닫기">
               <i class="fa-solid fa-xmark"></i>
             </button>
           </div>
 
-          <!-- 방송 & CF -->
-          <div class="extra-group-box">
+          <!-- Commercial & Broadcast 섹션 -->
+          <div class="extra-content-group">
             <div class="extra-group-title-row">
               <h3 class="extra-group-title">COMMERCIAL &amp; BROADCAST</h3>
               <span class="extra-group-badge">BRAND AMBASSADOR</span>
@@ -769,12 +796,12 @@
             </div>
           </div>
 
-          <!-- 공식 소셜 미디어 -->
-          <div class="extra-group-box">
-            <div class="insta-header-row">
+          <!-- Official Social Media 섹션 -->
+          <div class="extra-content-group" style="margin-top: 55px;">
+            <div class="extra-group-title-row">
               <div>
                 <h3 class="extra-group-title">OFFICIAL SOCIAL MEDIA</h3>
-                <div class="extra-group-sub">인스타그램 공식 피드 및 최신 소식</div>
+                <span class="extra-group-sub" id="instaAccountLabel">선수 공식 인스타그램 피드</span>
               </div>
               <span class="follow-badge"><i class="fa-brands fa-instagram mr-2"></i>FOLLOW @ATHLETE</span>
             </div>
@@ -783,22 +810,23 @@
             </div>
           </div>
 
-          <!-- 최상단으로 복귀 버튼 및 닫기 버튼 -->
+          <!-- 2페이지 최하단 네비게이션 및 X 닫기 버튼 -->
           <div class="extra-footer-nav">
             <button class="btn-back-to-profile" onclick="scrollToTopSection()">
               <i class="fa-solid fa-arrow-up mr-2"></i> 선수 프로필 &amp; 하이라이트로 돌아가기
             </button>
-            <button id="closeDetailFooterBtn" class="close-detail-btn close-detail-footer-btn" title="닫기 (ROSTER로 돌아가기)" aria-label="선수 상세 닫기">
+            <button id="closeDetailFooterBtn" class="close-detail-btn close-detail-footer-btn" title="닫기 (ROSTER로 돌아가기)"
+              aria-label="선수 상세 닫기">
               <i class="fa-solid fa-xmark"></i>
             </button>
           </div>
+
         </div>
 
       </div>
 
     </div>
   </div>
-
   <!-- B. 상품 상세 퀵뷰 모달 (PRODUCT MODAL) -->
   <div class="product-modal" id="productModal">
     <div class="product-modal-box">
