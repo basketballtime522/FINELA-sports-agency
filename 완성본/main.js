@@ -182,7 +182,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     PLAYERS_DATA.forEach((p, idx) => {
       const card = document.createElement('div');
-      card.className = `roster-card ${idx === 1 || idx === 7 ? 'active-highlight' : ''}`;
+      card.className = 'roster-card';
       card.setAttribute('data-id', p.id);
       card.setAttribute('data-category', p.category);
 

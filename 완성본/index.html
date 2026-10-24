@@ -167,12 +167,18 @@
   <!-- 3. 선수단 섹션 (OUR ATHLETES - ROSTER)                                         -->
   <!-- ============================================================================== -->
   <section class="section roster-section" id="roster">
-    <!-- 농구 코트 전체 백그라운드 레이어 (탑뷰 벡터 코트) -->
+    <!-- 농구 코트 전체 백그라운드 레이어 (선수단 영역에 맞춰 아래로 배치) -->
     <div class="roster-court-bg" aria-hidden="true"></div>
 
     <div class="section-container roster-container">
 
-      <!-- 상단 컨트롤 바 (좌측 BACK TO HOME / 우측 서브 링크) -->
+      <!-- 1. 섹션 헤더 (OUR ATHLETES 대형 타이틀 - 상단 고정 위치) -->
+      <div class="roster-center-header">
+        <h2 class="roster-main-title">OUR ATHLETES</h2>
+        <p class="roster-sub-title">2026 AICHI-NAGOYA ASIAN GAMES ROSTER</p>
+      </div>
+
+      <!-- 2. 컨트롤 바 (선수단 그리드 바로 위에 위치) -->
       <div class="roster-top-bar">
         <a href="#hero" class="btn-back-home" title="메인 홈으로 이동">
           <i class="fa-solid fa-arrow-left"></i> BACK TO HOME
@@ -184,18 +190,12 @@
         </div>
       </div>
 
-      <!-- 섹션 헤더 (중앙 대형 타이틀) -->
-      <div class="roster-center-header">
-        <h2 class="roster-main-title">OUR ATHLETES</h2>
-        <p class="roster-sub-title">2026 AICHI-NAGOYA ASIAN GAMES ROSTER</p>
-      </div>
-
-      <!-- 12인 선수단 카드 그리드 (JS 동적 렌더링 - 6열 2행) -->
+      <!-- 3. 12인 선수단 카드 그리드 (JS 동적 렌더링 - 6열 2행) -->
       <div class="roster-grid" id="rosterGrid">
         <!-- main.js에서 PLAYERS_DATA를 기반으로 12장의 카드가 자동 렌더링됩니다 -->
       </div>
 
-      <!-- 바닥 스크롤 안내 인디케이터 -->
+      <!-- 4. 바닥 스크롤 안내 인디케이터 -->
       <div class="roster-scroll-footer">
         <span class="roster-scroll-text">SCROLL FOR MORE</span>
         <i class="fa-solid fa-chevron-down roster-scroll-icon"></i>

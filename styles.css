@@ -714,13 +714,17 @@ button {
   position: relative;
   background-color: #07080c;
   overflow: hidden;
-  padding: 100px 40px 80px;
+  padding: 60px 40px 80px;
+  scroll-margin-top: 70px;
 }
 
 /* 농구 코트 전체 백그라운드 레이어 (탑뷰 벡터 코트) */
 .roster-court-bg {
   position: absolute;
-  inset: 0;
+  top: 130px;
+  left: 0;
+  right: 0;
+  bottom: 30px;
   background: url('assets/basketball_court_bg.svg') no-repeat center center / contain;
   opacity: 0.82;
   pointer-events: none;
@@ -854,8 +858,7 @@ button {
   flex-direction: column;
 }
 
-.roster-card:hover,
-.roster-card.active-highlight {
+.roster-card:hover {
   border-color: var(--finela-red);
   box-shadow: 0 0 22px rgba(230, 0, 18, 0.6), inset 0 0 12px rgba(230, 0, 18, 0.15);
   transform: translateY(-6px) scale(1.02);
@@ -878,8 +881,7 @@ button {
   transition: transform 0.45s ease, filter 0.45s ease;
 }
 
-.roster-card:hover .card-photo,
-.roster-card.active-highlight .card-photo {
+.roster-card:hover .card-photo {
   transform: scale(1.05);
   filter: grayscale(20%) contrast(115%);
 }
@@ -995,7 +997,10 @@ button {
 /* 모달 농구 코트 전체 백그라운드 레이어 (탑뷰 벡터 코트) */
 .modal-court-bg {
   position: fixed;
-  inset: 0;
+  top: 10px;
+  left: 0;
+  right: 0;
+  bottom: 0;
   background: url('assets/basketball_court_bg.svg') no-repeat center center / contain;
   opacity: 0.75;
   pointer-events: none;
