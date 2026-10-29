@@ -301,7 +301,7 @@ button {
   justify-content: center;
   overflow: hidden;
   padding-top: var(--header-height);
-  background: #000;
+  background: var(--bg-deep-black);
 }
 
 .hero-media-wrapper {
@@ -712,7 +712,7 @@ button {
    ============================================================================== */
 .roster-section {
   position: relative;
-  background-color: #07080c;
+  background-color: var(--bg-deep-black);
   overflow: hidden;
   padding: 130px 40px 80px;
   scroll-margin-top: 70px;
@@ -2306,7 +2306,7 @@ button {
    6. 공식 스토어 섹션 (FINELA STORE)
    ============================================================================== */
 .store-section {
-  background-color: var(--bg-surface-dark);
+  background-color: var(--bg-deep-black);
 }
 
 .products-grid {
@@ -2778,10 +2778,8 @@ button {
    8. 문의하기 섹션 (CONTACT US - GET IN TOUCH)
    ============================================================================== */
 .contact-section {
-  background-color: var(--bg-surface-dark);
-  background-image:
-    radial-gradient(circle at 80% 20%, rgba(230, 0, 18, 0.08) 0%, transparent 40%),
-    radial-gradient(circle at 20% 80%, rgba(230, 0, 18, 0.05) 0%, transparent 40%);
+  background-color: var(--bg-deep-black);
+  background-image: none;
 }
 
 .contact-split-grid {
@@ -3010,7 +3008,7 @@ button {
    9. 푸터 (GLOBAL FOOTER)
    ============================================================================== */
 .global-footer {
-  background: #040507;
+  background: var(--bg-deep-black);
   border-top: 1px solid var(--border-subtle);
   padding: 80px 40px 40px;
 }
@@ -3611,18 +3609,61 @@ html {
   overflow-x: hidden !important;
 }
 
-/* 2. 공통 섹션: 화면 높이에 알맞게 자동 중앙 정렬 */
+/* 2. 전 페이지 배경색 단일 딥블랙(#060709) 일원화 및 공통 섹션 상단 여백 재조정 */
+.hero-section,
+.roster-section,
+.services-section,
+.store-section,
+.sponsors-section,
+.contact-section,
+.global-footer {
+  background-color: var(--bg-deep-black, #060709) !important;
+}
+
+.contact-section {
+  background-image: none !important;
+}
+
 .section {
   position: relative !important;
   min-height: 100vh !important;
   height: auto !important;
-  padding: calc(var(--header-height) + clamp(8px, 1.8vh, 32px)) clamp(20px, 3vw, 48px) clamp(16px, 2.5vh, 40px) !important;
+  padding-top: calc(var(--header-height) + clamp(36px, 4.8vh, 56px)) !important;
+  padding-bottom: clamp(16px, 2.5vh, 36px) !important;
+  padding-left: clamp(20px, 3vw, 48px) !important;
+  padding-right: clamp(20px, 3vw, 48px) !important;
   box-sizing: border-box !important;
   display: flex !important;
   flex-direction: column !important;
-  justify-content: center !important;
+  justify-content: flex-start !important;
   align-items: center !important;
   overflow: visible !important;
+}
+
+/* 상단 빨간색 태그 삭제에 따른 헤더 및 타이틀 여백 재조정 */
+.section-header {
+  text-align: center !important;
+  margin-bottom: clamp(14px, 2.4vh, 32px) !important;
+}
+
+.section-title {
+  font-family: var(--font-display) !important;
+  font-size: clamp(2.2rem, 3.8vh, 3.6rem) !important;
+  font-weight: 700 !important;
+  letter-spacing: 2px !important;
+  color: #fff !important;
+  text-transform: uppercase !important;
+  margin-top: 0 !important;
+  margin-bottom: clamp(6px, 1vh, 12px) !important;
+  line-height: 1.15 !important;
+}
+
+.section-desc {
+  font-size: clamp(0.92rem, 1.2vh, 1.12rem) !important;
+  color: var(--text-muted) !important;
+  max-width: 760px !important;
+  margin: 0 auto !important;
+  line-height: 1.5 !important;
 }
 
 .section-container {
