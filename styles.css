@@ -3575,7 +3575,7 @@ button {
 }
 
 /* ========================================================== */
-/* 선수 상세 모달 열림 시 메인 GNB 배너 상태 완벽 유지 */
+/* 선수 상세 모달 열림 시 메인 GNB 배너 상태 완벽 유지 및 전체 밸런스 최적화 */
 /* ========================================================== */
 
 .gnb-header {
@@ -3583,10 +3583,201 @@ button {
   /* 모달(5000)보다 항상 위에 위치하여 메인 배너 유지 */
 }
 
-/* 모달 내부 컨텐츠가 상단 GNB 헤더에 가리지 않도록 상단 여백 확보 */
+/* 선수 개인 상세 모달 전체적인 밸런스 및 뷰포트 비례 정밀 조정 */
+.player-modal {
+  background-color: var(--bg-deep-black, #060709) !important;
+  background-image: none !important;
+}
+
+/* 농구 코트 배경이 상단 GNB 배너 직하단에서 자연스럽게 펼쳐지도록 배치 */
+.modal-court-bg {
+  top: var(--header-height, 75px) !important;
+  opacity: 0.75 !important;
+  background-size: contain !important;
+}
+
+/* 좌우 넘김 버튼 밸런스 */
+.modal-nav-arrow {
+  width: clamp(42px, 5vh, 52px) !important;
+  height: clamp(42px, 5vh, 52px) !important;
+  font-size: clamp(15px, 1.8vh, 19px) !important;
+}
+
+.modal-nav-prev {
+  left: clamp(12px, 1.8vw, 28px) !important;
+}
+
+.modal-nav-next {
+  right: clamp(12px, 1.8vw, 28px) !important;
+}
+
+/* 1페이지: 선수 프로필 & 하이라이트 영상 스플릿 화면 */
 .player-modal .modal-screen-profile {
-  padding-top: calc(var(--header-height) + 20px) !important;
-  /* 80px + 20px = 100px */
+  min-height: 100vh !important;
+  padding-top: calc(var(--header-height) + clamp(16px, 2.2vh, 26px)) !important;
+  padding-bottom: clamp(12px, 1.8vh, 24px) !important;
+  padding-left: clamp(20px, 3.5vw, 60px) !important;
+  padding-right: clamp(20px, 3.5vw, 60px) !important;
+  box-sizing: border-box !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+}
+
+.modal-hero-split {
+  max-width: min(1420px, 90vw, 150vh) !important;
+  width: 100% !important;
+  margin: auto !important;
+  display: grid !important;
+  grid-template-columns: 1fr 1.2fr !important;
+  gap: clamp(24px, 3vw, 56px) !important;
+  align-items: center !important;
+}
+
+/* 좌측: 선수 비주얼 및 워터마크 등번호 */
+.modal-visual-col {
+  min-height: auto !important;
+  justify-content: flex-end !important;
+  position: relative !important;
+}
+
+.modal-watermark-number {
+  font-size: clamp(130px, 17vh, 220px) !important;
+  letter-spacing: -4px !important;
+  right: 2% !important;
+  top: 42% !important;
+  opacity: 0.88 !important;
+  line-height: 0.8 !important;
+}
+
+.modal-athlete-figure {
+  max-width: min(480px, 100%) !important;
+}
+
+.modal-athlete-img {
+  max-height: clamp(340px, 48vh, 520px) !important;
+  width: 100% !important;
+  object-fit: contain !important;
+}
+
+.modal-player-header-box {
+  margin-top: clamp(-24px, -3vh, -12px) !important;
+  margin-left: clamp(10px, 1.5vw, 20px) !important;
+}
+
+.modal-player-name {
+  font-size: clamp(2.4rem, 3.6vw, 3.8rem) !important;
+  line-height: 1.05 !important;
+}
+
+.modal-player-subinfo {
+  font-size: clamp(13px, 1.5vh, 16px) !important;
+  letter-spacing: 2px !important;
+  margin-top: clamp(4px, 0.8vh, 8px) !important;
+}
+
+/* 우측: 하이라이트 영상 박스 & 2x2 스탯 그리드 */
+.modal-stats-col {
+  gap: clamp(12px, 1.8vh, 18px) !important;
+}
+
+.modal-video-card {
+  max-height: clamp(190px, 26vh, 290px) !important;
+  width: 100% !important;
+  aspect-ratio: 16 / 9 !important;
+  border-radius: 14px !important;
+  box-shadow: 0 0 25px rgba(230, 0, 18, 0.25) !important;
+  margin: 0 auto !important;
+}
+
+.modal-middle-grid {
+  gap: clamp(10px, 1.4vw, 16px) !important;
+  grid-template-columns: 1fr 1.15fr !important;
+}
+
+.modal-stats-subcol {
+  gap: clamp(8px, 1.2vh, 12px) !important;
+}
+
+.modal-stats-grid {
+  gap: clamp(8px, 1vh, 12px) !important;
+}
+
+.stat-metric-card {
+  padding: clamp(9px, 1.3vh, 14px) clamp(10px, 1.1vw, 15px) !important;
+  border-radius: 12px !important;
+  background: rgba(14, 16, 24, 0.85) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+}
+
+.stat-metric-label {
+  font-size: clamp(10.5px, 1.1vh, 12.5px) !important;
+  margin-bottom: 2px !important;
+}
+
+.stat-metric-val {
+  font-size: clamp(24px, 3.2vh, 34px) !important;
+  line-height: 1 !important;
+}
+
+.modal-action-buttons {
+  gap: clamp(8px, 1vw, 12px) !important;
+}
+
+.btn-watch-highlight,
+.btn-career-stats {
+  padding: clamp(9px, 1.2vh, 13px) clamp(10px, 1vw, 14px) !important;
+  font-size: clamp(11.5px, 1.2vh, 13px) !important;
+  letter-spacing: 1px !important;
+}
+
+.modal-profile-subcol {
+  gap: clamp(8px, 1.2vh, 12px) !important;
+}
+
+.profile-spec-card,
+.recent-news-card {
+  padding: clamp(9px, 1.3vh, 14px) clamp(12px, 1.2vw, 16px) !important;
+  border-radius: 12px !important;
+  background: rgba(14, 16, 24, 0.85) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+}
+
+.card-mini-title {
+  font-size: clamp(13px, 1.4vh, 15px) !important;
+  margin-bottom: clamp(6px, 0.8vh, 9px) !important;
+}
+
+.spec-label {
+  font-size: clamp(10px, 1.1vh, 11px) !important;
+}
+
+.spec-val {
+  font-size: clamp(14px, 1.7vh, 17px) !important;
+}
+
+.spec-team-info {
+  font-size: clamp(10.5px, 1.1vh, 12px) !important;
+  margin-top: clamp(4px, 0.6vh, 6px) !important;
+}
+
+.news-item {
+  font-size: clamp(11px, 1.15vh, 12.5px) !important;
+  margin-bottom: clamp(3px, 0.5vh, 6px) !important;
+}
+
+/* 하단 스크롤 가이드 밸런스 */
+.modal-scroll-guide {
+  margin: clamp(8px, 1.2vh, 16px) auto 0 !important;
+  font-size: clamp(9.5px, 1vh, 11px) !important;
+}
+
+/* 2페이지: 추가 활동 및 미디어 섹션 밸런스 */
+.modal-extra-section {
+  max-width: min(1420px, 90vw, 150vh) !important;
+  padding: clamp(40px, 6vh, 70px) clamp(24px, 4vw, 60px) clamp(60px, 8vh, 100px) !important;
+  margin: 0 auto !important;
 }
 
 /* ==============================================================================
