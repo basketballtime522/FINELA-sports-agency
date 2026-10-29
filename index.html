@@ -640,29 +640,11 @@
           <!-- 우측: 하이라이트 영상 카드 & 2x2 스탯 & 프로필/뉴스 & 버튼 -->
           <div class="modal-stats-col">
 
-            <!-- 4K 하이라이트 영상 박스 (우측 상단 X 닫기 버튼 포함) -->
-            <div class="modal-video-card">
-              <!-- X 닫기 버튼 (Roster 복귀) -->
-              <button id="closeDetailBtn" class="close-detail-btn" title="닫기 (ROSTER로 돌아가기)" aria-label="선수 상세 닫기">
-                <i class="fa-solid fa-xmark"></i>
-              </button>
+            <!-- 4K 하이라이트 영상 박스 (시안 1:1 일치 - 단일 16:9 영상 플레이어 & 재생 시뮬레이션) -->
+            <div class="modal-video-card" id="modalVideoPlayBtn" role="button" tabindex="0" title="클릭하여 하이라이트 영상 재생">
               <div class="video-thumb-wrap">
-                <img src="assets/detail/video_highlight_thumb.jpg" alt="Highlight Thumbnail"
+                <img src="assets/detail/video_highlight_thumb.jpg" alt="Highlight Video"
                   class="modal-video-thumbnail">
-                <div class="video-play-overlay" id="modalVideoPlayBtn">
-                  <div class="video-play-btn"><i class="fa-solid fa-play"></i></div>
-                </div>
-              </div>
-              <div class="video-control-bar">
-                <button class="video-ctrl-play"><i class="fa-solid fa-play"></i></button>
-                <span class="video-time">00:00</span>
-                <div class="video-progress-bar">
-                  <div class="video-progress-fill"></div>
-                  <div class="video-progress-handle"></div>
-                </div>
-                <span class="video-time-total">-00:00</span>
-                <button class="video-ctrl-icon"><i class="fa-solid fa-volume-high"></i></button>
-                <button class="video-ctrl-icon"><i class="fa-solid fa-expand"></i></button>
               </div>
             </div>
 
