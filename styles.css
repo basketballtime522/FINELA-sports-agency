@@ -103,8 +103,8 @@ button {
   left: 0;
   width: 100%;
   height: var(--header-height);
-  z-index: 4000;
-  /* 모달보다 더 상위에 두거나 상황에 맞춰 유지 */
+  z-index: 6000;
+  /* 메인 GNB 헤더를 모달보다 항상 최상위에 유지 */
   background: rgba(6, 7, 9, 0.95);
   backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--border-subtle);
@@ -969,6 +969,7 @@ button {
   .roster-grid {
     grid-template-columns: repeat(2, 1fr);
   }
+
   .roster-top-bar {
     flex-direction: column;
     gap: 14px;
@@ -1905,16 +1906,20 @@ button {
     grid-template-columns: 1fr;
     gap: 30px;
   }
+
   .modal-visual-col {
     min-height: 400px;
     align-items: center;
   }
+
   .modal-athlete-img {
     max-height: 420px;
   }
+
   .cf-cards-grid {
     grid-template-columns: repeat(2, 1fr);
   }
+
   .insta-cards-grid {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -1924,15 +1929,19 @@ button {
   .modal-screen-profile {
     padding: 80px 20px 20px;
   }
+
   .modal-middle-grid {
     grid-template-columns: 1fr;
   }
+
   .cf-cards-grid {
     grid-template-columns: 1fr;
   }
+
   .modal-fixed-header {
     padding: 0 16px;
   }
+
   .modal-gnb-nav {
     display: none;
   }
@@ -2554,7 +2563,7 @@ button {
 .cart-drawer-overlay {
   position: fixed;
   inset: 0;
-  z-index: 2200;
+  z-index: 7000;
   background: rgba(0, 0, 0, 0.7);
   backdrop-filter: blur(8px);
   display: none;
@@ -2574,7 +2583,7 @@ button {
   width: 440px;
   max-width: 100%;
   height: 100vh;
-  z-index: 2300;
+  z-index: 7100;
   background: #0d0e15;
   border-left: 1px solid var(--border-subtle);
   display: flex;
@@ -3215,4 +3224,367 @@ button {
     width: 100%;
     right: -100%;
   }
+}
+
+/* ========================================================== */
+/* 시안 맞춤형 선수 개인 상세 페이지 (비율 및 배경 정비) */
+/* ========================================================== */
+
+.player-detail-screen {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  background-color: #060709;
+  /* 화면 전체를 안정적으로 채우도록 반복 없음(no-repeat)과 커버 설정 추가 */
+  background-image:
+    radial-gradient(circle at 50% 50%, rgba(230, 0, 18, 0.15) 0%, transparent 70%),
+    linear-gradient(rgba(230, 0, 18, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(230, 0, 18, 0.08) 1px, transparent 1px);
+  background-size: 100% 100%, 140px 140px, 140px 140px;
+  background-position: center center;
+  background-repeat: no-repeat;
+  padding: 90px 50px 40px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.detail-content-grid {
+  max-width: 1450px;
+  width: 100%;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1.1fr;
+  /* 좌우 비율 조정 */
+  gap: 40px;
+  align-items: center;
+}
+
+/* 좌측 선수 비주얼 & 대형 등번호 */
+.detail-left-col {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.detail-watermark-num {
+  position: absolute;
+  top: 35%;
+  left: 30%;
+  transform: translateY(-50%);
+  font-family: var(--font-display, 'Oswald', sans-serif);
+  font-size: 280px;
+  /* 등번호 크기 최적화 */
+  font-weight: 900;
+  color: #e60012;
+  opacity: 0.35;
+  line-height: 1;
+  pointer-events: none;
+  z-index: 1;
+  text-shadow: 0 0 30px rgba(230, 0, 18, 0.4);
+}
+
+.detail-athlete-figure {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: 440px;
+  /* 이미지 높이를 시안 비율에 맞게 축소 */
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.detail-athlete-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  mask-image: linear-gradient(to top, transparent 0%, black 15%, black 100%);
+  -webkit-mask-image: linear-gradient(to top, transparent 0%, black 15%, black 100%);
+}
+
+.detail-player-info-box {
+  position: relative;
+  z-index: 3;
+  margin-top: 5px;
+}
+
+.detail-player-name {
+  font-family: var(--font-display, 'Oswald', sans-serif);
+  font-size: 44px;
+  /* 이름 폰트 크기 조절 */
+  font-weight: 700;
+  line-height: 0.95;
+  letter-spacing: 1px;
+  color: #fff;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.detail-player-sub {
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: #9498a8;
+}
+
+.detail-player-sub .highlight {
+  color: #e60012;
+}
+
+/* 2. 우측 비디오 및 스탯 패널 사이즈 전체 축소 */
+.detail-right-col {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  /* 간격 축소 */
+  max-width: 650px;
+  /* 우측 패널 전체 최대 폭 제한으로 컴팩트하게 구성 */
+}
+
+.detail-video-card {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  max-height: 250px;
+  /* 하이라이트 영상 높이 제한 */
+  background: #000;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(230, 0, 18, 0.4);
+  box-shadow: 0 0 20px rgba(230, 0, 18, 0.2);
+}
+
+.detail-video-thumb {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(0.7);
+}
+
+.detail-play-btn-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.play-circle {
+  width: 50px;
+  /* 플레이 버튼 크기 축소 */
+  height: 50px;
+  border-radius: 50%;
+  background: #e60012;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 16px;
+  box-shadow: 0 0 20px rgba(230, 0, 18, 0.8);
+  transition: all 0.3s ease;
+}
+
+.detail-play-btn-overlay:hover .play-circle {
+  transform: scale(1.1);
+  background: #ff1a2b;
+}
+
+.video-timeline-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 8px 12px;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 10px;
+  color: #9498a8;
+}
+
+.progress-track {
+  flex: 1;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: #e60012;
+}
+
+/* 스탯 그리드 패널 사이즈 축소 */
+.detail-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.stat-box {
+  background: rgba(18, 19, 26, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  padding: 12px 14px;
+  /* 내부 여백 축소로 패널 컴팩트화 */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.stat-label {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  color: #e60012;
+  margin-bottom: 4px;
+}
+
+.stat-value {
+  font-family: var(--font-display, 'Oswald', sans-serif);
+  font-size: 30px;
+  /* 스탯 숫자 크기 시안에 맞게 축소 */
+  font-weight: 700;
+  color: #fff;
+  line-height: 1;
+}
+
+/* 프로필 및 뉴스 박스 */
+.profile-box .profile-specs {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 6px;
+}
+
+.spec-lbl {
+  display: block;
+  font-size: 8.5px;
+  color: #6b6f80;
+  font-weight: 700;
+}
+
+.spec-val {
+  font-family: var(--font-display, 'Oswald', sans-serif);
+  font-size: 14px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.news-box {
+  grid-column: span 2;
+}
+
+.news-mini-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 11px;
+  color: #c4c8d4;
+  padding-left: 0;
+  margin: 0;
+}
+
+.news-mini-list li {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.news-mini-list .dot {
+  width: 3.5px;
+  height: 3.5px;
+  background: #e60012;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.news-mini-list small {
+  color: #6b6f80;
+  margin-left: auto;
+  font-size: 10px;
+}
+
+/* 하단 액션 버튼 컴팩트화 */
+.detail-action-row {
+  display: flex;
+  gap: 10px;
+  margin-top: 2px;
+}
+
+.btn-red-action,
+.btn-dark-action {
+  flex: 1;
+  font-family: var(--font-display, 'Oswald', sans-serif);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  padding: 11px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+}
+
+.btn-red-action {
+  background: #e60012;
+  color: #fff;
+  box-shadow: 0 0 15px rgba(230, 0, 18, 0.4);
+}
+
+.btn-red-action:hover {
+  background: #ff1a2b;
+  box-shadow: 0 0 25px rgba(230, 0, 18, 0.7);
+}
+
+.btn-dark-action {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  color: #fff;
+}
+
+.btn-dark-action:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.3) !important;
+}
+
+/* 선수 상세 모달 기본 상태 (숨김) */
+.player-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 5000;
+  /* GNB 헤더보다 위로 오도록 설정 */
+  background: #060709;
+  display: none;
+  /* 평소엔 숨김 */
+  overflow-y: auto;
+  overflow-x: hidden;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+/* active 클래스가 붙으면 화면에 표시 */
+.player-modal.active {
+  display: block;
+  opacity: 1;
+}
+
+/* ========================================================== */
+/* 선수 상세 모달 열림 시 메인 GNB 배너 상태 완벽 유지 */
+/* ========================================================== */
+
+.gnb-header {
+  z-index: 6000 !important; /* 모달(5000)보다 항상 위에 위치하여 메인 배너 유지 */
+}
+
+/* 모달 내부 컨텐츠가 상단 GNB 헤더에 가리지 않도록 상단 여백 확보 */
+.player-modal .modal-screen-profile {
+  padding-top: calc(var(--header-height) + 20px) !important; /* 80px + 20px = 100px */
 }

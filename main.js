@@ -674,16 +674,23 @@ document.addEventListener('DOMContentLoaded', () => {
   const navLinks = document.querySelectorAll('.nav-link, .footer-col a, a[href^="#"]');
 
   navLinks.forEach(link => {
-    link.addEventListener('click', () => {
+    link.addEventListener('click', (e) => {
       const playerModal = document.getElementById('playerModal');
 
       // 만약 선수 상세 모달이 열려 있는 상태라면(.active)
       if (playerModal && playerModal.classList.contains('active')) {
-        // 모달을 닫고
+        // 모달 닫기 및 스크롤 복원
         playerModal.classList.remove('active');
-
-        // 배경 페이지의 스크롤 잠금을 해제하여 정상적으로 스크롤되도록 만듭니다.
         document.body.style.overflow = 'auto';
+
+        const href = link.getAttribute('href');
+        if (href && href.startsWith('#')) {
+          const target = document.querySelector(href);
+          if (target) {
+            e.preventDefault();
+            target.scrollIntoView({ behavior: 'smooth' });
+          }
+        }
       }
     });
   });

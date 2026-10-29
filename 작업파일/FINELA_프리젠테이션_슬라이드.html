@@ -1,0 +1,1235 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FINELA 웹사이트 구성별 콜아웃 프리젠테이션</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Oswald:wght@500;700&family=Permanent+Marker&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        finelaRed: '#e60012',
+                        darkBg: '#0a0a0a',
+                        cardBg: '#141414',
+                        cardBorder: '#262626'
+                    },
+                    fontFamily: {
+                        sans: ['"Noto Sans KR"', 'sans-serif'],
+                        display: ['Oswald', 'sans-serif'],
+                        brush: ['"Permanent Marker"', 'cursive']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #0a0a0a;
+            color: #ffffff;
+            font-family: 'Noto Sans KR', sans-serif;
+            overflow: hidden;
+            user-select: none;
+        }
+
+        .slide-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        .slide {
+            position: absolute;
+            inset: 0;
+            display: none;
+            opacity: 0;
+            transform: scale(0.98);
+            transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+            padding: 4.5rem 3.5rem 4.5rem 3.5rem;
+            box-sizing: border-box;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .slide.active {
+            display: flex;
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* Callout Pin Styling */
+        .callout-pin {
+            position: absolute;
+            width: 28px;
+            height: 28px;
+            background-color: #e60012;
+            color: white;
+            border-radius: 9999px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 900;
+            box-shadow: 0 0 15px rgba(230, 0, 18, 0.8), 0 0 0 2px white;
+            cursor: pointer;
+            z-index: 30;
+            transition: transform 0.2s, background-color 0.2s;
+        }
+        .callout-pin:hover, .callout-pin.active {
+            transform: scale(1.25);
+            background-color: #ff3344;
+            box-shadow: 0 0 25px rgba(230, 0, 18, 1), 0 0 0 3px white;
+        }
+
+        /* Pulsing ring */
+        .callout-pin::after {
+            content: '';
+            position: absolute;
+            inset: -4px;
+            border-radius: 9999px;
+            border: 2px solid #e60012;
+            animation: pulse-ring 1.8s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+        }
+        @keyframes pulse-ring {
+            0% { transform: scale(0.9); opacity: 0.9; }
+            50% { transform: scale(1.5); opacity: 0.2; }
+            100% { transform: scale(1.8); opacity: 0; }
+        }
+
+        /* Mockup Glass Window */
+        .mockup-window {
+            background: #111111;
+            border: 1px solid #2a2a2a;
+            border-radius: 14px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.8);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Callout detail card active */
+        .callout-item {
+            border-left: 3px solid transparent;
+            transition: all 0.2s ease;
+        }
+        .callout-item:hover, .callout-item.highlighted {
+            border-left-color: #e60012;
+            background: rgba(230, 0, 18, 0.08);
+            transform: translateX(4px);
+        }
+
+        /* Script Drawer */
+        #script-drawer {
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        #script-drawer.open { transform: translateY(0); }
+        #script-drawer.closed { transform: translateY(105%); }
+
+        .glass-panel {
+            background: rgba(18, 18, 18, 0.9);
+            backdrop-filter: blur(14px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+    </style>
+</head>
+<body class="bg-darkBg text-white antialiased">
+
+    <!-- Top Status Bar -->
+    <header class="fixed top-0 left-0 w-full z-40 px-8 py-3.5 flex items-center justify-between border-b border-white/10 glass-panel">
+        <div class="flex items-center space-x-4">
+            <span class="font-brush text-2xl text-finelaRed tracking-wider">FINELA</span>
+            <span class="text-xs tracking-widest text-gray-400 font-display uppercase border-l border-white/20 pl-4 hidden sm:inline">
+                UI Callout Structure Presentation
+            </span>
+        </div>
+        <div class="flex items-center space-x-5 text-sm font-medium">
+            <span id="slide-indicator" class="font-display tracking-widest text-finelaRed text-base font-bold">01 / 12</span>
+            <div class="flex items-center space-x-2">
+                <button onclick="toggleScript()" class="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-finelaRed text-xs font-semibold tracking-wider transition flex items-center gap-1.5" title="발표자 대본 (단축키: N)">
+                    <i class="fa-solid fa-microphone-lines"></i>
+                    <span>대본 (N)</span>
+                </button>
+                <button onclick="toggleFullscreen()" class="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-xs font-semibold tracking-wider transition" title="전체화면 (단축키: F)">
+                    <i class="fa-solid fa-expand"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Slide Viewport -->
+    <main class="slide-container">
+
+        <!-- ================= SLIDE 1: COVER ================= -->
+        <section class="slide active" data-index="1">
+            <div class="h-full flex flex-col justify-center items-center text-center max-w-4xl mx-auto">
+                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-finelaRed/10 border border-finelaRed/30 text-finelaRed text-xs font-bold tracking-widest uppercase mb-6">
+                    <i class="fa-solid fa-crosshairs"></i> UI / UX Callout Analysis
+                </div>
+                <h1 class="font-display text-5xl md:text-7xl font-bold uppercase tracking-tight mb-4 leading-none">
+                    FINELA 웹사이트 <br><span class="text-finelaRed">구성별 콜아웃</span> 프리젠테이션
+                </h1>
+                <p class="text-xl text-gray-300 font-light mb-10 max-w-2xl leading-relaxed">
+                    "어느 위치에 어떤 요소가 있고, 왜 이 탭과 기능을 넣었는가?"<br>
+                    <span class="text-sm text-gray-400 mt-2 block font-normal">홈페이지의 화면 구조와 시각 요소별 1:1 콜아웃(Callout) 심층 분석</span>
+                </p>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs font-mono text-gray-300 bg-cardBg p-5 rounded-2xl border border-cardBorder">
+                    <div class="p-3 bg-white/5 rounded-xl text-center"><i class="fa-solid fa-compass text-finelaRed mb-2 text-base block"></i>GNB & 네비게이션</div>
+                    <div class="p-3 bg-white/5 rounded-xl text-center"><i class="fa-solid fa-house text-finelaRed mb-2 text-base block"></i>메인 홈페이지 히어로</div>
+                    <div class="p-3 bg-white/5 rounded-xl text-center"><i class="fa-solid fa-users text-finelaRed mb-2 text-base block"></i>선수단 & 스탯 대시보드</div>
+                    <div class="p-3 bg-white/5 rounded-xl text-center"><i class="fa-solid fa-shield-halved text-finelaRed mb-2 text-base block"></i>360° 인프라 & 스토어</div>
+                </div>
+            </div>
+            <div class="flex justify-between items-center text-xs text-gray-500 pt-3 border-t border-white/5">
+                <span>FINELA • UI Callout Overview</span>
+                <span>키보드 [→] 방향키를 눌러 시작하세요</span>
+            </div>
+        </section>
+
+        <!-- ================= SLIDE 2: GNB HEADER CALLOUT ================= -->
+        <section class="slide" data-index="2">
+            <div>
+                <span class="text-finelaRed text-xs font-bold tracking-widest uppercase block mb-1">01. Global Navigation Bar</span>
+                <h2 class="font-display text-3xl md:text-4xl font-bold tracking-wide uppercase">공통 헤더: GNB 네비게이션 콜아웃</h2>
+                <p class="text-gray-400 text-xs md:text-sm">어느 페이지에서든 고정되어 최상위 기준점이 되는 헤더 구성요소 분석</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 my-auto items-center">
+                <!-- Visual Mockup with Pins -->
+                <div class="lg:col-span-6 mockup-window p-6 relative">
+                    <div class="flex items-center gap-2 mb-6 border-b border-white/10 pb-3">
+                        <span class="w-3 h-3 rounded-full bg-red-500/80"></span>
+                        <span class="w-3 h-3 rounded-full bg-yellow-500/80"></span>
+                        <span class="w-3 h-3 rounded-full bg-green-500/80"></span>
+                        <span class="text-[11px] text-gray-400 ml-2 font-mono">https://www.finela.com/ (Global Header)</span>
+                    </div>
+
+                    <!-- Mockup Header Container -->
+                    <div class="h-20 bg-darkBg border border-gray-800 rounded-xl px-6 flex items-center justify-between relative">
+                        <!-- Pin 1 -->
+                        <div class="callout-pin -top-3 -left-3" onclick="highlightCallout(1)">1</div>
+                        <span class="font-brush text-3xl text-finelaRed">FINELA</span>
+
+                        <!-- Pin 2 -->
+                        <div class="callout-pin -top-3 left-1/2 -translate-x-1/2" onclick="highlightCallout(2)">2</div>
+                        <div class="hidden sm:flex gap-4 font-display text-xs text-gray-400 uppercase tracking-widest font-bold">
+                            <span class="text-finelaRed border-b-2 border-finelaRed pb-1">Home</span>
+                            <span>Athletes</span>
+                            <span>Services</span>
+                            <span>Shopping</span>
+                            <span>Sponsors</span>
+                            <span>Contact</span>
+                        </div>
+
+                        <!-- Pin 3 -->
+                        <div class="callout-pin -top-3 -right-3" onclick="highlightCallout(3)">3</div>
+                        <div class="w-9 h-9 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-gray-300">
+                            <i class="fa-solid fa-bars text-sm"></i>
+                        </div>
+                    </div>
+                    <p class="text-[11px] text-gray-500 text-center mt-6">화면 상단 고정(Fixed) 및 반투명 블러(Backdrop Blur) 처리</p>
+                </div>
+
+                <!-- Callout Descriptions -->
+                <div class="lg:col-span-6 space-y-3 max-h-[60vh] overflow-y-auto pr-2">
+                    <div class="callout-item bg-cardBg p-4 rounded-xl border border-cardBorder" id="callout-card-1">
+                        <div class="flex items-center gap-2 mb-1.5">
+                            <span class="w-5 h-5 rounded-full bg-finelaRed text-white text-xs flex items-center justify-center font-bold">1</span>
+                            <h4 class="font-bold text-white text-sm">[좌측 상단] FINELA 브러시 로고</h4>
+                        </div>
+                        <p class="text-xs text-gray-400 leading-relaxed">
+                            <strong>• 역할:</strong> 회사의 공식 로고이자 최상위 홈 복귀 네비게이션 버튼.<br>
+                            <strong>• 기획 의도:</strong> 스트리트 농구 감성의 영문 붓글씨(Permanent Marker)로 에너지를 전달하며, 사이트 내 어디서든 홈으로 복귀하는 앵커 역할을 합니다.
+                        </p>
+                    </div>
+
+                    <div class="callout-item bg-cardBg p-4 rounded-xl border border-cardBorder" id="callout-card-2">
+                        <div class="flex items-center gap-2 mb-1.5">
+                            <span class="w-5 h-5 rounded-full bg-finelaRed text-white text-xs flex items-center justify-center font-bold">2</span>
+                            <h4 class="font-bold text-white text-sm">[중앙 상단] 6대 대메뉴 링크 & 액티브 바</h4>
+                        </div>
+                        <p class="text-xs text-gray-400 leading-relaxed">
+                            <strong>• 역할:</strong> 에이전시의 6대 핵심 비즈니스 도메인 직관적 조망.<br>
+                            <strong>• 기획 의도:</strong> 볼드한 영문 폰트(Oswald)를 적용하고, 현재 위치한 탭 아래에 붉은색 언더라인을 표시해 유저의 탐색 길잡이 역할을 합니다.
+                        </p>
+                    </div>
+
+                    <div class="callout-item bg-cardBg p-4 rounded-xl border border-cardBorder" id="callout-card-3">
+                        <div class="flex items-center gap-2 mb-1.5">
+                            <span class="w-5 h-5 rounded-full bg-finelaRed text-white text-xs flex items-center justify-center font-bold">3</span>
+                            <h4 class="font-bold text-white text-sm">[우측 상단] 모바일 반응형 햄버거 메뉴</h4>
+                        </div>
+                        <p class="text-xs text-gray-400 leading-relaxed">
+                            <strong>• 역할:</strong> 스마트폰/태블릿 화면 크기 대응 모바일 네비게이션.<br>
+                            <strong>• 기획 의도:</strong> 작은 모바일 기기 접속 시 메뉴가 화면을 가리지 않도록 깔끔하게 접어두는 반응형 UI 배려입니다.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex justify-between items-center text-xs text-gray-500 pt-3 border-t border-white/5">
+                <span>FINELA • Callout: GNB Header</span>
+                <span>02 / 12</span>
+            </div>
+        </section>
+
+        <!-- ================= SLIDE 3: HOME VIEW CALLOUT ================= -->
+        <section class="slide" data-index="3">
+            <div>
+                <span class="text-finelaRed text-xs font-bold tracking-widest uppercase block mb-1">02. Main Homepage (Home)</span>
+                <h2 class="font-display text-3xl md:text-4xl font-bold tracking-wide uppercase">메인 홈페이지: 풀스크린 히어로 콜아웃</h2>
+                <p class="text-gray-400 text-xs md:text-sm">단 3초 만에 브랜드의 격을 각인시키는 핵심 시각 요소 4대 콜아웃</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 my-auto items-center">
+                <!-- Visual Mockup -->
+                <div class="lg:col-span-6 mockup-window p-6 relative">
+                    <!-- Background Visual Container -->
+                    <div class="aspect-[16/10] bg-black rounded-xl border border-white/10 relative overflow-hidden flex flex-col items-center justify-center text-center p-6">
+                        <!-- Pin 1: Background -->
+                        <div class="callout-pin top-3 left-3" onclick="highlightCallout(1)">1</div>
+                        <div class="absolute inset-0 bg-gradient-to-b from-black/40 via-black/80 to-black z-0 opacity-80 pointer-events-none"></div>
+
+                        <!-- Pin 2: Headline -->
+                        <div class="callout-pin top-1/4 right-8" onclick="highlightCallout(2)">2</div>
+                        <h3 class="font-display text-3xl md:text-4xl font-bold uppercase tracking-tight text-white mb-2 z-10 leading-none">
+                            PLAY WITH THE<br><span class="text-finelaRed">MEDALISTS</span>
+                        </h3>
+
+                        <!-- Pin 3: Slogan -->
+                        <div class="callout-pin top-1/2 left-8" onclick="highlightCallout(3)">3</div>
+                        <p class="text-[11px] text-gray-300 z-10 mb-6 font-light max-w-xs">
+                            우리는 선수의 한계를 넘어, 새로운 브랜드 가치를 창출합니다.
+                        </p>
+
+                        <!-- Pin 4: Dual CTA -->
+                        <div class="callout-pin bottom-4 right-1/4" onclick="highlightCallout(4)">4</div>
+                        <div class="flex gap-3 z-10">
+                            <span class="px-3.5 py-1.5 bg-finelaRed text-white text-[10px] font-bold rounded uppercase tracking-wider shadow-[0_0_15px_rgba(230,0,18,0.5)]">Explore Roster</span>
+                            <span class="px-3.5 py-1.5 border border-gray-600 text-white text-[10px] font-bold rounded uppercase tracking-wider">About Finela</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Callout Descriptions -->
+                <div class="lg:col-span-6 space-y-2.5 max-h-[60vh] overflow-y-auto pr-2">
+                    <div class="callout-item bg-cardBg p-3.5 rounded-xl border border-cardBorder" id="callout-card-1">
+                        <div class="flex items-center gap-2 mb-1">
+                            <span class="w-5 h-5 rounded-full bg-finelaRed text-white text-xs flex items-center justify-center font-bold">1</span>
+                            <h4 class="font-bold text-white text-sm">[배경 레이어] 흑백 코트 실루엣 & 다크 그라디언트</h4>
+                        </div>
+                        <p class="text-xs text-gray-400">
+                            <strong>• 왜 넣었는가?</strong> 화려한 경기장의 잡음을 지우고 코트 위의 긴장감과 하이엔드 다크 프리미엄 무드를 연출하여 헤드라인 텍스트 가독성을 극대화했습니다.
+                        </p>
+                    </div>
+
+                    <div class="callout-item bg-cardBg p-3.5 rounded-xl border border-cardBorder" id="callout-card-2">
+                        <div class="flex items-center gap-2 mb-1">
+                            <span class="w-5 h-5 rounded-full bg-finelaRed text-white text-xs flex items-center justify-center font-bold">2</span>
+                            <h4 class="font-bold text-white text-sm">[중앙 메인] 대형 헤드라인 'PLAY WITH THE MEDALISTS'</h4>
+                        </div>
+                        <p class="text-xs text-gray-400">
+                            <strong>• 왜 넣었는가?</strong> 방문자가 들어오자마자 FINELA가 '국가대표 메달리스트급 선수들을 관리하는 최고 수준의 에이전시'임을 3초 안에 직관적으로 체감시킵니다.
+                        </p>
+                    </div>
+
+                    <div class="callout-item bg-cardBg p-3.5 rounded-xl border border-cardBorder" id="callout-card-3">
+                        <div class="flex items-center gap-2 mb-1">
+                            <span class="w-5 h-5 rounded-full bg-finelaRed text-white text-xs flex items-center justify-center font-bold">3</span>
+                            <h4 class="font-bold text-white text-sm">[중앙 서브] 브랜드 철학 카피라이팅</h4>
+                        </div>
+                        <p class="text-xs text-gray-400">
+                            <strong>• 왜 넣었는가?</strong> "선수의 한계를 넘어 새로운 브랜드 가치 창출"이라는 미션을 밝혀, 단순 이적 대행사가 아니라 브랜딩 파트너임을 선언합니다.
+                        </p>
+                    </div>
+
+                    <div class="callout-item bg-cardBg p-3.5 rounded-xl border border-cardBorder" id="callout-card-4">
+                        <div class="flex items-center gap-2 mb-1">
+                            <span class="w-5 h-5 rounded-full bg-finelaRed text-white text-xs flex items-center justify-center font-bold">4</span>
+                            <h4 class="font-bold text-white text-sm">[하단 듀얼 CTA] Explore Roster vs About Finela 버튼</h4>
+                        </div>
+                        <p class="text-xs text-gray-400">
+                            <strong>• 왜 넣었는가?</strong> 구단/팬이 원하는 '선수단 탐색(Roster)'과 학부모/스폰서가 원하는 '에이전시 인프라 확인(Services)'으로 즉각 갈라지는 투-웨이 동선을 부여했습니다.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex justify-between items-center text-xs text-gray-500 pt-3 border-t border-white/5">
+                <span>FINELA • Callout: Main Home</span>
+                <span>03 / 12</span>
+            </div>
+        </section>
+
+        <!-- ================= SLIDE 4: ATHLETES VIEW CALLOUT ================= -->
+        <section class="slide" data-index="4">
+            <div>
+                <span class="text-finelaRed text-xs font-bold tracking-widest uppercase block mb-1">03. Athletes Roster</span>
+                <h2 class="font-display text-3xl md:text-4xl font-bold tracking-wide uppercase">선수단 로스터: 트레이딩 카드 콜아웃</h2>
+                <p class="text-gray-400 text-xs md:text-sm">에이전시의 핵심 자산인 선수단을 수집형 스포츠 카드 포맷으로 시각화한 콜아웃</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 my-auto items-center">
+                <!-- Mockup Grid -->
+                <div class="lg:col-span-6 mockup-window p-6 relative">
+                    <!-- Pin 1: Header -->
+                    <div class="callout-pin top-3 left-6" onclick="highlightCallout(1)">1</div>
+                    <div class="text-center mb-6 border-b border-gray-800 pb-3">
+                        <span class="font-display text-xl font-bold text-finelaRed uppercase">Our Athletes</span>
+                        <p class="text-[10px] text-gray-400">2026 Aichi-Nagoya Asian Games Roster</p>
+                    </div>
+
+                    <div class="grid grid-cols-3 gap-3">
+                        <!-- Single Highlighted Card -->
+                        <div class="aspect-[4/5] bg-cardBg rounded-xl border border-finelaRed p-2 flex flex-col justify-between relative shadow-[0_0_20px_rgba(230,0,18,0.4)]">
+                            <!-- Pin 2: Card Format -->
+                            <div class="callout-pin -top-2 -left-2" onclick="highlightCallout(2)">2</div>
+                            <!-- Pin 3: Hover Grayscale to Color -->
+                            <div class="callout-pin top-1/3 -right-2" onclick="highlightCallout(3)">3</div>
+                            <!-- Pin 4: Name & Red Back Number -->
+                            <div class="callout-pin -bottom-2 -left-2" onclick="highlightCallout(4)">4</div>
+
+                            <div class="w-full h-2/3 bg-neutral-800 rounded-lg flex items-center justify-center text-xs text-gray-400">
+                                <i class="fa-solid fa-user text-2xl text-finelaRed"></i>
+                            </div>
+                            <div class="pt-1">
+                                <p class="text-[10px] font-bold leading-tight">LEE HYUN JUNG</p>
+                                <p class="text-[9px] text-gray-400">이현중 <span class="text-finelaRed font-bold font-display ml-1">#1 SG</span></p>
+                            </div>
+                        </div>
+
+                        <div class="aspect-[4/5] bg-cardBg rounded-xl border border-gray-800 p-2 flex flex-col justify-between opacity-50">
+                            <div class="w-full h-2/3 bg-neutral-900 rounded-lg flex items-center justify-center text-xs text-gray-600"><i class="fa-solid fa-user text-xl"></i></div>
+                            <div><p class="text-[10px] font-bold text-gray-400">최준용 #2</p></div>
+                        </div>
+                        <div class="aspect-[4/5] bg-cardBg rounded-xl border border-gray-800 p-2 flex flex-col justify-between opacity-50">
+                            <div class="w-full h-2/3 bg-neutral-900 rounded-lg flex items-center justify-center text-xs text-gray-600"><i class="fa-solid fa-user text-xl"></i></div>
+                            <div><p class="text-[10px] font-bold text-gray-400">허훈 #5</p></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Callout Descriptions -->
+                <div class="lg:col-span-6 space-y-3 max-h-[60vh] overflow-y-auto pr-2">
+                    <div class="callout-item bg-cardBg p-3.5 rounded-xl border border-cardBorder" id="callout-card-1">
+                        <div class="flex items-center gap-2 mb-1">
+                            <span class="w-5 h-5 rounded-full bg-finelaRed text-white text-xs flex items-center justify-center font-bold">1</span>
+                            <h4 class="font-bold text-white text-sm">[상단 타이틀] 2026 아시안게임 로스터 표기</h4>
+                        </div>
+                        <p class="text-xs text-gray-400">
+                            <strong>• 왜 넣었는가?</strong> 막연한 선수 명단이 아니라 2026 나고야 아시안게임을 겨냥한 최정예 국가대표급 라인업임을 명시하여 공신력을 극대화했습니다.
+                        </p>
+                    </div>
+
+                    <div class="callout-item bg-cardBg p-3.5 rounded-xl border border-cardBorder" id="callout-card-2">
+                        <div class="flex items-center gap-2 mb-1">
+                            <span class="w-5 h-5 rounded-full bg-finelaRed text-white text-xs flex items-center justify-center font-bold">2</span>
+                            <h4 class="font-bold text-white text-sm">[카드 포맷] 수집형 스포츠 트레이딩 카드 메타포</h4>
+                        </div>
+                        <p class="text-xs text-gray-400">
+                            <strong>• 왜 넣었는가?</strong> 관공서식 증명사진 목록을 벗어나 NBA 수집형 카드 스타일을 채택해 선수의 상품 가치와 스타성을 끌어올렸습니다.
+                        </p>
+                    </div>
+
+                    <div class="callout-item bg-cardBg p-3.5 rounded-xl border border-cardBorder" id="callout-card-3">
+                        <div class="flex items-center gap-2 mb-1">
+                            <span class="w-5 h-5 rounded-full bg-finelaRed text-white text-xs flex items-center justify-center font-bold">3</span>
+                            <h4 class="font-bold text-white text-sm">[인터랙션] 흑백 ➔ 호버 시 풀컬러 전환</h4>
+                        </div>
+                        <p class="text-xs text-gray-400">
+                            <strong>• 왜 넣었는가?</strong> 마우스 커서가 닿는 순간 선수의 생동감이 깨어나는 인터랙션으로 유저의 몰입도와 탐색 재미를 높였습니다.
+                        </p>
+                    </div>
+
+                    <div class="callout-item bg-cardBg p-3.5 rounded-xl border border-cardBorder" id="callout-card-4">
+                        <div class="flex items-center gap-2 mb-1">
+                            <span class="w-5 h-5 rounded-full bg-finelaRed text-white text-xs flex items-center justify-center font-bold">4</span>
+                            <h4 class="font-bold text-white text-sm">[카드 하단 배지] 한/영 성명 & 시그니처 레드 백넘버</h4>
+                        </div>
+                        <p class="text-xs text-gray-400">
+                            <strong>• 왜 넣었는가?</strong> 글로벌 스카우터용 영문과 국내 팬용 한글을 병기하고, 코트 위 상징인 등번호를 레드로 각인시켰습니다.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex justify-between items-center text-xs text-gray-500 pt-3 border-t border-white/5">
+                <span>FINELA • Callout: Athletes Roster</span>
+                <span>04 / 12</span>
+            </div>
+        </section>
+
+        <!-- ================= SLIDE 5: DETAIL TOP (PERFORMANCE) ================= -->
+        <section class="slide" data-index="5">
+            <div>
+                <span class="text-finelaRed text-xs font-bold tracking-widest uppercase block mb-1">04. Player Detail: Top Section</span>
+                <h2 class="font-display text-3xl md:text-4xl font-bold tracking-wide uppercase">선수 상세: 상단 경기력 & 스탯 콜아웃</h2>
+                <p class="text-gray-400 text-xs md:text-sm">구단 스카우터와 코칭스태프에게 선수의 실전 기량을 객관적으로 증명하는 영역</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 my-auto items-center">
+                <!-- Visual Mockup -->
+                <div class="lg:col-span-6 mockup-window p-5 relative">
+                    <!-- Pin 1: Back Button -->
+                    <div class="callout-pin top-2 left-2" onclick="highlightCallout(1)">1</div>
+                    <span class="text-[10px] text-gray-400 font-bold uppercase tracking-wider block mb-3"><i class="fa-solid fa-arrow-left mr-1"></i> Back to Roster</span>
+
+                    <div class="flex gap-4 items-center">
+                        <!-- Profile Card with Pin 2 & 3 -->
+                        <div class="w-5/12 aspect-[3/4] bg-neutral-900 rounded-xl border border-gray-800 p-3 relative overflow-hidden flex flex-col justify-end">
+                            <div class="callout-pin top-2 right-2" onclick="highlightCallout(2)">2</div>
+                            <div class="callout-pin bottom-2 right-2" onclick="highlightCallout(3)">3</div>
+                            <span class="absolute -right-2 -bottom-4 font-display text-7xl font-bold text-finelaRed opacity-20 pointer-events-none">1</span>
+                            <span class="text-xs font-bold text-white z-10">LEE HYUN JUNG</span>
+                            <span class="text-[9px] text-finelaRed font-bold z-10">SG | #1</span>
+                        </div>
+
+                        <!-- Video & Stats with Pin 4 & 5 -->
+                        <div class="w-7/12 space-y-3">
+                            <div class="aspect-video bg-black rounded-lg border border-gray-800 relative flex items-center justify-center">
+                                <div class="callout-pin -top-2 -right-2" onclick="highlightCallout(4)">4</div>
+                                <div class="w-8 h-8 rounded-full bg-finelaRed flex items-center justify-center text-white text-xs"><i class="fa-solid fa-play ml-0.5"></i></div>
+                            </div>
+                            <div class="grid grid-cols-4 gap-1 text-center relative">
+                                <div class="callout-pin -top-3 left-1/2 -translate-x-1/2" onclick="highlightCallout(5)">5</div>
+                                <div class="bg-cardBg p-1.5 rounded border border-cardBorder"><span class="text-[8px] text-finelaRed block">PTS</span><span class="font-display text-xs font-bold">22.4</span></div>
+                                <div class="bg-cardBg p-1.5 rounded border border-cardBorder"><span class="text-[8px] text-finelaRed block">AST</span><span class="font-display text-xs font-bold">5.2</span></div>
+                                <div class="bg-cardBg p-1.5 rounded border border-cardBorder"><span class="text-[8px] text-finelaRed block">REB</span><span class="font-display text-xs font-bold">4.5</span></div>
+                                <div class="bg-cardBg p-1.5 rounded border border-cardBorder"><span class="text-[8px] text-finelaRed block">STL</span><span class="font-display text-xs font-bold">1.2</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Callout Descriptions -->
+                <div class="lg:col-span-6 space-y-2.5 max-h-[60vh] overflow-y-auto pr-2">
+                    <div class="callout-item bg-cardBg p-3 rounded-xl border border-cardBorder" id="callout-card-1">
+                        <div class="flex items-center gap-2 mb-1">
+                            <span class="w-5 h-5 rounded-full bg-finelaRed text-white text-xs flex items-center justify-center font-bold">1</span>
+                            <h4 class="font-bold text-white text-sm">[좌측 상단] Back to Roster 뒤로가기 버튼</h4>
+                        </div>
+                        <p class="text-xs text-gray-400">선수 탐색 후 로스터 목록으로 한 번에 복귀할 수 있는 직관적인 내비게이션 복귀 동선입니다.</p>
+                    </div>
+
+                    <div class="callout-item bg-cardBg p-3 rounded-xl border border-cardBorder" id="callout-card-2">
+                        <div class="flex items-center gap-2 mb-1">
+                            <span class="w-5 h-5 rounded-full bg-finelaRed text-white text-xs flex items-center justify-center font-bold">2</span>
+                            <h4 class="font-bold text-white text-sm">[좌측 메인] 3:4 고화질 프로필 이미지</h4>
+                        </div>
+                        <p class="text-xs text-gray-400">선수의 당당한 피지컬과 에이스다운 카리스마를 대형 이미지로 부각시켰습니다.</p>
+                    </div>
+
+                    <div class="callout-item bg-cardBg p-3 rounded-xl border border-cardBorder" id="callout-card-3">
+                        <div class="flex items-center gap-2 mb-1">
+                            <span class="w-5 h-5 rounded-full bg-finelaRed text-white text-xs flex items-center justify-center font-bold">3</span>
+                            <h4 class="font-bold text-white text-sm">[배경 레이어] 대형 등번호 워터마크 (`#1`)</h4>
+                        </div>
+                        <p class="text-xs text-gray-400">거대한 반투명 숫자를 뒤에 깔아 매거진 화보 같은 입체적 비주얼 뎁스를 주었습니다.</p>
+                    </div>
+
+                    <div class="callout-item bg-cardBg p-3 rounded-xl border border-cardBorder" id="callout-card-4">
+                        <div class="flex items-center gap-2 mb-1">
+                            <span class="w-5 h-5 rounded-full bg-finelaRed text-white text-xs flex items-center justify-center font-bold">4</span>
+                            <h4 class="font-bold text-white text-sm">[우측 상단] 하이라이트 비디오 플레이어</h4>
+                        </div>
+                        <p class="text-xs text-gray-400">슈팅 폼과 실전 경기 템포를 3초 만에 검증하도록 플레이 버튼을 배치했습니다.</p>
+                    </div>
+
+                    <div class="callout-item bg-cardBg p-3 rounded-xl border border-cardBorder" id="callout-card-5">
+                        <div class="flex items-center gap-2 mb-1">
+                            <span class="w-5 h-5 rounded-full bg-finelaRed text-white text-xs flex items-center justify-center font-bold">5</span>
+                            <h4 class="font-bold text-white text-sm">[우측 하단] 4대 핵심 경기 스탯 (PTS/AST/REB/STL)</h4>
+                        </div>
+                        <p class="text-xs text-gray-400">득점, 어시스트 등 공인 리그 데이터를 정량적 대시보드로 시각화해 실력을 증명합니다.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex justify-between items-center text-xs text-gray-500 pt-3 border-t border-white/5">
+                <span>FINELA • Callout: Detail (Performance)</span>
+                <span>05 / 12</span>
+            </div>
+        </section>
+
+        <!-- ================= SLIDE 6: DETAIL BOTTOM (MEDIA & SNS) ================= -->
+        <section class="slide" data-index="6">
+            <div>
+                <span class="text-finelaRed text-xs font-bold tracking-widest uppercase block mb-1">05. Player Detail: Bottom Section</span>
+                <h2 class="font-display text-3xl md:text-4xl font-bold tracking-wide uppercase">선수 상세: 하단 미디어 & SNS 콜아웃</h2>
+                <p class="text-gray-400 text-xs md:text-sm">기업 광고주에게 선수의 상업적 영향력과 인플루언서 가치를 설득하는 콜아웃</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 my-auto items-center">
+                <!-- Visual Mockup -->
+                <div class="lg:col-span-6 mockup-window p-5 relative space-y-4">
+                    <!-- Commercial Section -->
+                    <div class="relative bg-darkBg p-3 rounded-xl border border-gray-800">
+                        <div class="callout-pin -top-2.5 -left-2.5" onclick="highlightCallout(1)">1</div>
+                        <span class="text-[10px] font-bold uppercase text-gray-300 block mb-2">Commercial & Broadcast</span>
+                        <div class="grid grid-cols-3 gap-2">
+                            <div class="callout-pin -top-2 left-1/3" onclick="highlightCallout(2)">2</div>
+                            <div class="aspect-video bg-neutral-900 rounded flex items-center justify-center text-[9px] text-gray-400 border border-white/5 text-center p-1">스포츠 CF</div>
+                            <div class="aspect-video bg-neutral-900 rounded flex items-center justify-center text-[9px] text-gray-400 border border-white/5 text-center p-1">예능 방송</div>
+                            <div class="aspect-video bg-neutral-900 rounded flex items-center justify-center text-[9px] text-gray-400 border border-white/5 text-center p-1">음료 광고</div>
+                        </div>
+                    </div>
+
+                    <!-- SNS Section -->
+                    <div class="relative bg-darkBg p-3 rounded-xl border border-gray-800">
+                        <div class="callout-pin -top-2.5 -left-2.5" onclick="highlightCallout(3)">3</div>
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-[10px] font-bold uppercase text-gray-300">Official Social Media</span>
+                            <span class="bg-finelaRed px-2 py-0.5 rounded text-[8px] font-bold">Follow @Athlete</span>
+                        </div>
+                        <div class="callout-pin bottom-2 right-2" onclick="highlightCallout(4)">4</div>
+                        <div class="grid grid-cols-4 gap-1.5">
+                            <div class="aspect-square bg-neutral-900 rounded flex items-center justify-center text-gray-600"><i class="fa-brands fa-instagram text-xs"></i></div>
+                            <div class="aspect-square bg-neutral-900 rounded flex items-center justify-center text-gray-600"><i class="fa-brands fa-instagram text-xs"></i></div>
+                            <div class="aspect-square bg-neutral-900 rounded flex items-center justify-center text-gray-600"><i class="fa-brands fa-instagram text-xs"></i></div>
+                            <div class="aspect-square bg-neutral-900 rounded flex items-center justify-center text-gray-600"><i class="fa-brands fa-instagram text-xs"></i></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Callout Descriptions -->
+                <div class="lg:col-span-6 space-y-3 max-h-[60vh] overflow-y-auto pr-2">
+                    <div class="callout-item bg-cardBg p-3.5 rounded-xl border border-cardBorder" id="callout-card-1">
+                        <div class="flex items-center gap-2 mb-1">
+                            <span class="w-5 h-5 rounded-full bg-finelaRed text-white text-xs flex items-center justify-center font-bold">1</span>
+                            <h4 class="font-bold text-white text-sm">[섹션 헤더] Commercial & Broadcast 타이틀</h4>
+                        </div>
+                        <p class="text-xs text-gray-400">
+                            <strong>• 왜 넣었는가?</strong> 단순 운동선수를 넘어 대중적 인기를 얻고 있는 '스타 앰버서더'로서의 상업적 가치를 공식적으로 내세우기 위함입니다.
+                        </p>
+                    </div>
+
+                    <div class="callout-item bg-cardBg p-3.5 rounded-xl border border-cardBorder" id="callout-card-2">
+                        <div class="flex items-center gap-2 mb-1">
+                            <span class="w-5 h-5 rounded-full bg-finelaRed text-white text-xs flex items-center justify-center font-bold">2</span>
+                            <h4 class="font-bold text-white text-sm">[미디어 카드 3종] 패션/방송/식음료 포트폴리오</h4>
+                        </div>
+                        <p class="text-xs text-gray-400">
+                            <strong>• 왜 넣었는가?</strong> 광고주에게 이미 여러 메이저 브랜드에서 검증된 모델임을 증명하여 스폰서십 유치 단가를 높입니다.
+                        </p>
+                    </div>
+
+                    <div class="callout-item bg-cardBg p-3.5 rounded-xl border border-cardBorder" id="callout-card-3">
+                        <div class="flex items-center gap-2 mb-1">
+                            <span class="w-5 h-5 rounded-full bg-finelaRed text-white text-xs flex items-center justify-center font-bold">3</span>
+                            <h4 class="font-bold text-white text-sm">[SNS 헤더] Official Instagram & Follow CTA 버튼</h4>
+                        </div>
+                        <p class="text-xs text-gray-400">
+                            <strong>• 왜 넣었는가?</strong> 사이트 방문자를 선수의 실제 인스타그램으로 유입시켜 팬덤을 확대하고 즉각적인 소통 창구를 연결합니다.
+                        </p>
+                    </div>
+
+                    <div class="callout-item bg-cardBg p-3.5 rounded-xl border border-cardBorder" id="callout-card-4">
+                        <div class="flex items-center gap-2 mb-1">
+                            <span class="w-5 h-5 rounded-full bg-finelaRed text-white text-xs flex items-center justify-center font-bold">4</span>
+                            <h4 class="font-bold text-white text-sm">[피드 그리드] 4분할 실시간 인스타그램 피드</h4>
+                        </div>
+                        <p class="text-xs text-gray-400">
+                            <strong>• 왜 넣었는가?</strong> 선수의 일상과 패션 스타일을 보여줌으로써 MZ세대 팬들과의 친밀감과 인플루언서 파급력을 시각화했습니다.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex justify-between items-center text-xs text-gray-500 pt-3 border-t border-white/5">
+                <span>FINELA • Callout: Detail (Commercial & SNS)</span>
+                <span>06 / 12</span>
+            </div>
+        </section>
+
+        <!-- ================= SLIDE 7: SERVICES TRAINING ================= -->
+        <section class="slide" data-index="7">
+            <div>
+                <span class="text-finelaRed text-xs font-bold tracking-widest uppercase block mb-1">06. Services: Training</span>
+                <h2 class="font-display text-3xl md:text-4xl font-bold tracking-wide uppercase">서비스: 퍼포먼스 트레이닝 콜아웃</h2>
+                <p class="text-gray-400 text-xs md:text-sm">경험에만 의존하지 않는 데이터 기반 하이테크 훈련 시스템 콜아웃</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 my-auto items-center">
+                <!-- Visual Mockup -->
+                <div class="lg:col-span-6 mockup-window p-5 relative">
+                    <!-- Pin 1: Sub Tabs -->
+                    <div class="callout-pin -top-2 left-10" onclick="highlightCallout(1)">1</div>
+                    <div class="flex gap-4 border-b border-gray-800 pb-2 mb-4 text-[10px] font-bold">
+                        <span class="text-finelaRed border-b-2 border-finelaRed pb-1 uppercase">Performance Training</span>
+                        <span class="text-gray-500 uppercase">Accommodation</span>
+                        <span class="text-gray-500 uppercase">Management & Legal</span>
+                    </div>
+
+                    <!-- Main Facility Card with Pin 2 -->
+                    <div class="bg-cardBg p-3 rounded-xl border border-gray-800 mb-3 relative">
+                        <div class="callout-pin -top-2.5 right-4" onclick="highlightCallout(2)">2</div>
+                        <div class="flex gap-3 items-center">
+                            <div class="w-12 h-12 rounded-lg bg-neutral-900 border border-gray-700 flex items-center justify-center text-finelaRed"><i class="fa-solid fa-chart-line text-lg"></i></div>
+                            <div>
+                                <span class="text-xs font-bold block">최첨단 퍼포먼스 센터</span>
+                                <span class="text-[9px] text-gray-400">NBA급 모션 트래킹 & 생체 데이터 분석</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 3 Branch Cards with Pin 3, 4, 5 -->
+                    <div class="grid grid-cols-3 gap-2 relative">
+                        <div class="callout-pin -top-2.5 left-1/2 -translate-x-1/2" onclick="highlightCallout(3)">3</div>
+                        <div class="bg-cardBg p-2.5 rounded-lg border border-gray-800 text-center">
+                            <i class="fa-solid fa-dumbbell text-finelaRed text-sm mb-1 block"></i>
+                            <span class="text-[9px] font-bold block">피지컬</span>
+                            <span class="text-[8px] text-gray-500">부상 방지</span>
+                        </div>
+                        <div class="bg-cardBg p-2.5 rounded-lg border border-gray-800 text-center">
+                            <i class="fa-solid fa-basketball text-finelaRed text-sm mb-1 block"></i>
+                            <span class="text-[9px] font-bold block">스킬 코칭</span>
+                            <span class="text-[8px] text-gray-500">포지션 맞춤</span>
+                        </div>
+                        <div class="bg-cardBg p-2.5 rounded-lg border border-gray-800 text-center">
+                            <i class="fa-solid fa-brain text-finelaRed text-sm mb-1 block"></i>
+                            <span class="text-[9px] font-bold block">멘탈 케어</span>
+                            <span class="text-[8px] text-gray-500">심리 상담</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Callout Descriptions -->
+                <div class="lg:col-span-6 space-y-3 max-h-[60vh] overflow-y-auto pr-2">
+                    <div class="callout-item bg-cardBg p-3.5 rounded-xl border border-cardBorder" id="callout-card-1">
+                        <div class="flex items-center gap-2 mb-1">
+                            <span class="w-5 h-5 rounded-full bg-finelaRed text-white text-xs flex items-center justify-center font-bold">1</span>
+                            <h4 class="font-bold text-white text-sm">[상단 탭] 3대 서브탭 버튼 (Training / Living / Legal)</h4>
+                        </div>
+                        <p class="text-xs text-gray-400">
+                            <strong>• 왜 넣었는가?</strong> 훈련, 의식주, 법률/관리라는 360도 전방위 지원 체계를 단계별로 분리하여 전문성을 체계화했습니다.
+                        </p>
+                    </div>
+
+                    <div class="callout-item bg-cardBg p-3.5 rounded-xl border border-cardBorder" id="callout-card-2">
+                        <div class="flex items-center gap-2 mb-1">
+                            <span class="w-5 h-5 rounded-full bg-finelaRed text-white text-xs flex items-center justify-center font-bold">2</span>
+                            <h4 class="font-bold text-white text-sm">[메인 카드] NBA급 최첨단 퍼포먼스 센터</h4>
+                        </div>
+                        <p class="text-xs text-gray-400">
+                            <strong>• 왜 넣었는가?</strong> "열심히 시킨다"는 막연한 방식 대신, 카메라 모션 캡처와 센서 데이터로 훈련시키는 과학적 인프라를 증명합니다.
+                        </p>
+                    </div>
+
+                    <div class="callout-item bg-cardBg p-3.5 rounded-xl border border-cardBorder" id="callout-card-3">
+                        <div class="flex items-center gap-2 mb-1">
+                            <span class="w-5 h-5 rounded-full bg-finelaRed text-white text-xs flex items-center justify-center font-bold">3</span>
+                            <h4 class="font-bold text-white text-sm">[분과 카드 3종] 피지컬 / 스킬 / 멘탈 트라이앵글</h4>
+                        </div>
+                        <p class="text-xs text-gray-400">
+                            <strong>• 왜 넣었는가?</strong> 근력(부상 방지), 실전 전술(1:1 코칭), 심리 방어선(슬럼프 극복)의 삼각 균형을 맞춰 선수 수명을 연장시킵니다.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex justify-between items-center text-xs text-gray-500 pt-3 border-t border-white/5">
+                <span>FINELA • Callout: Services (Training)</span>
+                <span>07 / 12</span>
+            </div>
+        </section>
+
+        <!-- ================= SLIDE 8: SERVICES CARE & LEGAL ================= -->
+        <section class="slide" data-index="8">
+            <div>
+                <span class="text-finelaRed text-xs font-bold tracking-widest uppercase block mb-1">07. Services: Living & Legal</span>
+                <h2 class="font-display text-3xl md:text-4xl font-bold tracking-wide uppercase">서비스: 숙소 및 매니지먼트/법률 콜아웃</h2>
+                <p class="text-gray-400 text-xs md:text-sm">선수와 학부모가 안심할 수 있는 의식주 케어와 전문 법률 방어선 콜아웃</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 my-auto items-center">
+                <!-- Visual Mockup -->
+                <div class="lg:col-span-6 mockup-window p-5 relative space-y-3">
+                    <!-- Accommodation Block -->
+                    <div class="bg-cardBg p-3 rounded-xl border border-gray-800 relative">
+                        <div class="callout-pin -top-2.5 -left-2.5" onclick="highlightCallout(1)">1</div>
+                        <span class="text-[10px] font-bold text-finelaRed uppercase block mb-1">Premium Accommodation</span>
+                        <div class="grid grid-cols-2 gap-2 text-[9px] text-gray-300">
+                            <div><i class="fa-solid fa-bed text-finelaRed mr-1"></i>1인 1실 프라이빗 룸</div>
+                            <div><i class="fa-solid fa-utensils text-finelaRed mr-1"></i>도핑 프리 맞춤 식단</div>
+                            <div><i class="fa-solid fa-person-swimming text-finelaRed mr-1"></i>인피니티 풀 & 스파</div>
+                            <div><i class="fa-solid fa-snowflake text-finelaRed mr-1"></i>크라이오테라피 극저온</div>
+                        </div>
+                    </div>
+
+                    <!-- Management Block -->
+                    <div class="bg-cardBg p-3 rounded-xl border border-gray-800 relative">
+                        <div class="callout-pin -top-2.5 -left-2.5" onclick="highlightCallout(2)">2</div>
+                        <span class="text-[10px] font-bold text-finelaRed uppercase block mb-1">Management & Legal</span>
+                        <div class="grid grid-cols-2 gap-2 text-[9px] text-gray-300">
+                            <div><i class="fa-solid fa-plane text-gray-400 mr-1"></i>원정 이동/차량 의전</div>
+                            <div><i class="fa-solid fa-file-signature text-gray-400 mr-1"></i>국내외 연봉/이적 협상</div>
+                            <div><i class="fa-solid fa-camera text-gray-400 mr-1"></i>미디어/화보 일정 대행</div>
+                            <div><i class="fa-solid fa-shield text-gray-400 mr-1"></i>초상권 및 리스크 방어</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Callout Descriptions -->
+                <div class="lg:col-span-6 space-y-3 max-h-[60vh] overflow-y-auto pr-2">
+                    <div class="callout-item bg-cardBg p-3.5 rounded-xl border border-cardBorder" id="callout-card-1">
+                        <div class="flex items-center gap-2 mb-1">
+                            <span class="w-5 h-5 rounded-full bg-finelaRed text-white text-xs flex items-center justify-center font-bold">1</span>
+                            <h4 class="font-bold text-white text-sm">[숙소 & 리커버리] 1인 1실 및 크라이오테라피</h4>
+                        </div>
+                        <p class="text-xs text-gray-400 leading-relaxed">
+                            <strong>• 왜 넣었는가?</strong> 사생활 보장(1인 1실)과 함께 영하 130도 극저온 피로회복 장비, 혈액검사 기반 맞춤 식단을 제공하여 호텔급 재충전을 지원합니다.
+                        </p>
+                    </div>
+
+                    <div class="callout-item bg-cardBg p-3.5 rounded-xl border border-cardBorder" id="callout-card-2">
+                        <div class="flex items-center gap-2 mb-1">
+                            <span class="w-5 h-5 rounded-full bg-finelaRed text-white text-xs flex items-center justify-center font-bold">2</span>
+                            <h4 class="font-bold text-white text-sm">[매니지먼트 & 법률] 1:1 라이프 매니저와 계약 자문</h4>
+                        </div>
+                        <p class="text-xs text-gray-400 leading-relaxed">
+                            <strong>• 왜 넣었는가?</strong> 원정 숙박과 미디어 일정 등 잡무를 전담 매니저가 대행하고, 전문 변호사가 연봉 및 초상권을 방어하여 선수가 시합에만 집중할 수 있게 합니다.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex justify-between items-center text-xs text-gray-500 pt-3 border-t border-white/5">
+                <span>FINELA • Callout: Services (Living & Legal)</span>
+                <span>08 / 12</span>
+            </div>
+        </section>
+
+        <!-- ================= SLIDE 9: SHOPPING VIEW CALLOUT ================= -->
+        <section class="slide" data-index="9">
+            <div>
+                <span class="text-finelaRed text-xs font-bold tracking-widest uppercase block mb-1">08. Finela Store (Shopping)</span>
+                <h2 class="font-display text-3xl md:text-4xl font-bold tracking-wide uppercase">피넬라 스토어: 팬덤 커머스 콜아웃</h2>
+                <p class="text-gray-400 text-xs md:text-sm">선수 개인 IP를 활용해 팬덤을 결집하고 D2C 수익을 창출하는 커머스 콜아웃</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 my-auto items-center">
+                <!-- Visual Mockup -->
+                <div class="lg:col-span-6 mockup-window p-5 relative">
+                    <!-- Pin 1: Header -->
+                    <div class="callout-pin top-2 left-4" onclick="highlightCallout(1)">1</div>
+                    <span class="font-display text-base font-bold text-finelaRed block uppercase mb-1">Finela Store</span>
+                    <span class="text-[9px] text-gray-400 block mb-4">Official Agency & Player Merchandise</span>
+
+                    <!-- Product Grid with Pin 2 & 3 -->
+                    <div class="grid grid-cols-3 gap-2 mb-3 relative">
+                        <div class="callout-pin -top-2.5 right-4" onclick="highlightCallout(2)">2</div>
+                        <div class="aspect-square bg-cardBg rounded-lg border border-gray-800 p-2 flex flex-col justify-end">
+                            <span class="text-[9px] font-bold">Replica Jersey</span>
+                            <span class="text-[8px] text-finelaRed font-display">₩89,000</span>
+                        </div>
+                        <div class="aspect-square bg-cardBg rounded-lg border border-gray-800 p-2 flex flex-col justify-end">
+                            <span class="text-[9px] font-bold">Signature Ball</span>
+                            <span class="text-[8px] text-finelaRed font-display">₩65,000</span>
+                        </div>
+                        <div class="aspect-square bg-cardBg rounded-lg border border-gray-800 p-2 flex flex-col justify-end">
+                            <span class="text-[9px] font-bold">Photo Cards</span>
+                            <span class="text-[8px] text-finelaRed font-display">₩25,000</span>
+                        </div>
+                    </div>
+
+                    <!-- Detail Pop / Drawer with Pin 4 -->
+                    <div class="bg-black/90 p-2.5 rounded-lg border border-finelaRed/40 flex items-center justify-between relative">
+                        <div class="callout-pin -top-2.5 -left-2.5" onclick="highlightCallout(3)">3</div>
+                        <div class="flex gap-1.5 text-[9px] text-gray-300">
+                            <span>Size:</span>
+                            <span class="px-1.5 py-0.5 border border-finelaRed text-finelaRed rounded font-bold">M</span>
+                            <span class="px-1.5 py-0.5 border border-gray-700 rounded">L</span>
+                        </div>
+                        <span class="bg-finelaRed px-3 py-1 rounded text-[9px] font-bold text-white"><i class="fa-solid fa-cart-shopping mr-1"></i>Add To Cart</span>
+                    </div>
+                </div>
+
+                <!-- Callout Descriptions -->
+                <div class="lg:col-span-6 space-y-3 max-h-[60vh] overflow-y-auto pr-2">
+                    <div class="callout-item bg-cardBg p-3.5 rounded-xl border border-cardBorder" id="callout-card-1">
+                        <div class="flex items-center gap-2 mb-1">
+                            <span class="w-5 h-5 rounded-full bg-finelaRed text-white text-xs flex items-center justify-center font-bold">1</span>
+                            <h4 class="font-bold text-white text-sm">[스토어 헤더] Official Merchandise 선언</h4>
+                        </div>
+                        <p class="text-xs text-gray-400">
+                            <strong>• 왜 넣었는가?</strong> 외부 쇼핑몰 링크가 아닌, 에이전시 공식 플랫폼 내에서 공인 굿즈를 유통하는 D2C 커머스 신뢰도를 구축했습니다.
+                        </p>
+                    </div>
+
+                    <div class="callout-item bg-cardBg p-3.5 rounded-xl border border-cardBorder" id="callout-card-2">
+                        <div class="flex items-center gap-2 mb-1">
+                            <span class="w-5 h-5 rounded-full bg-finelaRed text-white text-xs flex items-center justify-center font-bold">2</span>
+                            <h4 class="font-bold text-white text-sm">[상품 라인업] 6종 핵심 굿즈 (저지/농구공/포토카드)</h4>
+                        </div>
+                        <p class="text-xs text-gray-400">
+                            <strong>• 왜 넣었는가?</strong> 실용적인 의류부터 팬덤 소장용 포토카드까지 팬들의 구매 심리를 자극해 에이전시의 수익을 다각화합니다.
+                        </p>
+                    </div>
+
+                    <div class="callout-item bg-cardBg p-3.5 rounded-xl border border-cardBorder" id="callout-card-3">
+                        <div class="flex items-center gap-2 mb-1">
+                            <span class="w-5 h-5 rounded-full bg-finelaRed text-white text-xs flex items-center justify-center font-bold">3</span>
+                            <h4 class="font-bold text-white text-sm">[옵션 & 카트 버튼] 사이즈 선택(S/M/L) & Add To Cart</h4>
+                        </div>
+                        <p class="text-xs text-gray-400">
+                            <strong>• 왜 넣었는가?</strong> 페이지 이탈 없이 상품을 누르면 즉시 사이즈를 고르고 장바구니에 담을 수 있는 매끄러운 원스톱 구매 UX를 완성했습니다.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex justify-between items-center text-xs text-gray-500 pt-3 border-t border-white/5">
+                <span>FINELA • Callout: Finela Store</span>
+                <span>09 / 12</span>
+            </div>
+        </section>
+
+        <!-- ================= SLIDE 10: SPONSORS VIEW CALLOUT ================= -->
+        <section class="slide" data-index="10">
+            <div>
+                <span class="text-finelaRed text-xs font-bold tracking-widest uppercase block mb-1">09. Partners (Sponsors)</span>
+                <h2 class="font-display text-3xl md:text-4xl font-bold tracking-wide uppercase">스폰서십: 글로벌 파트너스 콜아웃</h2>
+                <p class="text-gray-400 text-xs md:text-sm">기업의 신뢰도(Social Proof)와 파트너사를 존중하는 인터랙티브 콜아웃</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 my-auto items-center">
+                <!-- Visual Mockup -->
+                <div class="lg:col-span-6 mockup-window p-5 relative">
+                    <!-- Pin 1: Header -->
+                    <div class="callout-pin top-2 left-6" onclick="highlightCallout(1)">1</div>
+                    <div class="text-center mb-4">
+                        <span class="font-display text-lg font-bold text-finelaRed uppercase">Our Partners</span>
+                        <p class="text-[9px] text-gray-400">세계 최고 기업들이 FINELA의 비전을 지지합니다.</p>
+                    </div>
+
+                    <div class="grid grid-cols-3 gap-2.5">
+                        <!-- Pin 2: Nike Card (Normal Grayscale) -->
+                        <div class="aspect-square bg-cardBg rounded-xl border border-gray-800 p-2 flex flex-col items-center justify-center text-center relative opacity-70">
+                            <div class="callout-pin -top-2 -left-2" onclick="highlightCallout(2)">2</div>
+                            <i class="fa-solid fa-check text-xl text-gray-400 mb-1"></i>
+                            <span class="text-[9px] font-bold">NIKE</span>
+                            <span class="text-[7px] text-gray-500">Kit Sponsor</span>
+                        </div>
+
+                        <!-- Pin 3: Gatorade Card (Hovered Color Glow) -->
+                        <div class="aspect-square bg-cardBg rounded-xl border border-orange-500 p-2 flex flex-col items-center justify-center text-center relative shadow-[0_0_15px_rgba(255,94,0,0.3)]">
+                            <div class="callout-pin -top-2.5 -right-2.5" onclick="highlightCallout(3)">3</div>
+                            <i class="fa-solid fa-bolt text-xl text-orange-500 mb-1"></i>
+                            <span class="text-[9px] font-bold text-orange-400">GATORADE</span>
+                            <span class="text-[7px] text-gray-400">Beverage</span>
+                        </div>
+
+                        <!-- Samsung Card -->
+                        <div class="aspect-square bg-cardBg rounded-xl border border-blue-500 p-2 flex flex-col items-center justify-center text-center relative shadow-[0_0_15px_rgba(20,40,160,0.3)]">
+                            <i class="fa-solid fa-mobile-screen text-xl text-blue-500 mb-1"></i>
+                            <span class="text-[9px] font-bold text-blue-400">SAMSUNG</span>
+                            <span class="text-[7px] text-gray-400">Main Sponsor</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Callout Descriptions -->
+                <div class="lg:col-span-6 space-y-3 max-h-[60vh] overflow-y-auto pr-2">
+                    <div class="callout-item bg-cardBg p-3.5 rounded-xl border border-cardBorder" id="callout-card-1">
+                        <div class="flex items-center gap-2 mb-1">
+                            <span class="w-5 h-5 rounded-full bg-finelaRed text-white text-xs flex items-center justify-center font-bold">1</span>
+                            <h4 class="font-bold text-white text-sm">[파트너십 선언] Our Partners 헤더</h4>
+                        </div>
+                        <p class="text-xs text-gray-400">
+                            <strong>• 왜 넣었는가?</strong> 단순 협찬에 그치지 않고, 세계적인 기업들과 비전을 함께 공유하는 동반 성장 파트너십임을 밝힙니다.
+                        </p>
+                    </div>
+
+                    <div class="callout-item bg-cardBg p-3.5 rounded-xl border border-cardBorder" id="callout-card-2">
+                        <div class="flex items-center gap-2 mb-1">
+                            <span class="w-5 h-5 rounded-full bg-finelaRed text-white text-xs flex items-center justify-center font-bold">2</span>
+                            <h4 class="font-bold text-white text-sm">[흑백 로고 배치] 톤앤매너 정돈 & 공신력 확보</h4>
+                        </div>
+                        <p class="text-xs text-gray-400">
+                            <strong>• 왜 넣었는가?</strong> 로고를 평소 흑백으로 정돈하여 다크 테마의 무게감을 유지하면서 유수의 대기업 네트워크를 과시합니다.
+                        </p>
+                    </div>
+
+                    <div class="callout-item bg-cardBg p-3.5 rounded-xl border border-cardBorder" id="callout-card-3">
+                        <div class="flex items-center gap-2 mb-1">
+                            <span class="w-5 h-5 rounded-full bg-finelaRed text-white text-xs flex items-center justify-center font-bold">3</span>
+                            <h4 class="font-bold text-white text-sm">[인터랙션] 마우스 오버 시 브랜드 고유 컬러 점등</h4>
+                        </div>
+                        <p class="text-xs text-gray-400">
+                            <strong>• 왜 넣었는가?</strong> 게토레이 오렌지, 삼성 블루 등 호버 시 각 기업 고유의 CI 컬러가 화려하게 켜지도록 설계해 파트너사에 대한 리스펙트를 표현했습니다.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex justify-between items-center text-xs text-gray-500 pt-3 border-t border-white/5">
+                <span>FINELA • Callout: Sponsors</span>
+                <span>10 / 12</span>
+            </div>
+        </section>
+
+        <!-- ================= SLIDE 11: CONTACT US VIEW CALLOUT ================= -->
+        <section class="slide" data-index="11">
+            <div>
+                <span class="text-finelaRed text-xs font-bold tracking-widest uppercase block mb-1">10. Contact Us (Inquiry)</span>
+                <h2 class="font-display text-3xl md:text-4xl font-bold tracking-wide uppercase">고객센터 & 제휴: 스마트 리드 전환 콜아웃</h2>
+                <p class="text-gray-400 text-xs md:text-sm">방문자의 탐색을 실제 비즈니스 계약으로 성사시키는 스마트 폼 콜아웃</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 my-auto items-center">
+                <!-- Visual Mockup -->
+                <div class="lg:col-span-6 mockup-window p-5 relative">
+                    <span class="font-display text-lg font-bold text-white block mb-3 uppercase">Get in <span class="text-finelaRed">Touch</span></span>
+
+                    <div class="grid grid-cols-2 gap-3">
+                        <!-- Offline Info with Pin 1 -->
+                        <div class="bg-cardBg p-3 rounded-xl border border-gray-800 space-y-2 relative">
+                            <div class="callout-pin -top-2.5 -left-2.5" onclick="highlightCallout(1)">1</div>
+                            <span class="text-[9px] font-bold text-finelaRed uppercase block">Headquarters</span>
+                            <p class="text-[8px] text-gray-300 leading-tight">서울특별시 강남구 테헤란로 123 FINELA 타워 15F</p>
+                            <p class="text-[8px] text-gray-400"><i class="fa-solid fa-phone text-finelaRed mr-1"></i>+82 2-1234-5678</p>
+                        </div>
+
+                        <!-- Form with Pin 2 & 3 -->
+                        <div class="bg-cardBg p-3 rounded-xl border border-gray-800 space-y-2 relative">
+                            <div class="callout-pin -top-2.5 right-4" onclick="highlightCallout(2)">2</div>
+                            <div class="callout-pin bottom-2 right-2" onclick="highlightCallout(3)">3</div>
+                            <div class="bg-neutral-900 border border-gray-700 rounded px-2 py-1 text-[8px] text-gray-400">Name / Email</div>
+                            <div class="bg-neutral-900 border border-finelaRed rounded px-2 py-1 text-[8px] text-white flex justify-between items-center">
+                                <span>Partnership / Sponsorship</span>
+                                <i class="fa-solid fa-chevron-down text-[7px] text-finelaRed"></i>
+                            </div>
+                            <button class="w-full bg-finelaRed text-white text-[9px] font-bold py-1.5 rounded uppercase tracking-wider">Send Message</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Callout Descriptions -->
+                <div class="lg:col-span-6 space-y-3 max-h-[60vh] overflow-y-auto pr-2">
+                    <div class="callout-item bg-cardBg p-3.5 rounded-xl border border-cardBorder" id="callout-card-1">
+                        <div class="flex items-center gap-2 mb-1">
+                            <span class="w-5 h-5 rounded-full bg-finelaRed text-white text-xs flex items-center justify-center font-bold">1</span>
+                            <h4 class="font-bold text-white text-sm">[좌측 정보창] 강남 테헤란로 본사 거점 공개</h4>
+                        </div>
+                        <p class="text-xs text-gray-400">
+                            <strong>• 왜 넣었는가?</strong> 페이퍼 컴퍼니가 아닌 테헤란로 중심가에 실재하는 대형 에이전시임을 입증하여 고객에게 신뢰를 부여합니다.
+                        </p>
+                    </div>
+
+                    <div class="callout-item bg-cardBg p-3.5 rounded-xl border border-cardBorder" id="callout-card-2">
+                        <div class="flex items-center gap-2 mb-1">
+                            <span class="w-5 h-5 rounded-full bg-finelaRed text-white text-xs flex items-center justify-center font-bold">2</span>
+                            <h4 class="font-bold text-white text-sm">[Subject 드롭다운] 목적별 자동 라우팅 셀렉트박스</h4>
+                        </div>
+                        <p class="text-xs text-gray-400">
+                            <strong>• 왜 넣었는가?</strong> 스폰서십, 스카우팅, 미디어 취재로 문의 유형을 사전 분기하여 담당 부서로 지체 없이 연결하는 스마트 폼입니다.
+                        </p>
+                    </div>
+
+                    <div class="callout-item bg-cardBg p-3.5 rounded-xl border border-cardBorder" id="callout-card-3">
+                        <div class="flex items-center gap-2 mb-1">
+                            <span class="w-5 h-5 rounded-full bg-finelaRed text-white text-xs flex items-center justify-center font-bold">3</span>
+                            <h4 class="font-bold text-white text-sm">[전송 CTA] Send Message 최종 전환 버튼</h4>
+                        </div>
+                        <p class="text-xs text-gray-400">
+                            <strong>• 왜 넣었는가?</strong> 웹사이트를 둘러본 유저의 단순 관심을 실제 비즈니스 계약과 미팅 리드(Lead)로 성사시키는 최종 관문입니다.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex justify-between items-center text-xs text-gray-500 pt-3 border-t border-white/5">
+                <span>FINELA • Callout: Contact Us</span>
+                <span>11 / 12</span>
+            </div>
+        </section>
+
+        <!-- ================= SLIDE 12: CONCLUSION ================= -->
+        <section class="slide" data-index="12">
+            <div class="h-full flex flex-col justify-center items-center text-center max-w-4xl mx-auto">
+                <span class="font-brush text-5xl text-finelaRed tracking-wider mb-3">FINELA</span>
+                <h2 class="font-display text-5xl md:text-7xl font-bold uppercase tracking-tight mb-4">
+                    Callout Summary
+                </h2>
+                <p class="text-lg text-gray-300 font-light mb-8 max-w-2xl leading-relaxed">
+                    모든 탭과 버튼, 컬러와 인터랙션은 <br>
+                    <strong class="text-white">선수의 가치 극대화</strong>와 <strong class="text-finelaRed">비즈니스 신뢰도 구축</strong>을 위해 유기적으로 설계되었습니다.
+                </p>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full text-xs text-gray-300 mb-8">
+                    <div class="p-4 bg-cardBg rounded-xl border border-cardBorder text-left">
+                        <span class="text-finelaRed font-bold block mb-1">01. B2B 파트너십</span>
+                        <p class="text-gray-400">스탯과 미디어 파워를 동시에 보여주어 광고 및 이적 협상 우위 선점</p>
+                    </div>
+                    <div class="p-4 bg-cardBg rounded-xl border border-cardBorder text-left">
+                        <span class="text-finelaRed font-bold block mb-1">02. B2C 팬덤 경제</span>
+                        <p class="text-gray-400">트레이딩 카드 및 공식 굿즈 스토어를 통해 충성도 높은 팬덤 락인</p>
+                    </div>
+                    <div class="p-4 bg-cardBg rounded-xl border border-cardBorder text-left">
+                        <span class="text-finelaRed font-bold block mb-1">03. 360° 토털 케어</span>
+                        <p class="text-gray-400">데이터 훈련, 하이엔드 숙소, 법률 자문으로 선수와 학부모 신뢰 획득</p>
+                    </div>
+                </div>
+                <div class="flex gap-4 text-xs font-mono text-gray-400">
+                    <span><i class="fa-solid fa-envelope mr-1 text-finelaRed"></i>contact@finela.com</span>
+                    <span>•</span>
+                    <span><i class="fa-solid fa-globe mr-1 text-finelaRed"></i>www.finela.com</span>
+                </div>
+            </div>
+            <div class="flex justify-between items-center text-xs text-gray-500 pt-3 border-t border-white/5">
+                <span>FINELA • Summary & Closing</span>
+                <span>12 / 12</span>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Bottom Navigation Bar & Progress Bar -->
+    <footer class="fixed bottom-0 left-0 w-full z-40 px-8 py-3 glass-panel border-t border-white/10 flex items-center justify-between">
+        <div class="flex items-center space-x-3 text-xs text-gray-400">
+            <button onclick="prevSlide()" class="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white font-bold transition flex items-center gap-1.5">
+                <i class="fa-solid fa-chevron-left"></i> 이전 (←)
+            </button>
+            <button onclick="nextSlide()" class="px-3 py-1.5 rounded-lg bg-finelaRed hover:bg-red-700 text-white font-bold transition flex items-center gap-1.5">
+                다음 (→) <i class="fa-solid fa-chevron-right"></i>
+            </button>
+        </div>
+
+        <!-- Progress Track -->
+        <div class="w-1/3 max-w-xs h-1.5 bg-white/10 rounded-full overflow-hidden hidden md:block">
+            <div id="progress-bar" class="h-full bg-finelaRed transition-all duration-300" style="width: 8.33%;"></div>
+        </div>
+
+        <div class="flex items-center space-x-4 text-xs text-gray-400">
+            <span class="hidden sm:inline">단축키: [←/→] 슬라이드 이동, [N] 대본, [F] 전체화면, 콜아웃 핀 클릭</span>
+        </div>
+    </footer>
+
+    <!-- Presenter Script Drawer (Slide Up) -->
+    <aside id="script-drawer" class="closed fixed bottom-14 left-0 w-full max-h-[45vh] z-50 glass-panel border-t-2 border-finelaRed p-6 shadow-2xl overflow-y-auto">
+        <div class="max-w-5xl mx-auto">
+            <div class="flex items-center justify-between mb-3 border-b border-white/10 pb-2">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-microphone-lines text-finelaRed text-lg"></i>
+                    <h3 class="font-bold text-sm text-white">현재 슬라이드 콜아웃 발표 대본 (Speaker Script)</h3>
+                    <span id="script-slide-num" class="text-xs bg-finelaRed/20 text-finelaRed px-2 py-0.5 rounded font-mono font-bold">SLIDE 01</span>
+                </div>
+                <button onclick="toggleScript()" class="text-gray-400 hover:text-white text-sm">
+                    <i class="fa-solid fa-xmark"></i> 닫기
+                </button>
+            </div>
+            <p id="script-text" class="text-gray-200 text-sm md:text-base leading-relaxed whitespace-pre-line font-normal">
+                대본을 불러오는 중입니다...
+            </p>
+        </div>
+    </aside>
+
+    <script>
+        // Callout-specific Speaker Scripts Array (12 Slides)
+        const scripts = [
+            /* 1 */ "안녕하십니까. 프리미엄 농구 스포츠 에이전시 FINELA의 웹사이트 구성별 콜아웃 프리젠테이션을 시작하겠습니다.\n\n이번 발표에서는 '웹사이트의 어느 위치에 어떤 요소가 있고, 왜 그 탭과 버튼을 배치했는가?'를 화면 레이아웃과 1:1로 매핑하여 직관적으로 설명해 드리겠습니다.",
+            /* 2 */ "첫 번째는 모든 화면에 고정되어 있는 GNB 헤더 영역입니다.\n\n좌측 상단 1번 핀은 회사의 로고인 FINELA 브러시 마크로, 언제든 홈으로 돌아오는 네비게이션 기준점입니다.\n중앙 2번 핀은 6대 대메뉴 링크로 현재 탭에 붉은 밑줄을 표시해 유저의 길잡이가 되며,\n우측 3번 핀은 모바일 접속 시 화면을 깔끔하게 접어두는 햄버거 메뉴입니다.",
+            /* 3 */ "두 번째는 메인 홈페이지의 풀스크린 히어로 영역입니다.\n\n1번 배경 핀은 코트의 긴장감을 살린 흑백 실루엣으로 하이엔드 다크 무드를 잡았고,\n2번 핀의 거대한 헤드라인 'PLAY WITH THE MEDALISTS'는 3초 만에 메달리스트급 선수단의 위상을 각인시킵니다.\n3번 슬로건은 브랜드 철학을 선언하며, 4번 핀의 붉은 Explore Roster와 About Finela 버튼은 선수단 탐색과 서비스 확인으로 유도하는 듀얼 동선입니다.",
+            /* 4 */ "세 번째는 선수단 로스터(Athletes) 화면입니다.\n\n1번 타이틀은 2026 나고야 아시안게임 출전 라인업임을 명시해 국가대표급 공신력을 알립니다.\n2번 핀은 증명사진 대신 NBA 트레이딩 카드 포맷을 적용해 스타성을 극대화했고,\n3번 핀은 마우스를 올렸을 때 흑백에서 풀컬러로 살아나는 인터랙션으로 선수의 활력을 은유했습니다.\n4번 핀의 한/영 성명과 붉은 등번호 배지는 글로벌 및 국내 팬 모두에게 강한 인상을 남깁니다.",
+            /* 5 */ "네 번째는 선수 상세 페이지 상단의 경기력 영역입니다.\n\n1번 핀의 'Back to Roster'는 탐색 피로도를 줄여주는 안전한 뒤로가기 동선이고,\n2번 핀은 3:4 고화질 프로필로 선수의 당당한 피지컬을 보여줍니다.\n3번 핀의 배경 대형 등번호 워터마크는 매거진 화보 같은 깊이감을 주며,\n4번 하이라이트 영상 플레이어와 5번 4대 경기 스탯 카드는 구단 스카우터에게 실제 코트 위 기량을 3초 만에 검증해 줍니다.",
+            /* 6 */ "다섯 번째는 선수 상세 페이지 하단의 커머셜 & SNS 영역입니다.\n\n1번과 2번 핀의 'Commercial & Broadcast'는 패션, 예능, 식음료 광고 이력을 보여주어 광고주에게 보장된 상업적 스타성을 증명합니다.\n3번 핀의 인스타그램 팔로우 버튼과 4번 4분할 피드는 선수의 일상과 패션 스타일을 공유하여 MZ세대 팬들과의 소통 및 인플루언서 파급력을 증명합니다.",
+            /* 7 */ "여섯 번째는 서비스(Services)의 퍼포먼스 트레이닝 탭입니다.\n\n1번 서브탭을 통해 훈련, 숙소, 법률을 체계적으로 분리했습니다.\n2번 메인 카드는 NBA급 모션 트래킹과 생체 데이터를 활용한 과학적 훈련 시스템을 증명하며,\n3번 핀의 피지컬(부상 방지), 스킬(1:1 코칭), 멘탈 케어(슬럼프 극복) 삼각 분과를 통해 선수의 수명을 늘리는 전문 인프라를 제시합니다.",
+            /* 8 */ "일곱 번째는 서비스의 숙소 및 매니지먼트/법률 탭입니다.\n\n1번 핀의 Premium Accommodation은 1인 1실 숙소와 도핑 프리 식단, 영하 130도 크라이오테라피 극저온 피로회복 시설로 호텔급 재충전을 약속합니다.\n2번 핀의 Management & Legal은 전담 매니저가 원정 일정과 세무를 대행하고, 전문 법률팀이 연봉 협상과 초상권을 방어하여 선수와 학부모에게 절대적 신뢰를 줍니다.",
+            /* 9 */ "여덟 번째는 공식 스토어(Shopping) 탭입니다.\n\n1번 핀은 에이전시 공식 플랫폼에서 정품을 유통하는 D2C 신뢰도를 선언합니다.\n2번 핀은 유니폼 저지부터 농구공, 포토카드까지 팬덤의 지갑을 여는 핵심 굿즈 라인업이며,\n3번 핀은 페이지 이탈 없이 상품을 누르면 즉시 사이즈를 고르고 장바구니에 담을 수 있는 매끄러운 구매 전환 UX입니다.",
+            /* 10 */ "아홉 번째는 공식 파트너스(Sponsors) 탭입니다.\n\n1번 핀은 세계적 기업들과 함께 뛰는 비즈니스 연대임을 강조하며,\n2번 핀은 나이키, 삼성 등 유수의 로고를 흑백으로 정돈하여 묵직한 공신력을 줍니다.\n3번 핀은 마우스를 올렸을 때 게토레이 오렌지, 삼성 블루 등 각 기업 고유의 브랜드 컬러가 켜지는 인터랙션으로 파트너사에 대한 시각적 예우를 표했습니다.",
+            /* 11 */ "열 번째는 고객센터 및 제휴(Contact Us) 탭입니다.\n\n1번 핀은 강남 테헤란로 본사 거점과 직통 번호를 명시해 실재하는 탄탄한 기업임을 입증합니다.\n2번 핀의 Subject 드롭다운은 스폰서십, 스카우팅, 미디어 취재로 문의를 자동 분류하여 사내 담당자에게 즉시 전달하는 스마트 라우팅이며,\n3번 Send Message 버튼은 단순 방문자를 실제 비즈니스 계약으로 체결시키는 최종 관문입니다.",
+            /* 12 */ "마지막 결론입니다.\n\nFINELA 웹사이트의 모든 탭과 버튼, 컬러와 인터랙션은 '선수의 가치 극대화'와 '비즈니스 신뢰도 구축'을 위해 콜아웃 요소 하나하나가 치밀하게 계산되어 설계되었습니다.\n\n경청해 주셔서 대단히 감사합니다. 질의응답을 진행하겠습니다."
+        ];
+
+        let currentSlide = 1;
+        const totalSlides = 12;
+
+        function updateSlide() {
+            document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
+            const active = document.querySelector(`.slide[data-index="${currentSlide}"]`);
+            if (active) active.classList.add('active');
+
+            // Update indicator & progress
+            const formatted = String(currentSlide).padStart(2, '0');
+            document.getElementById('slide-indicator').innerText = `${formatted} / ${totalSlides}`;
+            document.getElementById('progress-bar').style.width = `${(currentSlide / totalSlides) * 100}%`;
+
+            // Update presenter script
+            document.getElementById('script-slide-num').innerText = `SLIDE ${formatted}`;
+            document.getElementById('script-text').innerText = scripts[currentSlide - 1] || '대본 준비 중';
+
+            // Clear any highlighted callout card
+            document.querySelectorAll('.callout-item').forEach(c => c.classList.remove('highlighted'));
+            document.querySelectorAll('.callout-pin').forEach(p => p.classList.remove('active'));
+        }
+
+        function highlightCallout(pinNum) {
+            // Unhighlight all
+            document.querySelectorAll('.callout-item').forEach(c => c.classList.remove('highlighted'));
+            document.querySelectorAll('.callout-pin').forEach(p => p.classList.remove('active'));
+
+            const card = document.getElementById(`callout-card-${pinNum}`);
+            if (card) {
+                card.classList.add('highlighted');
+                card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+        }
+
+        function nextSlide() {
+            if (currentSlide < totalSlides) {
+                currentSlide++;
+                updateSlide();
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 1) {
+                currentSlide--;
+                updateSlide();
+            }
+        }
+
+        function toggleScript() {
+            const drawer = document.getElementById('script-drawer');
+            drawer.classList.toggle('open');
+            drawer.classList.toggle('closed');
+        }
+
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(() => {});
+            } else {
+                if (document.exitFullscreen) document.exitFullscreen();
+            }
+        }
+
+        // Keyboard Shortcuts
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+                e.preventDefault();
+                nextSlide();
+            } else if (e.key === 'ArrowLeft' || e.key === 'Backspace' || e.key === 'PageUp') {
+                e.preventDefault();
+                prevSlide();
+            } else if (e.key === 'n' || e.key === 'N') {
+                e.preventDefault();
+                toggleScript();
+            } else if (e.key === 'f' || e.key === 'F') {
+                e.preventDefault();
+                toggleFullscreen();
+            }
+        });
+
+        // Initialize
+        updateSlide();
+    </script>
+</body>
+</html>
