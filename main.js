@@ -336,8 +336,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 모달 노출 및 스크롤 최상단(1페이지) 리셋
     playerModal.classList.add('active');
-    playerModal.scrollTop = 0;
-    document.body.style.overflow = 'hidden';
+      playerModal.scrollTop = 0;
+      document.body.style.overflow = 'hidden';
+      document.body.classList.add('modal-open');
   }
 
   // 모달 내 스크롤 이동 헬퍼 함수
@@ -357,7 +358,8 @@ document.addEventListener('DOMContentLoaded', () => {
   function closePlayerModalFunc() {
     if (!playerModal) return;
     playerModal.classList.remove('active');
-    document.body.style.overflow = 'auto';
+      document.body.style.overflow = 'auto';
+      document.body.classList.remove('modal-open');
 
     // Roster 섹션으로 즉시 부드럽게 복귀
     const rosterSec = document.getElementById('roster');
@@ -595,12 +597,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function openCartDrawer() {
     cartDrawer.classList.add('active');
-    cartOverlay.classList.add('active');
+      cartOverlay.classList.add('active');
+      document.body.classList.add('cart-open');
   }
 
   function closeCartDrawer() {
     cartDrawer.classList.remove('active');
-    cartOverlay.classList.remove('active');
+      cartOverlay.classList.remove('active');
+      document.body.classList.remove('cart-open');
   }
 
   if (openCartBtn) openCartBtn.addEventListener('click', openCartDrawer);
@@ -681,7 +685,8 @@ document.addEventListener('DOMContentLoaded', () => {
       if (playerModal && playerModal.classList.contains('active')) {
         // 모달 닫기 및 스크롤 복원
         playerModal.classList.remove('active');
-        document.body.style.overflow = 'auto';
+      document.body.style.overflow = 'auto';
+      document.body.classList.remove('modal-open');
 
         const href = link.getAttribute('href');
         if (href && href.startsWith('#')) {
@@ -694,4 +699,62 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   });
+});
+// ==============================================================================
+// 풀스크린 스크롤 스냅 우측 플로팅 도트 내비게이션 & 섹션 옵저버
+// ==============================================================================
+document.addEventListener('DOMContentLoaded', () => {
+  const dotNavItems = document.querySelectorAll('.dot-nav-item');
+  const navItems = document.querySelectorAll('.nav-item');
+  const snapSections = document.querySelectorAll('section[id]');
+
+  // 도트 클릭 시 부드러운 스크롤 이동
+  dotNavItems.forEach(dot => {
+    dot.addEventListener('click', (e) => {
+      e.preventDefault();
+      const targetId = dot.getAttribute('href');
+      const target = document.querySelector(targetId);
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+  });
+
+  // IntersectionObserver로 화면의 50% 이상 차지하는 섹션 자동 도트 및 GNB 활성화
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const id = entry.target.getAttribute('id');
+          if (id) {
+            // 도트 내비 활성화
+            dotNavItems.forEach(dot => {
+              if (dot.getAttribute('href') === `#${id}`) {
+                dot.classList.add('active');
+              } else {
+                dot.classList.remove('active');
+              }
+            });
+
+            // GNB 상단 탭 활성화 (히어로 구역일 때는 모든 탭 비활성화)
+            if (id === 'hero') {
+              navItems.forEach(i => i.classList.remove('active'));
+            } else {
+              navItems.forEach(item => {
+                const link = item.querySelector('.nav-link');
+                if (link && link.getAttribute('href') === `#${id}`) {
+                  navItems.forEach(i => i.classList.remove('active'));
+                  item.classList.add('active');
+                }
+              });
+            }
+          }
+        }
+      });
+    }, {
+      threshold: 0.5
+    });
+
+    snapSections.forEach(sec => observer.observe(sec));
+  }
 });
