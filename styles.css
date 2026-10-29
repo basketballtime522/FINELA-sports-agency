@@ -3633,31 +3633,79 @@ html {
 }
 
 /* ==============================================================================
-   3. 선수단(ROSTER) 섹션: 12인 1:1.15 포트레이트 완전 보존 + 뷰포트 비례 정렬
+   3. 선수단(ROSTER) 섹션: 배너 직하단 상단 정렬 + 12인 황금비율 + 농구코트 최대 확장
    ============================================================================== */
 .roster-section {
   position: relative !important;
   min-height: 100vh !important;
   height: auto !important;
-  padding: calc(var(--header-height) + clamp(4px, 1vh, 18px)) clamp(16px, 2vw, 36px) clamp(8px, 1.5vh, 24px) !important;
+  scroll-margin-top: 0 !important; /* 상단 배너 클릭 시 배너 바로 아래로 정확히 정렬 */
+  padding-top: calc(var(--header-height) + clamp(2px, 0.6vh, 10px)) !important; /* 배너 바로 밑으로 올림 */
+  padding-bottom: clamp(14px, 2vh, 28px) !important;
+  padding-left: clamp(16px, 2vw, 36px) !important;
+  padding-right: clamp(16px, 2vw, 36px) !important;
   box-sizing: border-box !important;
   overflow: visible !important;
   display: flex !important;
   flex-direction: column !important;
-  justify-content: center !important;
+  justify-content: flex-start !important; /* 위쪽(배너 직하단)부터 우선 배치하여 전체 비율을 위로 이동 */
   align-items: center !important;
+}
+
+/* 농구코트 배경: 화면에 잘리지 않는 한에서 최대로 꽉 차게 확장 */
+.roster-court-bg {
+  position: absolute !important;
+  top: calc(var(--header-height) * 0.15) !important;
+  bottom: 8px !important;
+  left: 12px !important;
+  right: 12px !important;
+  background: url('assets/basketball_court_bg.svg') no-repeat center center / contain !important;
+  opacity: 0.88 !important;
+  pointer-events: none !important;
+  z-index: 1 !important;
 }
 
 /* 뷰포트 높이(vh)에 비례하여 컨테이너 최대 너비를 유동적으로 조절 */
 .roster-container {
+  position: relative !important;
+  z-index: 2 !important;
   width: 100% !important;
   max-width: min(1560px, 130vh) !important;
   margin: 0 auto !important;
   display: flex !important;
   flex-direction: column !important;
-  justify-content: center !important;
+  justify-content: flex-start !important;
 }
 
+/* 1. 섹션 헤더 (OUR ATHLETES - 상단 배너 바로 아래 위치) */
+.roster-center-header {
+  text-align: center !important;
+  margin-top: 0 !important;
+  margin-bottom: clamp(4px, 1vh, 14px) !important;
+}
+
+.roster-main-title {
+  font-family: var(--font-display) !important;
+  font-size: clamp(2.2rem, 4.5vh, 4.8rem) !important;
+  line-height: 1.05 !important;
+  margin-bottom: clamp(2px, 0.3vh, 5px) !important;
+  letter-spacing: 2px !important;
+  color: #fff !important;
+  text-transform: uppercase !important;
+  text-shadow: 0 10px 40px rgba(0, 0, 0, 0.9) !important;
+}
+
+.roster-sub-title {
+  font-family: var(--font-en) !important;
+  font-size: clamp(0.75rem, 1.25vh, 1.15rem) !important;
+  font-weight: 800 !important;
+  letter-spacing: 2.5px !important;
+  color: var(--finela-red) !important;
+  text-shadow: 0 0 25px rgba(230, 0, 18, 0.7) !important;
+  text-transform: uppercase !important;
+}
+
+/* 2. 컨트롤 바 (BACK TO HOME / 서브 링크) */
 .roster-top-bar {
   display: flex !important;
   justify-content: space-between !important;
@@ -3674,29 +3722,12 @@ html {
   font-size: clamp(10px, 0.85vh, 12.5px) !important;
 }
 
-.roster-center-header {
-  text-align: center !important;
-  margin-bottom: clamp(6px, 1.4vh, 20px) !important;
-}
-
-.roster-main-title {
-  font-family: var(--font-display) !important;
-  font-size: clamp(2rem, 4.4vh, 4.8rem) !important;
-  line-height: 1.05 !important;
-  margin-bottom: clamp(2px, 0.4vh, 6px) !important;
-}
-
-.roster-sub-title {
-  font-size: clamp(0.75rem, 1.3vh, 1.15rem) !important;
-  letter-spacing: 2px !important;
-}
-
-/* 12인 선수단 그리드 (6열 2행) */
+/* 3. 12인 선수단 그리드 (6열 2행) */
 .roster-grid {
   display: grid !important;
   grid-template-columns: repeat(6, 1fr) !important;
   gap: clamp(6px, 1vh, 14px) !important;
-  margin-bottom: clamp(6px, 1vh, 16px) !important;
+  margin-bottom: clamp(6px, 1.2vh, 16px) !important;
   width: 100% !important;
 }
 
@@ -3707,7 +3738,7 @@ html {
   display: flex !important;
   flex-direction: column !important;
   background: rgba(14, 16, 24, 0.8) !important;
-  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  border: 1.2px solid rgba(255, 255, 255, 0.12) !important;
   transition: all 0.3s ease !important;
 }
 
@@ -3756,9 +3787,14 @@ html {
   font-size: clamp(8.5px, 0.85vh, 11px) !important;
 }
 
+/* 4. 하단 스크롤 안내 (카드 밑에 충분한 여백 확보) */
 .roster-scroll-footer {
-  font-size: clamp(8px, 0.9vh, 11px) !important;
+  margin-top: clamp(6px, 1vh, 18px) !important;
+  font-size: clamp(8.5px, 0.9vh, 11.5px) !important;
   gap: clamp(2px, 0.4vh, 4px) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
 }
 
 /* ==============================================================================
