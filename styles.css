@@ -714,7 +714,7 @@ button {
   position: relative;
   background-color: #07080c;
   overflow: hidden;
-  padding: 60px 40px 80px;
+  padding: 130px 40px 80px;
   scroll-margin-top: 70px;
 }
 
@@ -3581,12 +3581,14 @@ button {
 /* ========================================================== */
 
 .gnb-header {
-  z-index: 6000 !important; /* 모달(5000)보다 항상 위에 위치하여 메인 배너 유지 */
+  z-index: 6000 !important;
+  /* 모달(5000)보다 항상 위에 위치하여 메인 배너 유지 */
 }
 
 /* 모달 내부 컨텐츠가 상단 GNB 헤더에 가리지 않도록 상단 여백 확보 */
 .player-modal .modal-screen-profile {
-  padding-top: calc(var(--header-height) + 20px) !important; /* 80px + 20px = 100px */
+  padding-top: calc(var(--header-height) + 20px) !important;
+  /* 80px + 20px = 100px */
 }
 
 /* ==============================================================================
@@ -3633,32 +3635,40 @@ html {
 }
 
 /* ==============================================================================
-   3. 선수단(ROSTER) 섹션: 배너 직하단 상단 정렬 + 12인 황금비율 + 농구코트 최대 확장
+   3. 선수단(ROSTER) 섹션: OUR ATHLETES & 농구 코트 위치 정밀 하향 이동 (시안 1:1 반영)
+   1) OUR ATHLETES: 이전 2026 aichi~roster 하단 위치까지 여유롭게 내림 (답답함 해소)
+      - 2026 aichi~roster 부제는 간격을 유지하며 함께 하향 이동
+   2) 농구 코트 배경: 상단 라인이 이전 OUR ATHLETES 상단 위치로 하향 이동
+      - 크기 축소 없이 전체가 동일하게 이동 (버튼, 선수단 사진, 스크롤 안내 포함)
    ============================================================================== */
 .roster-section {
   position: relative !important;
   min-height: 100vh !important;
   height: auto !important;
-  scroll-margin-top: 0 !important; /* 상단 배너 클릭 시 배너 바로 아래로 정확히 정렬 */
-  padding-top: calc(var(--header-height) + clamp(2px, 0.6vh, 10px)) !important; /* 배너 바로 밑으로 올림 */
-  padding-bottom: clamp(14px, 2vh, 28px) !important;
+  scroll-margin-top: 0 !important;
+  /* 상단 패딩을 늘려 OUR ATHLETES와 전체 요소들을 이전 부제 하단 위치로 정확히 하향 이동 */
+  padding-top: calc(var(--header-height) + clamp(50px, 6.5vh, 68px)) !important;
+  padding-bottom: clamp(16px, 2.5vh, 36px) !important;
   padding-left: clamp(16px, 2vw, 36px) !important;
   padding-right: clamp(16px, 2vw, 36px) !important;
   box-sizing: border-box !important;
   overflow: visible !important;
   display: flex !important;
   flex-direction: column !important;
-  justify-content: flex-start !important; /* 위쪽(배너 직하단)부터 우선 배치하여 전체 비율을 위로 이동 */
+  justify-content: flex-start !important;
   align-items: center !important;
 }
 
-/* 농구코트 배경: 화면에 잘리지 않는 한에서 최대로 꽉 차게 확장 */
+/* 농구코트 배경: 크기 축소 없이 상단 라인이 이전 OUR ATHLETES 상단 위치로 이동 */
 .roster-court-bg {
   position: absolute !important;
-  top: calc(var(--header-height) * 0.15) !important;
-  bottom: 8px !important;
+  inset: 0 !important;
+  top: 0 !important;
+  bottom: 0 !important;
   left: 12px !important;
   right: 12px !important;
+  /* 배너에 가려지지 않고 이전 OUR ATHLETES 상단 위치로 코트 상단라인이 정확히 내려오도록 이동 */
+  transform: translateY(calc(var(--header-height) * 0.58 + clamp(4px, 0.8vh, 12px))) !important;
   background: url('assets/basketball_court_bg.svg') no-repeat center center / contain !important;
   opacity: 0.88 !important;
   pointer-events: none !important;
@@ -3677,11 +3687,11 @@ html {
   justify-content: flex-start !important;
 }
 
-/* 1. 섹션 헤더 (OUR ATHLETES - 상단 배너 바로 아래 위치) */
+/* 1. 섹션 헤더 (OUR ATHLETES - 여유로운 간격 확보 & 부제와 함께 정렬) */
 .roster-center-header {
   text-align: center !important;
   margin-top: 0 !important;
-  margin-bottom: clamp(4px, 1vh, 14px) !important;
+  margin-bottom: clamp(6px, 1.2vh, 16px) !important;
 }
 
 .roster-main-title {
@@ -3705,7 +3715,7 @@ html {
   text-transform: uppercase !important;
 }
 
-/* 2. 컨트롤 바 (BACK TO HOME / 서브 링크) */
+/* 2. 컨트롤 바 (BACK TO HOME / 서브 링크) - 크기 축소 없이 함께 이동 */
 .roster-top-bar {
   display: flex !important;
   justify-content: space-between !important;
@@ -3722,7 +3732,7 @@ html {
   font-size: clamp(10px, 0.85vh, 12.5px) !important;
 }
 
-/* 3. 12인 선수단 그리드 (6열 2행) */
+/* 3. 12인 선수단 그리드 (6열 2행) - 크기 축소 없이 함께 이동 */
 .roster-grid {
   display: grid !important;
   grid-template-columns: repeat(6, 1fr) !important;
@@ -3787,7 +3797,7 @@ html {
   font-size: clamp(8.5px, 0.85vh, 11px) !important;
 }
 
-/* 4. 하단 스크롤 안내 (카드 밑에 충분한 여백 확보) */
+/* 4. 하단 스크롤 안내 (SCROLL FOR MORE) - 카드 밑에 충분한 여백 확보 */
 .roster-scroll-footer {
   margin-top: clamp(6px, 1vh, 18px) !important;
   font-size: clamp(8.5px, 0.9vh, 11.5px) !important;
