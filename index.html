@@ -666,41 +666,48 @@
               </div>
             </div>
 
-            <!-- 중단 2열 그리드: 좌측(2x2 스탯 + 버튼), 우측(프로필 + 최근 뉴스) -->
+            <!-- 중단 2x2 그리드: 좌상(PTS & AST), 우상(PROFILE), 좌하(REB & STL + 버튼), 우하(RECENT NEWS) -->
             <div class="modal-middle-grid">
 
-              <!-- 좌측 서브컬럼: 2x2 스탯 카드 & 액션 버튼 -->
+              <!-- 좌측 서브컬럼: 상단(PTS & AST 페어 카드), 하단(REB & STL 페어 카드 + 액션 버튼) -->
               <div class="modal-stats-subcol">
-                <div class="modal-stats-grid">
-                  <div class="stat-metric-card">
+                <!-- 상단: PTS & AST 2열 페어 카드 -->
+                <div class="stat-metric-card stat-pair-card">
+                  <div class="stat-cell">
                     <div class="stat-metric-label">PTS</div>
                     <div class="stat-metric-val" id="statPts">22.4</div>
                   </div>
-                  <div class="stat-metric-card">
+                  <div class="stat-cell">
                     <div class="stat-metric-label">AST</div>
                     <div class="stat-metric-val" id="statAst">8.2</div>
                   </div>
-                  <div class="stat-metric-card">
-                    <div class="stat-metric-label">REB</div>
-                    <div class="stat-metric-val" id="statReb">4.5</div>
-                  </div>
-                  <div class="stat-metric-card">
-                    <div class="stat-metric-label">STL</div>
-                    <div class="stat-metric-val" id="statStl">1.8</div>
-                  </div>
                 </div>
 
-                <div class="modal-action-buttons">
-                  <button class="btn-watch-highlight" id="btnWatchHighlight" onclick="alert('하이라이트 풀 영상 링크로 이동합니다.')">
-                    WATCH HIGHLIGHTS
-                  </button>
-                  <button class="btn-career-stats" id="btnCareerStats" onclick="alert('선수 커리어 상세 기록 PDF를 다운로드합니다.')">
-                    VIEW CAREER STATS
-                  </button>
+                <!-- 하단: REB & STL 2열 페어 카드 및 액션 버튼 -->
+                <div class="stat-pair-bottom-group">
+                  <div class="stat-metric-card stat-pair-card">
+                    <div class="stat-cell">
+                      <div class="stat-metric-label">REB</div>
+                      <div class="stat-metric-val" id="statReb">4.5</div>
+                    </div>
+                    <div class="stat-cell">
+                      <div class="stat-metric-label">STL</div>
+                      <div class="stat-metric-val" id="statStl">1.8</div>
+                    </div>
+                  </div>
+
+                  <div class="modal-action-buttons">
+                    <button class="btn-watch-highlight" id="btnWatchHighlight" onclick="alert('하이라이트 풀 영상 링크로 이동합니다.')">
+                      WATCH HIGHLIGHTS
+                    </button>
+                    <button class="btn-career-stats" id="btnCareerStats" onclick="alert('선수 커리어 상세 기록 PDF를 다운로드합니다.')">
+                      VIEW CAREER STATS
+                    </button>
+                  </div>
                 </div>
               </div>
 
-              <!-- 우측 서브컬럼: PROFILE & RECENT NEWS -->
+              <!-- 우측 서브컬럼: 상단(PROFILE), 하단(RECENT NEWS) -->
               <div class="modal-profile-subcol">
                 <div class="profile-spec-card">
                   <div class="card-mini-title">PROFILE</div>
@@ -790,16 +797,7 @@
             </div>
           </div>
 
-          <!-- 2페이지 최하단 네비게이션 및 X 닫기 버튼 -->
-          <div class="extra-footer-nav">
-            <button class="btn-back-to-profile" onclick="scrollToTopSection()">
-              <i class="fa-solid fa-arrow-up mr-2"></i> 선수 프로필 &amp; 하이라이트로 돌아가기
-            </button>
-            <button id="closeDetailFooterBtn" class="close-detail-btn close-detail-footer-btn" title="닫기 (ROSTER로 돌아가기)"
-              aria-label="선수 상세 닫기">
-              <i class="fa-solid fa-xmark"></i>
-            </button>
-          </div>
+
 
         </div>
 

@@ -3575,7 +3575,7 @@ button {
 }
 
 /* ========================================================== */
-/* 선수 상세 모달 열림 시 메인 GNB 배너 상태 완벽 유지 및 전체 밸런스 최적화 */
+/* 선수 상세 모달 열림 시 메인 GNB 배너 상태 완벽 유지 및 첨부 시안 1:1 정밀 반영 */
 /* ========================================================== */
 
 .gnb-header {
@@ -3583,24 +3583,33 @@ button {
   /* 모달(5000)보다 항상 위에 위치하여 메인 배너 유지 */
 }
 
-/* 선수 개인 상세 모달 전체적인 밸런스 및 뷰포트 비례 정밀 조정 */
+/* 선수 개인 상세 모달 기본 배경 (사이트 전역 딥블랙과 동일) */
 .player-modal {
   background-color: var(--bg-deep-black, #060709) !important;
   background-image: none !important;
 }
 
-/* 농구 코트 배경이 상단 GNB 배너 직하단에서 자연스럽게 펼쳐지도록 배치 */
+/* 1. 농구 코트 배경: ROSTER 섹션에서 사용하는 탑뷰 벡터 코트와 100% 동일하게 배치 */
 .modal-court-bg {
+  position: fixed !important;
   top: var(--header-height, 75px) !important;
-  opacity: 0.75 !important;
-  background-size: contain !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  width: 100% !important;
+  height: calc(100% - var(--header-height, 75px)) !important;
+  background: url('assets/basketball_court_bg.svg') no-repeat center center / contain !important;
+  opacity: 0.82 !important;
+  pointer-events: none !important;
+  z-index: 0 !important;
 }
 
-/* 좌우 넘김 버튼 밸런스 */
+/* 모달 좌우 넘김 버튼 */
 .modal-nav-arrow {
   width: clamp(42px, 5vh, 52px) !important;
   height: clamp(42px, 5vh, 52px) !important;
   font-size: clamp(15px, 1.8vh, 19px) !important;
+  z-index: 3400 !important;
 }
 
 .modal-nav-prev {
@@ -3611,160 +3620,330 @@ button {
   right: clamp(12px, 1.8vw, 28px) !important;
 }
 
-/* 1페이지: 선수 프로필 & 하이라이트 영상 스플릿 화면 */
+/* 1페이지: 선수 프로필 & 하이라이트 영상 스플릿 전체 컨테이너 */
 .player-modal .modal-screen-profile {
   min-height: 100vh !important;
-  padding-top: calc(var(--header-height) + clamp(16px, 2.2vh, 26px)) !important;
-  padding-bottom: clamp(12px, 1.8vh, 24px) !important;
-  padding-left: clamp(20px, 3.5vw, 60px) !important;
-  padding-right: clamp(20px, 3.5vw, 60px) !important;
+  padding-top: calc(var(--header-height) + clamp(16px, 2.2vh, 28px)) !important;
+  padding-bottom: clamp(14px, 2vh, 26px) !important;
+  padding-left: clamp(24px, 3.5vw, 64px) !important;
+  padding-right: clamp(24px, 3.5vw, 64px) !important;
   box-sizing: border-box !important;
   display: flex !important;
   flex-direction: column !important;
-  justify-content: space-between !important;
+  justify-content: center !important;
   align-items: center !important;
+  position: relative !important;
+  z-index: 2 !important;
 }
 
+/* 2. 첨부 시안 기준 레이아웃: 좌측(선수 실사 + 붉은 등번호 + 좌하단 이름), 우측(16:9 하이라이트 + 2x2 카드) */
 .modal-hero-split {
-  max-width: min(1420px, 90vw, 150vh) !important;
+  max-width: min(1500px, 94vw, 155vh) !important;
   width: 100% !important;
   margin: auto !important;
   display: grid !important;
-  grid-template-columns: 1fr 1.2fr !important;
-  gap: clamp(24px, 3vw, 56px) !important;
+  grid-template-columns: 1fr 1.15fr !important;
+  gap: clamp(24px, 3.2vw, 54px) !important;
   align-items: center !important;
 }
 
-/* 좌측: 선수 비주얼 및 워터마크 등번호 */
+/* [좌측 영역]: 선수 액션 실사 비주얼, 대형 붉은 등번호, 좌하단 대형 영문 이름 */
 .modal-visual-col {
-  min-height: auto !important;
-  justify-content: flex-end !important;
   position: relative !important;
-}
-
-.modal-watermark-number {
-  font-size: clamp(130px, 17vh, 220px) !important;
-  letter-spacing: -4px !important;
-  right: 2% !important;
-  top: 42% !important;
-  opacity: 0.88 !important;
-  line-height: 0.8 !important;
+  display: flex !important;
+  align-items: flex-end !important;
+  justify-content: flex-start !important;
+  min-height: clamp(380px, 58vh, 580px) !important;
+  height: 100% !important;
+  width: 100% !important;
 }
 
 .modal-athlete-figure {
-  max-width: min(480px, 100%) !important;
+  position: relative !important;
+  z-index: 2 !important;
+  width: 100% !important;
+  max-width: 520px !important;
+  display: flex !important;
+  align-items: flex-end !important;
+  justify-content: flex-start !important;
 }
 
 .modal-athlete-img {
-  max-height: clamp(340px, 48vh, 520px) !important;
   width: 100% !important;
+  height: auto !important;
+  max-height: clamp(360px, 56vh, 560px) !important;
   object-fit: contain !important;
+  object-position: bottom left !important;
+  filter: grayscale(100%) contrast(115%) brightness(1.05) !important;
+  mask-image: linear-gradient(to top, transparent 0%, black 14%, black 100%) !important;
+  -webkit-mask-image: linear-gradient(to top, transparent 0%, black 14%, black 100%) !important;
 }
 
+/* 대형 붉은 등번호: 시안과 동일하게 선수 머리/어깨 우측(선수 몸 뒤)에 선명하고 웅장하게 배치 */
+.modal-watermark-number {
+  position: absolute !important;
+  top: 14% !important;
+  left: 48% !important;
+  right: auto !important;
+  transform: none !important;
+  font-family: var(--font-display) !important;
+  font-size: clamp(140px, 20vh, 230px) !important;
+  font-weight: 900 !important;
+  color: var(--finela-red, #e60012) !important;
+  opacity: 0.95 !important;
+  line-height: 0.8 !important;
+  pointer-events: none !important;
+  z-index: 1 !important;
+  text-shadow: 0 0 35px rgba(230, 0, 18, 0.45) !important;
+}
+
+/* 선수 이름 & 포지션: 시안과 동일하게 좌하단 선수 몸체 위에 오버레이 배치 */
 .modal-player-header-box {
-  margin-top: clamp(-24px, -3vh, -12px) !important;
-  margin-left: clamp(10px, 1.5vw, 20px) !important;
+  position: absolute !important;
+  bottom: clamp(16px, 3vh, 36px) !important;
+  left: clamp(14px, 2vw, 32px) !important;
+  z-index: 5 !important;
+  text-align: left !important;
+  margin: 0 !important;
 }
 
 .modal-player-name {
-  font-size: clamp(2.4rem, 3.6vw, 3.8rem) !important;
-  line-height: 1.05 !important;
+  font-family: var(--font-display) !important;
+  font-size: clamp(2.4rem, 3.8vw, 4.2rem) !important;
+  font-weight: 900 !important;
+  letter-spacing: 2px !important;
+  color: #fff !important;
+  line-height: 1.0 !important;
+  text-transform: uppercase !important;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.95), 0 0 10px rgba(0, 0, 0, 0.8) !important;
+  margin: 0 0 6px 0 !important;
 }
 
 .modal-player-subinfo {
-  font-size: clamp(13px, 1.5vh, 16px) !important;
+  font-family: var(--font-en) !important;
+  font-size: clamp(12.5px, 1.4vh, 15px) !important;
+  font-weight: 700 !important;
   letter-spacing: 2px !important;
-  margin-top: clamp(4px, 0.8vh, 8px) !important;
+  color: #c0c6d4 !important;
+  text-transform: uppercase !important;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.9) !important;
+  margin: 0 !important;
 }
 
-/* 우측: 하이라이트 영상 박스 & 2x2 스탯 그리드 */
+/* [우측 영역]: 16:9 와이드스크린 하이라이트 영상 + 하단 2x2 대칭형 카드 그리드 */
 .modal-stats-col {
-  gap: clamp(12px, 1.8vh, 18px) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: clamp(14px, 2vh, 22px) !important;
+  position: relative !important;
+  z-index: 2 !important;
+  width: 100% !important;
 }
 
+/* 4K 하이라이트 영상 박스 (16:9 시안 그대로) */
 .modal-video-card {
-  max-height: clamp(190px, 26vh, 290px) !important;
-  width: 100% !important;
-  aspect-ratio: 16 / 9 !important;
+  position: relative !important;
+  background: #000 !important;
   border-radius: 14px !important;
+  overflow: hidden !important;
+  border: 1.5px solid rgba(230, 0, 18, 0.45) !important;
   box-shadow: 0 0 25px rgba(230, 0, 18, 0.25) !important;
+  aspect-ratio: 16 / 9 !important;
+  width: 100% !important;
   margin: 0 auto !important;
 }
 
+/* 하단 2x2 대칭 카드 그리드 (좌상: PTS&AST, 우상: PROFILE, 좌하: REB&STL+버튼, 우하: RECENT NEWS) */
 .modal-middle-grid {
-  gap: clamp(10px, 1.4vw, 16px) !important;
-  grid-template-columns: 1fr 1.15fr !important;
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: clamp(12px, 1.6vw, 18px) !important;
+  align-items: stretch !important;
+  width: 100% !important;
 }
 
 .modal-stats-subcol {
-  gap: clamp(8px, 1.2vh, 12px) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
+  gap: clamp(10px, 1.4vh, 14px) !important;
 }
 
-.modal-stats-grid {
-  gap: clamp(8px, 1vh, 12px) !important;
+.stat-pair-bottom-group {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: clamp(8px, 1.1vh, 12px) !important;
 }
 
-.stat-metric-card {
-  padding: clamp(9px, 1.3vh, 14px) clamp(10px, 1.1vw, 15px) !important;
-  border-radius: 12px !important;
+.modal-profile-subcol {
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
+  gap: clamp(10px, 1.4vh, 14px) !important;
+}
+
+/* 2열 스탯 페어 카드 (PTS & AST / REB & STL) */
+.stat-pair-card {
+  display: flex !important;
+  justify-content: space-around !important;
+  align-items: center !important;
+  padding: clamp(10px, 1.4vh, 16px) clamp(14px, 1.4vw, 20px) !important;
+  border-radius: 14px !important;
   background: rgba(14, 16, 24, 0.85) !important;
   border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+}
+
+.stat-cell {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  flex: 1 !important;
+  padding: 0 clamp(4px, 0.6vw, 10px) !important;
 }
 
 .stat-metric-label {
-  font-size: clamp(10.5px, 1.1vh, 12.5px) !important;
+  font-family: var(--font-en) !important;
+  font-size: clamp(11px, 1.2vh, 13px) !important;
+  font-weight: 800 !important;
+  color: var(--finela-red, #e60012) !important;
+  letter-spacing: 1.5px !important;
   margin-bottom: 2px !important;
 }
 
 .stat-metric-val {
-  font-size: clamp(24px, 3.2vh, 34px) !important;
+  font-family: var(--font-display) !important;
+  font-size: clamp(26px, 3.4vh, 36px) !important;
+  font-weight: 900 !important;
+  color: #fff !important;
   line-height: 1 !important;
 }
 
+/* 액션 버튼 (WATCH HIGHLIGHTS: 레드 필, VIEW CAREER STATS: 다크 필) */
 .modal-action-buttons {
+  display: flex !important;
   gap: clamp(8px, 1vw, 12px) !important;
 }
 
-.btn-watch-highlight,
-.btn-career-stats {
-  padding: clamp(9px, 1.2vh, 13px) clamp(10px, 1vw, 14px) !important;
-  font-size: clamp(11.5px, 1.2vh, 13px) !important;
+.btn-watch-highlight {
+  flex: 1 !important;
+  padding: clamp(9px, 1.3vh, 13px) clamp(10px, 1vw, 16px) !important;
+  border-radius: 9999px !important;
+  background: var(--finela-red, #e60012) !important;
+  color: #fff !important;
+  font-family: var(--font-display) !important;
+  font-size: clamp(11px, 1.2vh, 13px) !important;
+  font-weight: 800 !important;
   letter-spacing: 1px !important;
+  border: none !important;
+  cursor: pointer !important;
+  box-shadow: 0 0 18px rgba(230, 0, 18, 0.6) !important;
+  transition: var(--transition-smooth) !important;
+  text-align: center !important;
 }
 
-.modal-profile-subcol {
-  gap: clamp(8px, 1.2vh, 12px) !important;
+.btn-career-stats {
+  flex: 1 !important;
+  padding: clamp(9px, 1.3vh, 13px) clamp(10px, 1vw, 16px) !important;
+  border-radius: 9999px !important;
+  background: rgba(20, 22, 30, 0.85) !important;
+  color: #fff !important;
+  font-family: var(--font-display) !important;
+  font-size: clamp(11px, 1.2vh, 13px) !important;
+  font-weight: 800 !important;
+  letter-spacing: 1px !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
+  cursor: pointer !important;
+  transition: var(--transition-smooth) !important;
+  text-align: center !important;
 }
 
-.profile-spec-card,
-.recent-news-card {
-  padding: clamp(9px, 1.3vh, 14px) clamp(12px, 1.2vw, 16px) !important;
-  border-radius: 12px !important;
+/* PROFILE 카드 (우상단) */
+.profile-spec-card {
+  padding: clamp(12px, 1.6vh, 18px) clamp(14px, 1.4vw, 20px) !important;
+  border-radius: 14px !important;
   background: rgba(14, 16, 24, 0.85) !important;
   border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
 }
 
 .card-mini-title {
-  font-size: clamp(13px, 1.4vh, 15px) !important;
-  margin-bottom: clamp(6px, 0.8vh, 9px) !important;
+  font-family: var(--font-display) !important;
+  font-size: clamp(13px, 1.5vh, 15px) !important;
+  font-weight: 800 !important;
+  color: #fff !important;
+  letter-spacing: 1.5px !important;
+  margin-bottom: clamp(6px, 0.8vh, 10px) !important;
+  text-transform: uppercase !important;
+}
+
+.spec-items-row {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  gap: 10px !important;
+}
+
+.spec-cell {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
 }
 
 .spec-label {
+  font-family: var(--font-en) !important;
   font-size: clamp(10px, 1.1vh, 11px) !important;
+  font-weight: 800 !important;
+  color: var(--finela-red, #e60012) !important;
+  letter-spacing: 1px !important;
+  margin-bottom: 2px !important;
 }
 
 .spec-val {
-  font-size: clamp(14px, 1.7vh, 17px) !important;
+  font-family: var(--font-display) !important;
+  font-size: clamp(15px, 1.9vh, 20px) !important;
+  font-weight: 800 !important;
+  color: #fff !important;
 }
 
 .spec-team-info {
-  font-size: clamp(10.5px, 1.1vh, 12px) !important;
+  font-size: clamp(10px, 1.1vh, 11.5px) !important;
+  color: #8e95a5 !important;
   margin-top: clamp(4px, 0.6vh, 6px) !important;
 }
 
+/* RECENT NEWS 카드 (우하단) */
+.recent-news-card {
+  padding: clamp(12px, 1.6vh, 18px) clamp(14px, 1.4vw, 20px) !important;
+  border-radius: 14px !important;
+  background: rgba(14, 16, 24, 0.85) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+}
+
 .news-item {
+  display: flex !important;
+  align-items: flex-start !important;
+  gap: 8px !important;
   font-size: clamp(11px, 1.15vh, 12.5px) !important;
+  line-height: 1.4 !important;
+  color: #c0c6d4 !important;
   margin-bottom: clamp(3px, 0.5vh, 6px) !important;
+}
+
+.news-bullet {
+  color: var(--finela-red, #e60012) !important;
+  font-size: 8px !important;
+  margin-top: 3px !important;
 }
 
 /* 하단 스크롤 가이드 밸런스 */
@@ -3775,7 +3954,7 @@ button {
 
 /* 2페이지: 추가 활동 및 미디어 섹션 밸런스 */
 .modal-extra-section {
-  max-width: min(1420px, 90vw, 150vh) !important;
+  max-width: min(1500px, 94vw, 155vh) !important;
   padding: clamp(40px, 6vh, 70px) clamp(24px, 4vw, 60px) clamp(60px, 8vh, 100px) !important;
   margin: 0 auto !important;
 }
