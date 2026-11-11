@@ -1,55 +1,61 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="100%" height="100%" preserveAspectRatio="xMidYMid meet">
-  <defs>
-    <filter id="courtRedGlow" x="-20%" y="-20%" width="140%" height="140%">
-      <feGaussianBlur stdDeviation="3" result="blur" />
-      <feComposite in="SourceGraphic" in2="blur" operator="over" />
-    </filter>
-  </defs>
+  <!--
+    FIBA 공식 규격 농구 코트 (28m x 15m) - 백보드/림 제외, 코트 라인 전용
+    - 내부 좌표 단위: cm (코트 0~2800 x 0~1500)
+    - 캔버스 배치: 높이 920px (y 80~1000), 폭 1717.333px (x 101.333~1818.667), 비율 28:15 유지
+      → transform: translate(101.333 80) scale(0.613333)
+    - 주요 치수
+      · 센터 서클 반지름 1.8m
+      · 제한구역(페인트) 5.8m x 4.9m
+      · 자유투 서클 반지름 1.8m (자유투 라인 중심)
+      · 골대 중심: 엔드라인에서 1.575m
+      · 3점 라인: 골대 중심에서 6.75m, 사이드라인에서 0.9m 떨어진 평행 직선
+      · 노차지 반원: 골대 중심에서 1.25m, 0.375m 직선 연결
+    - 선 스타일: 모든 선 동일 굵기·동일 색상(불투명 단색)
+      투명도는 그룹 전체에 1회만 적용 → 선이 겹치는 곳도 더 밝거나 굵어 보이지 않음
+  -->
+  <g transform="translate(101.333 80) scale(0.613333)">
 
-  <!-- 백보드 및 골대(림) 완전 삭제 / 농구 코트 라인 전용 그래픽 -->
-  <g stroke="rgba(230, 0, 18, 0.44)" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
-    <!-- 외곽 코트 라인 (상하좌우 여유 확보: y=80 ~ 1000) -->
-    <rect x="80" y="80" width="1760" height="920" rx="6" stroke="rgba(230, 0, 18, 0.55)" stroke-width="3" />
+    <!-- 바닥 면 채움 (선과 분리된 레이어) -->
+    <g fill="#e60012" opacity="0.035" stroke="none">
+      <rect x="0" y="505" width="580" height="490" />
+      <rect x="2220" y="505" width="580" height="490" />
+    </g>
 
-    <!-- 센터 라인 -->
-    <line x1="960" y1="80" x2="960" y2="1000" stroke="rgba(230, 0, 18, 0.5)" stroke-width="2.8" />
+    <!-- 코트 라인: 단일 색상 / 단일 굵기 / 그룹 단위 투명도 -->
+    <g fill="none" stroke="#e60012" stroke-width="4.6" stroke-linecap="butt" stroke-linejoin="miter" opacity="0.5">
 
-    <!-- 센터 서클 (외측 & 내측) -->
-    <circle cx="960" cy="540" r="135" stroke="rgba(230, 0, 18, 0.55)" stroke-width="2.8" fill="rgba(230, 0, 18, 0.015)" />
-    <circle cx="960" cy="540" r="40" stroke="rgba(230, 0, 18, 0.45)" stroke-width="2" />
+      <!-- 외곽 라인 (사이드라인 / 엔드라인) -->
+      <rect x="0" y="0" width="2800" height="1500" />
 
-    <!-- 좌측 페인트(키) 존 -->
-    <rect x="80" y="370" width="410" height="340" fill="rgba(230, 0, 18, 0.035)" stroke="rgba(230, 0, 18, 0.5)" stroke-width="2.5" />
-    <!-- 좌측 자유투 서클 -->
-    <path d="M 490 370 A 170 170 0 0 1 490 710" stroke="rgba(230, 0, 18, 0.5)" stroke-width="2.5" />
-    <path d="M 490 710 A 170 170 0 0 1 490 370" stroke="rgba(230, 0, 18, 0.35)" stroke-width="2" stroke-dasharray="8 8" />
+      <!-- 센터 라인 -->
+      <line x1="1400" y1="0" x2="1400" y2="1500" />
 
-    <!-- 좌측 3점 슛 라인 -->
-    <path d="M 80 170 L 260 170 A 470 470 0 0 1 260 910 L 80 910" stroke="rgba(230, 0, 18, 0.52)" stroke-width="2.8" />
+      <!-- 센터 서클 (r = 1.8m) -->
+      <circle cx="1400" cy="750" r="180" />
 
-    <!-- 좌측 페인트 존 레인 마크 -->
-    <line x1="220" y1="360" x2="220" y2="370" stroke="rgba(230, 0, 18, 0.5)" stroke-width="2" />
-    <line x1="280" y1="360" x2="280" y2="370" stroke="rgba(230, 0, 18, 0.5)" stroke-width="2" />
-    <line x1="340" y1="360" x2="340" y2="370" stroke="rgba(230, 0, 18, 0.5)" stroke-width="2" />
-    <line x1="220" y1="710" x2="220" y2="720" stroke="rgba(230, 0, 18, 0.5)" stroke-width="2" />
-    <line x1="280" y1="710" x2="280" y2="720" stroke="rgba(230, 0, 18, 0.5)" stroke-width="2" />
-    <line x1="340" y1="710" x2="340" y2="720" stroke="rgba(230, 0, 18, 0.5)" stroke-width="2" />
+      <!-- ===================== 좌측 하프 ===================== -->
+      <!-- 제한구역 (5.8m x 4.9m) - 엔드라인과 겹치는 변은 그리지 않음 -->
+      <path d="M 0 505 L 580 505 L 580 995 L 0 995" />
+      <!-- 자유투 서클: 바깥쪽 실선 / 안쪽 점선 -->
+      <path d="M 580 570 A 180 180 0 0 1 580 930" />
+      <path d="M 580 930 A 180 180 0 0 1 580 570" stroke-dasharray="14 14" />
+      <!-- 3점 라인 (r = 6.75m, 코너 0.9m) -->
+      <path d="M 0 90 L 299 90 A 675 675 0 0 1 299 1410 L 0 1410" />
+      <!-- 노차지 반원 (r = 1.25m) -->
+      <path d="M 120 625 L 157.5 625 A 125 125 0 0 1 157.5 875 L 120 875" />
+      <!-- 리바운드 위치 표시 (제한구역 바깥쪽 10cm) -->
+      <path d="M 175 495 V 505 M 225 495 V 505 M 310 495 V 505 M 395 495 V 505
+               M 175 995 V 1005 M 225 995 V 1005 M 310 995 V 1005 M 395 995 V 1005" />
 
-    <!-- 우측 페인트(키) 존 -->
-    <rect x="1430" y="370" width="410" height="340" fill="rgba(230, 0, 18, 0.035)" stroke="rgba(230, 0, 18, 0.5)" stroke-width="2.5" />
-    <!-- 우측 자유투 서클 -->
-    <path d="M 1430 710 A 170 170 0 0 1 1430 370" stroke="rgba(230, 0, 18, 0.5)" stroke-width="2.5" />
-    <path d="M 1430 370 A 170 170 0 0 1 1430 710" stroke="rgba(230, 0, 18, 0.35)" stroke-width="2" stroke-dasharray="8 8" />
-
-    <!-- 우측 3점 슛 라인 -->
-    <path d="M 1840 170 L 1660 170 A 470 470 0 0 0 1660 910 L 1840 910" stroke="rgba(230, 0, 18, 0.52)" stroke-width="2.8" />
-
-    <!-- 우측 페인트 존 레인 마크 -->
-    <line x1="1700" y1="360" x2="1700" y2="370" stroke="rgba(230, 0, 18, 0.5)" stroke-width="2" />
-    <line x1="1640" y1="360" x2="1640" y2="370" stroke="rgba(230, 0, 18, 0.5)" stroke-width="2" />
-    <line x1="1580" y1="360" x2="1580" y2="370" stroke="rgba(230, 0, 18, 0.5)" stroke-width="2" />
-    <line x1="1700" y1="710" x2="1700" y2="720" stroke="rgba(230, 0, 18, 0.5)" stroke-width="2" />
-    <line x1="1640" y1="710" x2="1640" y2="720" stroke="rgba(230, 0, 18, 0.5)" stroke-width="2" />
-    <line x1="1580" y1="710" x2="1580" y2="720" stroke="rgba(230, 0, 18, 0.5)" stroke-width="2" />
+      <!-- ===================== 우측 하프 (좌우 대칭) ===================== -->
+      <path d="M 2800 505 L 2220 505 L 2220 995 L 2800 995" />
+      <path d="M 2220 930 A 180 180 0 0 1 2220 570" />
+      <path d="M 2220 570 A 180 180 0 0 1 2220 930" stroke-dasharray="14 14" />
+      <path d="M 2800 90 L 2501 90 A 675 675 0 0 0 2501 1410 L 2800 1410" />
+      <path d="M 2680 625 L 2642.5 625 A 125 125 0 0 0 2642.5 875 L 2680 875" />
+      <path d="M 2625 495 V 505 M 2575 495 V 505 M 2490 495 V 505 M 2405 495 V 505
+               M 2625 995 V 1005 M 2575 995 V 1005 M 2490 995 V 1005 M 2405 995 V 1005" />
+    </g>
   </g>
 </svg>

@@ -212,6 +212,42 @@ document.addEventListener('DOMContentLoaded', () => {
 
   renderRoster();
 
+  // ----------------------------------------------------------------------------
+  // 3-1. 코트 비율 고정 맞춤
+  //  - 기준: 코트 가운데 라인(화면 중앙) + 선수단 상하 여백 동일 + 코트 비율 28:15 고정
+  //  - 선수단이 코트 안에 다 들어가지 않으면(코트가 세로로 늘어나면) 코트를 늘리지 않고
+  //    선수단 그리드 폭을 비율대로 줄여서 코트 안에 맞춤 (가운데 정렬 유지)
+  // ----------------------------------------------------------------------------
+  const rosterCourt = document.querySelector('.roster-court');
+  const COURT_RATIO = 28 / 15;
+
+  function fitRosterToCourt() {
+    if (!rosterCourt || !rosterGrid) return;
+    rosterGrid.style.removeProperty('max-width');
+
+    // 카드 하단 텍스트 높이는 폭에 비례하지 않으므로 몇 번에 걸쳐 수렴시킴
+    for (let i = 0; i < 6; i++) {
+      const targetHeight = rosterCourt.offsetWidth / COURT_RATIO;
+      const overflow = rosterCourt.offsetHeight - targetHeight;
+      if (overflow <= 0.5) break;
+
+      const gridHeight = rosterGrid.offsetHeight;
+      const scale = Math.max(0.3, (gridHeight - overflow - 1) / gridHeight);
+      rosterGrid.style.setProperty('max-width', `${rosterGrid.offsetWidth * scale}px`, 'important');
+    }
+  }
+
+  let rosterFitFrame = null;
+  const scheduleRosterFit = () => {
+    if (rosterFitFrame) cancelAnimationFrame(rosterFitFrame);
+    rosterFitFrame = requestAnimationFrame(fitRosterToCourt);
+  };
+
+  fitRosterToCourt();
+  window.addEventListener('resize', scheduleRosterFit);
+  window.addEventListener('load', scheduleRosterFit);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(scheduleRosterFit);
+
   // ============================================================================
   // 4. 선수 상세 모달 (PLAYER DETAIL MODAL - 전면 개편 1:1 시안)
   // ============================================================================
