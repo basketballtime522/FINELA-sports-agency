@@ -33,10 +33,17 @@
   const layerName = (el) => el.getAttribute('data-layer-name') || el.getAttribute('data-layer');
   const getData = (id) => layout.layers[id] || {};
 
-  // 위치 기준 단위 = 코트 폭(px). 화면 크기가 달라도 코트 대비 같은 위치에 오도록 함
-  function unit() {
+  // 위치 기준 단위 = 코트 폭. (x, y 값은 '코트 폭 대비 비율'로 저장)
+  // - 아트보드(#modalStage, 고정 1232px 폭) 안의 레이어: 아트보드 좌표 px = 비율 × 1232
+  //   (아트보드 전체가 코트 크기에 맞춰 확대·축소되므로 화면 크기와 무관하게 같은 구도)
+  // - 아트보드 밖 레이어(좌우 넘김 버튼, 2페이지): 실제 코트 폭 px 사용
+  const STAGE_WIDTH = 1232;
+  function unit(el) {
     const court = document.getElementById('modalCourt');
-    return court ? court.offsetWidth : 0;
+    if (!court || !court.offsetWidth) return 0;
+    const stage = document.getElementById('modalStage');
+    if (stage && el && stage.contains(el)) return STAGE_WIDTH;
+    return court.offsetWidth;
   }
 
   function cleanData(d) {
@@ -58,10 +65,10 @@
   // 1) 레이아웃 적용
   // ---------------------------------------------------------------------------
   function apply() {
-    const u = unit();
     let visibilityChanged = false;
 
     allLayers().forEach((el) => {
+      const u = unit(el);
       const d = getData(el.getAttribute('data-layer'));
 
       const wasHidden = el.hasAttribute('data-layer-hidden');
@@ -101,7 +108,13 @@
       .then(applyAndRefit);
   }
 
-  window.FinelaPlayerLayout = { apply };
+  window.FinelaPlayerLayout = {
+    apply,
+    // 배치 보정·점검용 (편집기와 같은 데이터 사용)
+    getLayers: () => JSON.parse(JSON.stringify(layout.layers)),
+    setLayer(id, patch) { setData(id, patch); applyAndRefit(); },
+    removeLayer(id) { delete layout.layers[id]; applyAndRefit(); },
+  };
 
   // ---------------------------------------------------------------------------
   // 2) 레이어 편집기 (로컬 전용)
@@ -358,7 +371,7 @@
         return;
       }
       const d = getData(selectedId);
-      const u = unit() || 1000;
+      const u = unit(el) || 1000;
       selNameEl.textContent = layerName(el);
       if (document.activeElement !== inputs.x) inputs.x.value = Math.round((d.x || 0) * u);
       if (document.activeElement !== inputs.y) inputs.y.value = Math.round((d.y || 0) * u);
@@ -482,7 +495,7 @@
         if (!selectedId) return;
         const v = parseFloat(input.value);
         if (Number.isNaN(v)) return refresh();
-        const u = unit() || 1000;
+        const u = unit(layerEl(selectedId)) || 1000;
         if (prop === 's') change(selectedId, { s: Math.min(5, Math.max(0.1, v / 100)) });
         else change(selectedId, { [prop]: v / u });
       });
@@ -644,7 +657,7 @@
       const d = getData(id);
       drag = {
         mode: 'move', id, before: snapshot(), sx: e.clientX, sy: e.clientY,
-        x0: d.x || 0, y0: d.y || 0, k: (unit() || 1000) * ancestorScale(el), moved: false,
+        x0: d.x || 0, y0: d.y || 0, k: (unit(el) || 1000) * ancestorScale(el), moved: false,
       };
     }, true);
 
@@ -705,7 +718,7 @@
       else if (key === 'Escape') select(null);
       else if (!selectedId) handled = key.startsWith('Arrow'); // 선택이 없어도 화살표로 선수 넘김 방지
       else if (key.startsWith('Arrow')) {
-        const step = (e.shiftKey ? 10 : 1) / (unit() || 1000);
+        const step = (e.shiftKey ? 10 : 1) / (unit(layerEl(selectedId)) || 1000);
         const d = getData(selectedId);
         const dx = key === 'ArrowLeft' ? -step : key === 'ArrowRight' ? step : 0;
         const dy = key === 'ArrowUp' ? -step : key === 'ArrowDown' ? step : 0;

@@ -4602,10 +4602,7 @@ body.cart-open .scroll-dot-nav {
   display: block !important;
 }
 
-/* 모달이 열려 있는 동안 사이트 스크롤바 숨김 → 모달이 화면 전체 폭을 사용 */
-html:has(body.modal-open) {
-  overflow: hidden !important;
-}
+/* (사이트 스크롤바는 그대로 유지: ROSTER 화면과 같은 폭 조건이어야 코트가 정확히 같은 위치에 옴) */
 
 .player-modal .modal-screen-profile {
   height: 100vh !important;
@@ -4620,17 +4617,90 @@ html:has(body.modal-open) {
 
 .modal-court {
   position: relative;
+  /* 기본값(대체용). 실제로는 main.js matchRosterCourt()가 ROSTER 코트와 같은 폭·위치로 지정 */
   width: min(100%, calc((100vh - var(--header-height) - 2 * var(--mc-pad-y)) * 28 / 15));
   aspect-ratio: 28 / 15;
   min-height: 0;
   flex: none;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  grid-template-rows: minmax(0, 1fr) auto minmax(0, 1fr);
-  padding: 0 3%;
+  display: block;
+  padding: 0;
   box-sizing: border-box;
   isolation: isolate;
 }
+
+/* 아트보드: 1232 x 660 고정 디자인 크기 → main.js가 코트 폭에 맞춰 scale 지정
+   (화면 크기와 무관하게 글자·카드·간격·레이어 위치가 모두 같은 비율로 확대·축소) */
+.modal-stage {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1232px;
+  height: 660px;
+  transform-origin: 0 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr) auto minmax(0, 1fr);
+  padding: 0 37px; /* 3% × 1232 — %는 실제 코트 폭 기준으로 계산되므로 px 고정 */
+  box-sizing: border-box;
+}
+
+/* ROSTER로 돌아가기 버튼 (아트보드 좌상단, 레이어로 이동 가능) */
+.modal-back-roster {
+  position: absolute;
+  top: 22px;
+  left: 37px;
+  z-index: 6;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 20px;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: #fff;
+  font-family: var(--font-en);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: background 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.modal-back-roster i {
+  color: var(--finela-red, #e60012);
+}
+
+.modal-back-roster:hover {
+  background: rgba(230, 0, 18, 0.2);
+  border-color: var(--finela-red, #e60012);
+  box-shadow: 0 0 20px rgba(230, 0, 18, 0.45);
+}
+
+/* 아트보드 안에서는 화면 높이(vh)·폭(vw) 기준 크기를 고정 px로 (편집 기준 화면 1403x1206 값) */
+/* (우선순위를 높여 아래쪽 글래스 카드 스타일의 vh 값보다 항상 우선 적용) */
+.player-modal .modal-stage [data-layer="stats-col"] { gap: 16px !important; }
+.player-modal .modal-stage [data-layer="card-grid"] { gap: 16px !important; }
+.player-modal .modal-stage .modal-stats-subcol,
+.player-modal .modal-stage .modal-profile-subcol { gap: 14px !important; }
+.player-modal .modal-stage .stat-pair-bottom-group,
+.player-modal .modal-stage [data-layer="action-buttons"] { gap: 12px !important; }
+.player-modal .modal-stage .stat-pair-card { gap: 14px !important; }
+.player-modal .modal-stage .stat-pair-card .stat-cell { padding: 16px 18px !important; }
+.player-modal .modal-stage .stat-metric-label { font-size: 18px !important; margin-bottom: 4.8px !important; }
+.player-modal .modal-stage .stat-metric-val { font-size: 36px !important; }
+.player-modal .modal-stage .profile-spec-card { padding: 18px 19.6px !important; min-height: 188px !important; } /* 스탯 카드 2줄 높이와 맞춤 */
+.player-modal .modal-stage .profile-spec-card .card-mini-title,
+.player-modal .modal-stage .card-mini-title { font-size: 24px !important; margin-bottom: 9.6px !important; }
+.player-modal .modal-stage .spec-label { font-size: 11px !important; }
+.player-modal .modal-stage .spec-val { font-size: 20px !important; }
+.player-modal .modal-stage .spec-cell { padding: 0 12.6px !important; }
+.player-modal .modal-stage .spec-cell:first-child { padding-left: 0 !important; }
+.player-modal .modal-stage .spec-team-info { font-size: 11.5px !important; margin-top: 6px !important; }
+.player-modal .modal-stage .btn-watch-highlight,
+.player-modal .modal-stage .btn-career-stats { font-size: 13px !important; padding: 13px 14px !important; }
+.player-modal .modal-stage .modal-scroll-guide { font-size: 11px !important; }
 
 .modal-court::before {
   content: '';
@@ -4644,7 +4714,7 @@ html:has(body.modal-open) {
 }
 
 /* 좌우 하프코트에 1:1로 대응하는 2열 (가운데 라인 기준 대칭) */
-.modal-court > .modal-hero-split {
+.modal-stage > .modal-hero-split {
   grid-row: 2 !important;
   justify-self: center !important;
   width: 100% !important;
@@ -4794,11 +4864,11 @@ html:has(body.modal-open) {
   white-space: nowrap !important;
 }
 
-.modal-court > .modal-scroll-guide {
+.modal-stage > .modal-scroll-guide {
   grid-row: 3 !important;
   align-self: start !important;
   justify-self: center !important;
-  margin: clamp(6px, 1vh, 12px) 0 0 !important;
+  margin: 12px 0 0 !important;
 }
 
 /* 레이어 편집기로 숨긴(삭제한) 요소 */
@@ -4822,17 +4892,46 @@ html:has(body.modal-open) {
     0 16px 24px -14px rgba(230, 0, 18, 0.55);
 }
 
-/* 하이라이트 영상: 배경 틀·빨간 광채 제거 */
+/* 하이라이트 영상: 배경 틀 제거 + 외곽 빨간 라이트 (시안 참고) */
 .player-modal .modal-video-card {
   background: transparent !important;
-  border: 1px solid rgba(255, 255, 255, 0.14) !important;
+  border: 1px solid rgba(255, 70, 80, 0.45) !important;
   border-radius: 12px !important;
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45) !important;
+  box-shadow:
+    0 0 0 1px rgba(230, 0, 18, 0.15),
+    0 0 22px rgba(230, 0, 18, 0.5),
+    0 0 60px rgba(230, 0, 18, 0.22),
+    0 16px 40px rgba(0, 0, 0, 0.45) !important;
 }
 
 .player-modal .modal-video-card:hover {
-  border-color: rgba(255, 255, 255, 0.3) !important;
-  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.55) !important;
+  border-color: rgba(255, 70, 80, 0.75) !important;
+  box-shadow:
+    0 0 0 1px rgba(230, 0, 18, 0.25),
+    0 0 28px rgba(230, 0, 18, 0.65),
+    0 0 72px rgba(230, 0, 18, 0.3),
+    0 18px 44px rgba(0, 0, 0, 0.55) !important;
+}
+
+/* 좌우 선수 넘김 버튼: 빨간 라이트 외곽 (위치는 main.js가 코트 양쪽 사이드라인·세로 중앙에 맞춤) */
+.player-modal .modal-nav-arrow {
+  /* 위치(left/top)는 즉시 적용, 색·빛만 부드럽게 */
+  transition: background 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease !important;
+  background: rgba(14, 16, 24, 0.82) !important;
+  border: 1.5px solid rgba(255, 60, 70, 0.9) !important;
+  color: #fff !important;
+  box-shadow:
+    0 0 10px rgba(230, 0, 18, 0.75),
+    0 0 26px rgba(230, 0, 18, 0.4),
+    inset 0 0 8px rgba(230, 0, 18, 0.35) !important;
+}
+
+.player-modal .modal-nav-arrow:hover {
+  background: var(--finela-red, #e60012) !important;
+  border-color: #ff4d57 !important;
+  box-shadow:
+    0 0 14px rgba(230, 0, 18, 0.95),
+    0 0 36px rgba(230, 0, 18, 0.55) !important;
 }
 
 /* 공통 글래스 카드 */

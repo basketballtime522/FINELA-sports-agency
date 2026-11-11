@@ -387,15 +387,44 @@ document.addEventListener('DOMContentLoaded', () => {
   //    (폭만 줄이면 카드 글자가 줄바꿈되어 오히려 길어지므로 균일 축소 방식 사용)
   // ----------------------------------------------------------------------------
   const modalCourt = document.getElementById('modalCourt');
+  const modalStage = document.getElementById('modalStage');
   const modalHero = modalCourt ? modalCourt.querySelector('.modal-hero-split') : null;
   const modalGuide = modalCourt ? modalCourt.querySelector('.modal-scroll-guide') : null;
   const MODAL_COURT_MIN_GAP = 8; // 코트 라인과 콘텐츠 사이 최소 간격(px)
+  const STAGE_WIDTH = 1232;      // 아트보드 고정 디자인 폭 (styles.css .modal-stage 와 동일)
+
+  // ROSTER 섹션 코트와 같은 크기·위치로 맞춤
+  //  - 폭: ROSTER 코트 폭 그대로
+  //  - 세로 위치: ROSTER 섹션 맨 위 기준 코트까지의 거리 그대로 (ROSTER가 화면 맨 위에 왔을 때와 동일)
+  //  - 가로: 화면 중앙 (가운데 라인 = 화면 중앙)
+  const rosterSection = document.getElementById('roster');
+  const rosterCourtEl = document.querySelector('.roster-court');
+  const modalProfileScreen = document.getElementById('modalProfileScreen');
+
+  function matchRosterCourt() {
+    if (!rosterSection || !rosterCourtEl || !modalProfileScreen) return;
+    const rc = rosterCourtEl.getBoundingClientRect();
+    const rs = rosterSection.getBoundingClientRect();
+    if (!rc.width) return; // ROSTER 코트가 보이지 않는 환경이면 기본 배치 사용
+    modalCourt.style.setProperty('width', `${rc.width.toFixed(2)}px`, 'important');
+    modalProfileScreen.style.setProperty('padding', `${(rc.top - rs.top).toFixed(2)}px 0 0 0`, 'important');
+    modalProfileScreen.style.setProperty('justify-content', 'flex-start', 'important');
+  }
 
   function fitPlayerModalCourt() {
     if (!modalCourt || !modalHero || !playerModal || !playerModal.classList.contains('active')) return;
+
+    matchRosterCourt();
+
+    // 아트보드를 코트 폭에 맞춰 통째로 확대·축소
+    if (modalStage && modalCourt.offsetWidth) {
+      modalStage.style.setProperty('scale', (modalCourt.offsetWidth / STAGE_WIDTH).toFixed(5));
+    }
+
     ['scale', 'margin-top', 'margin-bottom'].forEach(prop => modalHero.style.removeProperty(prop));
 
-    const courtHeight = modalCourt.clientHeight;
+    // 아트보드 내부 좌표(고정 px) 기준으로 계산 → 화면 크기와 무관하게 항상 같은 결과
+    const courtHeight = modalStage ? modalStage.offsetHeight : modalCourt.clientHeight;
     let guideSpace = 0;
     if (modalGuide && modalGuide.offsetParent !== null) {
       // +4px: 소수점 반올림으로 코트 하단 라인에 걸치지 않도록 여유
@@ -414,8 +443,25 @@ document.addEventListener('DOMContentLoaded', () => {
       modalHero.style.setProperty('margin-bottom', shrink, 'important');
     }
 
+    placeModalNavArrows();
+
     // 레이어 위치(코트 폭 비율 기준) 재적용
     if (window.FinelaPlayerLayout) window.FinelaPlayerLayout.apply();
+  }
+
+  // 좌우 선수 넘김 버튼: 화면 끝이 아니라 코트 양쪽 사이드라인 위, 코트 세로 중앙에 배치
+  // (화면 크기와 무관하게 코트 대비 항상 같은 자리 → 영상·카드와 겹치지 않음)
+  function placeModalNavArrows() {
+    if (!modalCourt) return;
+    const cr = modalCourt.getBoundingClientRect();
+    if (!cr.width) return;
+    const centerY = cr.top + playerModal.scrollTop + cr.height / 2; // 1페이지 맨 위 기준
+    [[modalNavPrev, cr.left], [modalNavNext, cr.right]].forEach(([btn, x]) => {
+      if (!btn) return;
+      btn.style.setProperty('left', `${(x - btn.offsetWidth / 2).toFixed(1)}px`, 'important');
+      btn.style.setProperty('right', 'auto', 'important');
+      btn.style.setProperty('top', `${centerY.toFixed(1)}px`, 'important');
+    });
   }
   window.fitPlayerModalCourt = fitPlayerModalCourt;
 
@@ -456,6 +502,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 상단 고정 헤더 닫기 버튼
   if (modalCloseBtn) modalCloseBtn.addEventListener('click', closePlayerModalFunc);
+
+  // 1페이지 'BACK TO ROSTER' 버튼 → 상세 닫고 ROSTER 섹션으로 복귀
+  const modalBackRoster = document.getElementById('modalBackRoster');
+  if (modalBackRoster) {
+    modalBackRoster.addEventListener('click', (e) => {
+      e.stopPropagation();
+      closePlayerModalFunc();
+    });
+  }
 
   // 모든 선수 상세 X 닫기 버튼 (1페이지 상단 및 2페이지 하단 버튼 공통)
   const allCloseDetailBtns = document.querySelectorAll('.close-detail-btn');

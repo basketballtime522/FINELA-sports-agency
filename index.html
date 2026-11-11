@@ -628,6 +628,18 @@
         <!-- 농구 코트 영역: 코트 외곽 라인이 이 박스 테두리에 맞춰짐 (가운데 라인 = 화면 중앙, 상하 여백 동일) -->
         <div class="modal-court" id="modalCourt">
 
+        <!--
+          아트보드: 고정 크기(1232 x 660) 디자인 화면을 코트 크기에 맞춰 통째로 확대·축소
+          → 어떤 화면 크기에서도 레이어 구도가 동일하게 유지됨 (main.js fitPlayerModalCourt)
+        -->
+        <div class="modal-stage" id="modalStage">
+
+        <!-- ROSTER 페이지로 돌아가기 -->
+        <button type="button" class="modal-back-roster" id="modalBackRoster" title="ROSTER로 돌아가기"
+          data-layer="back-roster" data-layer-name="ROSTER로 돌아가기 버튼">
+          <i class="fa-solid fa-arrow-left"></i> BACK TO ROSTER
+        </button>
+
         <div class="modal-hero-split">
 
           <!-- 좌측: 역동적 액션 포즈 실사 & 대형 붉은 등번호 & 대형 영문 이름 -->
@@ -723,13 +735,6 @@
                     국가대표 · 일라와라 호크스
                   </div>
                 </div>
-
-                <div class="recent-news-card" data-layer="card-news" data-layer-name="RECENT NEWS 카드">
-                  <div class="card-mini-title" data-layer="news-title" data-layer-name="RECENT NEWS 제목">RECENT NEWS</div>
-                  <div class="news-list" id="modalNewsList" data-layer="news-list" data-layer-name="뉴스 목록">
-                    <!-- JS 바인딩: 붉은색 사각 블릿과 텍스트 -->
-                  </div>
-                </div>
               </div>
 
             </div>
@@ -747,6 +752,9 @@
           </div>
           <i class="fa-solid fa-chevron-down guide-arrow"></i>
         </div>
+
+        </div>
+        <!-- /아트보드 -->
 
         </div>
         <!-- /농구 코트 영역 -->
