@@ -3575,21 +3575,7 @@ button {
       - 우측 하프코트: 16:9 하이라이트 영상 + 하단 2x2 대칭 스탯/프로필/뉴스 카드 그리드
    ============================================================================== */
 
-/* 1. 농구 코트 배경: ROSTER 섹션(.roster-court-bg)과 100% 동일한 크기/위치/트랜스폼 */
-.modal-court-bg {
-  position: absolute !important;
-  inset: 0 !important;
-  top: 0 !important;
-  bottom: 0 !important;
-  left: 12px !important;
-  right: 12px !important;
-  height: 100vh !important;
-  transform: translateY(calc(var(--header-height) * 0.58 + clamp(4px, 0.8vh, 12px))) !important;
-  background: url('assets/basketball_court_bg.svg') no-repeat center center / contain !important;
-  opacity: 0.88 !important;
-  pointer-events: none !important;
-  z-index: 1 !important;
-}
+/* 1. 농구 코트 배경: 파일 하단 '.modal-court' 블록으로 이전 (ROSTER와 동일한 코트 박스 방식) */
 
 /* 모달 좌우 넘김 버튼 (화면 최외곽 양옆 플로팅) */
 .modal-nav-arrow {
@@ -4117,7 +4103,8 @@ html {
   content: '' !important;
   position: absolute !important;
   inset: 0 !important;
-  background: url('assets/basketball_court_bg.svg') no-repeat center center !important;
+  /* ?v=fiba1 : vercel.json의 assets 1년 캐시(immutable) 때문에 SVG 변경 시 버전 갱신 필요 */
+  background: url('assets/basketball_court_bg.svg?v=fiba1') no-repeat center center !important;
   background-size: calc(100% * 1920 / 1717.333) calc(100% * 1080 / 920) !important;
   opacity: 0.88 !important;
   pointer-events: none !important;
@@ -4587,4 +4574,375 @@ body.cart-open .scroll-dot-nav {
   .scroll-dot-nav {
     display: none !important;
   }
+}
+
+/* ==============================================================================
+   선수 개인 상세 모달 1페이지: ROSTER와 동일한 농구 코트 배치 기준
+   - 코트(.modal-court)는 FIBA 비율 28:15 고정, 외곽 라인 = 박스 테두리
+   - 기준 1) 코트 가운데 라인 = 화면 가로 중앙
+   - 기준 2) 콘텐츠(.modal-hero-split) 위/아래 여백 동일 (3단 그리드 1fr / auto / 1fr)
+   - 기준 3) 화면을 벗어나면 콘텐츠 폭을 줄여 비율 유지 (main.js fitPlayerModalCourt)
+   - 2페이지(ATHLETE ACTIVITIES & MEDIA)에는 코트 없음
+   ============================================================================== */
+.player-modal {
+  --mc-pad-y: clamp(14px, 2.4vh, 28px);
+  /* 좌우 넘김 버튼(최대 52px + 여백)과 코트가 겹치지 않도록 확보 */
+  --mc-pad-x: clamp(64px, 5.5vw, 100px);
+}
+
+/* 모달 바깥 틀(.player-detail-screen)의 기존 여백 제거 → 1페이지가 화면 맨 위부터 100vh를 정확히 차지 */
+.player-modal.player-detail-screen {
+  padding: 0 !important;
+  display: none;
+  /* 스크롤바 폭만큼 좌우 대칭 여백 → 코트 가운데 라인이 정확히 화면 중앙 */
+  scrollbar-gutter: stable both-edges;
+}
+
+.player-modal.player-detail-screen.active {
+  display: block !important;
+}
+
+/* 모달이 열려 있는 동안 사이트 스크롤바 숨김 → 모달이 화면 전체 폭을 사용 */
+html:has(body.modal-open) {
+  overflow: hidden !important;
+}
+
+.player-modal .modal-screen-profile {
+  height: 100vh !important;
+  min-height: 0 !important;
+  overflow: visible !important; /* 레이어를 코트 밖으로 옮겨도 잘리지 않도록 */
+  padding: calc(var(--header-height) + var(--mc-pad-y)) var(--mc-pad-x) var(--mc-pad-y) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  align-items: center !important;
+}
+
+.modal-court {
+  position: relative;
+  width: min(100%, calc((100vh - var(--header-height) - 2 * var(--mc-pad-y)) * 28 / 15));
+  aspect-ratio: 28 / 15;
+  min-height: 0;
+  flex: none;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr) auto minmax(0, 1fr);
+  padding: 0 3%;
+  box-sizing: border-box;
+  isolation: isolate;
+}
+
+.modal-court::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url('assets/basketball_court_bg.svg?v=fiba1') no-repeat center center;
+  background-size: calc(100% * 1920 / 1717.333) calc(100% * 1080 / 920);
+  opacity: 0.88;
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* 좌우 하프코트에 1:1로 대응하는 2열 (가운데 라인 기준 대칭) */
+.modal-court > .modal-hero-split {
+  grid-row: 2 !important;
+  justify-self: center !important;
+  width: 100% !important;
+  max-width: none !important; /* 화면 이탈 시 main.js가 scale로 균일 축소 */
+  max-height: none !important;
+  margin: 0 !important;
+  flex: none !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 6% !important;
+  align-items: stretch !important;
+}
+
+/* 좌측 비주얼은 우측(영상+카드) 높이에 맞춰 채움 */
+.modal-court .modal-visual-col {
+  height: auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  align-self: stretch !important;
+}
+
+.modal-court .modal-athlete-figure {
+  position: absolute !important;
+  inset: 0 !important;
+  width: auto !important;
+  height: auto !important;
+}
+
+.modal-court .modal-athlete-img {
+  width: 100% !important;
+  height: 100% !important;
+  max-height: none !important;
+  object-fit: contain !important;
+  object-position: bottom left !important;
+}
+
+/* ------------------------------------------------------------------------------
+   선수 사진 카드 (시안 기준 912 x 1000 비율)
+   레이어 (아래 → 위): 코트배경 0 → 로고 1 → 등번호 1 → 사진 2 → 텍스트 5
+   모든 위치·크기는 카드 크기 비율(%, cqh)로 지정 → 화면 크기가 달라도 같은 구도
+   ------------------------------------------------------------------------------ */
+.modal-court .modal-visual-col {
+  container-type: size;
+  aspect-ratio: 912 / 1000;
+  width: auto !important;
+  max-width: 100%;
+  justify-self: center;
+  /* 레이어를 카드 밖으로 옮겨도 잘리지 않도록 (사진 하단 잘림은 사진 레이어 자체에서 처리) */
+  overflow: visible !important;
+}
+
+/* 코트배경: 어두운 카드 + 왼쪽 하프코트 라인 */
+.modal-court .modal-photo-court {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-color: #17171b;
+  /* 코트 SVG의 왼쪽 하프코트만 잘라서 표시 (#svgView 프래그먼트) */
+  background-image: url('assets/basketball_court_bg.svg?v=fiba1#svgView(viewBox(96,75,869,930))');
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: 100% 100%;
+  pointer-events: none;
+}
+
+/* 로고: 카드 좌상단 */
+.modal-court .modal-photo-logo {
+  position: absolute;
+  top: 6%;
+  left: 24.3%;
+  width: 20%;
+  height: auto;
+  z-index: 1;
+  pointer-events: none;
+  filter: drop-shadow(0 0 10px rgba(230, 0, 18, 0.35));
+}
+
+/* 등번호: 선수 오른쪽 뒤 대형 빨간 숫자 (두 자리 번호는 왼쪽으로 늘어남) */
+.modal-court .modal-watermark-number {
+  top: 19% !important;
+  right: 11% !important;
+  left: auto !important;
+  font-family: var(--font-display) !important;
+  font-size: 68cqh !important;
+  font-weight: 700 !important;
+  line-height: 0.8 !important;
+  letter-spacing: -0.02em !important;
+  color: #e8262a !important;
+  opacity: 1 !important;
+  text-shadow: 0 0 4cqh rgba(230, 0, 18, 0.55), 0 0 12cqh rgba(230, 0, 18, 0.25) !important;
+  z-index: 1 !important;
+  /* 기울기: 윗부분이 오른쪽으로 기울어진 이탤릭 형태 (레이어 이동·크기와 별개로 적용) */
+  transform: skewX(-10deg) !important;
+  transform-origin: left bottom !important;
+}
+
+/* 사진: 누끼 이미지, 카드 좌하단 기준 */
+/* 사진 레이어 = 카드 하단까지의 상자(84.5%), 이미지는 그보다 크게(88%) 넣고 상자에서 잘라
+   시안처럼 하단이 살짝 잘린 모습 유지 → 사진 레이어를 옮기면 잘린 모습 그대로 함께 이동 */
+.modal-court .modal-athlete-figure {
+  inset: auto !important;
+  left: 0 !important;
+  top: 15.5% !important;
+  width: auto !important;
+  height: 84.5% !important;
+  display: block !important;
+  overflow: hidden !important;
+  z-index: 2 !important;
+}
+
+.modal-court .modal-athlete-img {
+  display: block !important;
+  width: auto !important;
+  height: calc(100% * 88 / 84.5) !important;
+  object-fit: contain !important;
+  object-position: left bottom !important;
+  -webkit-mask-image: none !important;
+  mask-image: none !important;
+  filter: grayscale(100%) contrast(108%) !important;
+}
+
+/* 텍스트: 이름(2줄) + 포지션 · 등번호 */
+.modal-court .modal-player-header-box {
+  top: 68.5% !important;
+  left: 25.6% !important;
+  bottom: auto !important;
+  z-index: 5 !important;
+}
+
+.modal-court .modal-player-name {
+  font-family: var(--font-display) !important;
+  font-size: 8.6cqh !important;
+  font-weight: 600 !important;
+  line-height: 1 !important;
+  letter-spacing: 0 !important;
+  color: #f2f2f2 !important;
+  margin: 0 0 2.2cqh 0 !important;
+  white-space: nowrap !important;
+  text-shadow: 0 0.4cqh 2cqh rgba(0, 0, 0, 0.6) !important;
+}
+
+.modal-court .modal-player-subinfo {
+  font-family: var(--font-display) !important;
+  font-size: 2.9cqh !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.04em !important;
+  color: #e6e6e6 !important;
+  white-space: nowrap !important;
+}
+
+.modal-court > .modal-scroll-guide {
+  grid-row: 3 !important;
+  align-self: start !important;
+  justify-self: center !important;
+  margin: clamp(6px, 1vh, 12px) 0 0 !important;
+}
+
+/* 레이어 편집기로 숨긴(삭제한) 요소 */
+[data-layer][data-layer-hidden] {
+  display: none !important;
+}
+
+/* ==============================================================================
+   선수 상세 1페이지 우측: 하이라이트 영상 + 반투명(글래스) 스탯 카드
+   - 영상: 썸네일 이미지의 바깥 배경 틀 제거본(video_highlight_clean.jpg) + 빨간 테두리/광채 제거
+   - 카드: 반투명 어두운 유리 + 블러 + 얇은 밝은 테두리 + 카드 아래 은은한 빨간 빛
+   - PTS·AST / REB·STL 은 각각 개별 카드로 분리 표시 (레이어 구조는 그대로)
+   ============================================================================== */
+.player-modal {
+  --glass-bg: linear-gradient(180deg, rgba(62, 62, 70, 0.42) 0%, rgba(26, 26, 32, 0.34) 100%);
+  --glass-border: 1px solid rgba(255, 255, 255, 0.16);
+  --glass-radius: 10px;
+  --glass-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 10px 28px rgba(0, 0, 0, 0.35),
+    0 16px 24px -14px rgba(230, 0, 18, 0.55);
+}
+
+/* 하이라이트 영상: 배경 틀·빨간 광채 제거 */
+.player-modal .modal-video-card {
+  background: transparent !important;
+  border: 1px solid rgba(255, 255, 255, 0.14) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45) !important;
+}
+
+.player-modal .modal-video-card:hover {
+  border-color: rgba(255, 255, 255, 0.3) !important;
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.55) !important;
+}
+
+/* 공통 글래스 카드 */
+.player-modal .stat-pair-card .stat-cell,
+.player-modal .profile-spec-card,
+.player-modal .recent-news-card {
+  background: var(--glass-bg) !important;
+  border: var(--glass-border) !important;
+  border-radius: var(--glass-radius) !important;
+  box-shadow: var(--glass-shadow) !important;
+  backdrop-filter: blur(14px) saturate(120%) !important;
+  -webkit-backdrop-filter: blur(14px) saturate(120%) !important;
+}
+
+/* PTS·AST / REB·STL: 바깥 묶음은 투명, 안의 두 칸을 각각 카드로 */
+.player-modal .stat-pair-card {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: clamp(8px, 1vw, 14px) !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.player-modal .stat-pair-card .stat-cell {
+  padding: clamp(10px, 1.4vh, 16px) clamp(12px, 1.1vw, 18px) !important;
+  align-items: flex-start !important;
+}
+
+.player-modal .stat-metric-label {
+  font-family: var(--font-display) !important;
+  font-size: clamp(13px, 1.6vh, 18px) !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.04em !important;
+  color: #ff3341 !important;
+  margin-bottom: clamp(2px, 0.4vh, 6px) !important;
+}
+
+/* 숫자 크기는 기존 유지 (저장된 레이어 배치가 어긋나지 않도록) */
+.player-modal .stat-metric-val {
+  font-family: var(--font-display) !important;
+  font-weight: 600 !important;
+  line-height: 1 !important;
+  color: #fff !important;
+}
+
+/* PROFILE */
+.player-modal .profile-spec-card .card-mini-title,
+.player-modal .recent-news-card .card-mini-title {
+  font-family: var(--font-display) !important;
+  font-size: clamp(16px, 2.1vh, 24px) !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.02em !important;
+  color: #e9e9ee !important;
+}
+
+.player-modal .spec-items-row {
+  justify-content: flex-start !important;
+  gap: 0 !important;
+}
+
+.player-modal .spec-cell {
+  flex: 1 !important;
+  padding: 0 clamp(8px, 0.9vw, 14px) !important;
+}
+
+.player-modal .spec-cell:first-child {
+  padding-left: 0 !important;
+}
+
+.player-modal .spec-cell + .spec-cell {
+  border-left: 1px solid rgba(255, 255, 255, 0.16) !important;
+}
+
+.player-modal .spec-label {
+  font-family: var(--font-display) !important;
+  font-weight: 600 !important;
+  color: #ff3341 !important;
+}
+
+/* RECENT NEWS: 빨간 사각 블릿 + 항목 사이 구분선 */
+.player-modal .news-item + .news-item {
+  border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+  padding-top: clamp(4px, 0.7vh, 8px) !important;
+}
+
+.player-modal .news-bullet {
+  color: #ff3341 !important;
+}
+
+/* 버튼: 시안과 같은 직사각형 (WATCH = 빨간 채움, CAREER = 빨간 테두리 반투명) */
+.player-modal .btn-watch-highlight,
+.player-modal .btn-career-stats {
+  border-radius: 6px !important;
+  font-family: var(--font-display) !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.03em !important;
+}
+
+.player-modal .btn-watch-highlight {
+  background: #e8262a !important;
+  box-shadow: 0 0 18px rgba(230, 0, 18, 0.55) !important;
+}
+
+.player-modal .btn-career-stats {
+  background: rgba(20, 20, 24, 0.55) !important;
+  border: 1px solid rgba(230, 0, 18, 0.75) !important;
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
 }

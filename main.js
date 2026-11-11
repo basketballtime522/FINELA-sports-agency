@@ -269,26 +269,27 @@ document.addEventListener('DOMContentLoaded', () => {
     if (watermarkEl) watermarkEl.innerText = p.number;
 
     // 선수 액션 포즈 사진 적용 (기존 증명사진 대신 액션 포즈 적용)
-    const actionImg = p.actionHero || 'assets/detail/athlete_hero_action.jpg';
+    // 선수 누끼(투명 배경) 사진 - 글씨·로고·코트·등번호는 별도 레이어
+    const actionImg = p.actionHero || 'assets/detail/athlete_cutout.png';
     const playerImgEl = document.getElementById('modalPlayerImg');
     if (playerImgEl) playerImgEl.src = actionImg;
 
-    // 대형 영문 이름 (2줄 분할 렌더링)
+    // 대형 영문 이름 (2줄: 성 / 이름 — 예: LEE / HYUN JUNG)
     const nameEl = document.getElementById('modalPlayerName');
     if (nameEl) {
-      if (p.nameEn.includes(' ')) {
-        const parts = p.nameEn.split(' ');
-        nameEl.innerHTML = parts.join('<br>');
-      } else {
-        nameEl.innerText = p.nameEn;
+      const parts = p.nameEn.trim().split(/\s+/);
+      nameEl.textContent = '';
+      nameEl.append(parts[0]);
+      if (parts.length > 1) {
+        nameEl.append(document.createElement('br'), parts.slice(1).join(' '));
       }
     }
 
-    // 포지션 및 등번호 서브타이틀
+    // 포지션 및 등번호 서브타이틀 (예: POINT GUARD  |  #1)
     const subinfoEl = document.getElementById('modalPlayerSubinfo');
     if (subinfoEl) {
       const pos = p.position ? p.position : (p.positionKo || 'POINT GUARD');
-      subinfoEl.innerText = `${pos.toUpperCase()} | #${p.number}`;
+      subinfoEl.textContent = `${pos.toUpperCase()}  |  #${p.number}`;
     }
 
     // 4대 핵심 스탯 수치
@@ -375,7 +376,56 @@ document.addEventListener('DOMContentLoaded', () => {
       playerModal.scrollTop = 0;
       document.body.style.overflow = 'hidden';
       document.body.classList.add('modal-open');
+
+    schedulePlayerModalFit();
   }
+
+  // ----------------------------------------------------------------------------
+  // 4-1. 선수 상세 1페이지 코트 맞춤 (ROSTER와 동일 기준)
+  //  - 코트 비율 28:15 고정, 가운데 라인 = 화면 중앙, 콘텐츠 상하 여백 동일
+  //  - 콘텐츠(영상·카드·선수 비주얼)가 코트 높이를 넘으면 콘텐츠 전체를 같은 비율로 축소
+  //    (폭만 줄이면 카드 글자가 줄바꿈되어 오히려 길어지므로 균일 축소 방식 사용)
+  // ----------------------------------------------------------------------------
+  const modalCourt = document.getElementById('modalCourt');
+  const modalHero = modalCourt ? modalCourt.querySelector('.modal-hero-split') : null;
+  const modalGuide = modalCourt ? modalCourt.querySelector('.modal-scroll-guide') : null;
+  const MODAL_COURT_MIN_GAP = 8; // 코트 라인과 콘텐츠 사이 최소 간격(px)
+
+  function fitPlayerModalCourt() {
+    if (!modalCourt || !modalHero || !playerModal || !playerModal.classList.contains('active')) return;
+    ['scale', 'margin-top', 'margin-bottom'].forEach(prop => modalHero.style.removeProperty(prop));
+
+    const courtHeight = modalCourt.clientHeight;
+    let guideSpace = 0;
+    if (modalGuide && modalGuide.offsetParent !== null) {
+      // +4px: 소수점 반올림으로 코트 하단 라인에 걸치지 않도록 여유
+      guideSpace = modalGuide.offsetHeight + parseFloat(getComputedStyle(modalGuide).marginTop || 0) + 4;
+    }
+    // 하단 1fr 칸에 스크롤 안내가 들어가야 하므로 위·아래 칸 모두 guideSpace 이상 확보
+    const available = courtHeight - 2 * Math.max(guideSpace, MODAL_COURT_MIN_GAP);
+    const heroHeight = modalHero.offsetHeight;
+
+    if (heroHeight > available && heroHeight > 0) {
+      const zoom = Math.max(0.3, available / heroHeight);
+      // 중심 기준 균일 축소 + 줄어든 만큼 위아래 음수 여백 → 레이아웃 높이도 축소 높이와 일치 (가운데·상하 여백 유지)
+      const shrink = `${(-heroHeight * (1 - zoom) / 2).toFixed(2)}px`;
+      modalHero.style.setProperty('scale', zoom.toFixed(4));
+      modalHero.style.setProperty('margin-top', shrink, 'important');
+      modalHero.style.setProperty('margin-bottom', shrink, 'important');
+    }
+
+    // 레이어 위치(코트 폭 비율 기준) 재적용
+    if (window.FinelaPlayerLayout) window.FinelaPlayerLayout.apply();
+  }
+  window.fitPlayerModalCourt = fitPlayerModalCourt;
+
+  let playerModalFitFrame = null;
+  function schedulePlayerModalFit() {
+    if (playerModalFitFrame) cancelAnimationFrame(playerModalFitFrame);
+    playerModalFitFrame = requestAnimationFrame(fitPlayerModalCourt);
+  }
+  window.addEventListener('resize', schedulePlayerModalFit);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(schedulePlayerModalFit);
 
   // 모달 내 스크롤 이동 헬퍼 함수
   window.scrollToExtraSection = function () {

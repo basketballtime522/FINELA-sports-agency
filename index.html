@@ -606,15 +606,17 @@
 
   <!-- A. 선수 상세 모달 (PLAYER DETAIL MODAL - 전면 개편 1:1 시안) -->
   <div class="player-modal player-detail-screen" id="playerModal">
-    <!-- 농구 코트 전체 백그라운드 레이어 (탑뷰 벡터 코트) -->
-    <div class="modal-court-bg" aria-hidden="true"></div>
-
+    <!--
+      [레이어 시스템] data-layer="id" / data-layer-name="표시 이름"
+      - 각 요소의 위치·크기·삭제 상태는 player-layout.json에 저장되어 모든 선수에게 공통 적용됩니다.
+      - 로컬 미리보기(localhost)에서 '레이어 편집' 버튼으로 편집할 수 있습니다. (player-layout.js)
+    -->
 
     <!-- 모달 좌우 넘김 버튼 (화면 양옆 고정) -->
-    <button class="modal-nav-arrow modal-nav-prev" id="modalNavPrev" title="이전 선수 (왼쪽 화살표)"><i
-        class="fa-solid fa-chevron-left"></i></button>
-    <button class="modal-nav-arrow modal-nav-next" id="modalNavNext" title="다음 선수 (오른쪽 화살표)"><i
-        class="fa-solid fa-chevron-right"></i></button>
+    <button class="modal-nav-arrow modal-nav-prev" id="modalNavPrev" title="이전 선수 (왼쪽 화살표)"
+      data-layer="nav-prev" data-layer-name="이전 선수 버튼"><i class="fa-solid fa-chevron-left"></i></button>
+    <button class="modal-nav-arrow modal-nav-next" id="modalNavNext" title="다음 선수 (오른쪽 화살표)"
+      data-layer="nav-next" data-layer-name="다음 선수 버튼"><i class="fa-solid fa-chevron-right"></i></button>
 
     <div class="player-modal-container">
 
@@ -623,44 +625,51 @@
       <!-- ========================================================== -->
       <div class="modal-screen-profile" id="modalProfileScreen">
 
+        <!-- 농구 코트 영역: 코트 외곽 라인이 이 박스 테두리에 맞춰짐 (가운데 라인 = 화면 중앙, 상하 여백 동일) -->
+        <div class="modal-court" id="modalCourt">
+
         <div class="modal-hero-split">
 
           <!-- 좌측: 역동적 액션 포즈 실사 & 대형 붉은 등번호 & 대형 영문 이름 -->
-          <div class="modal-visual-col">
-            <div class="modal-watermark-number" id="modalWatermarkNum">1</div>
-            <div class="modal-athlete-figure">
-              <img src="assets/detail/athlete_hero_action.jpg" alt="Player Action Hero" class="modal-athlete-img"
+          <!-- 선수 사진 영역: 아래에서 위 순서로 코트배경 → 로고 → 등번호 → 사진 → 텍스트 -->
+          <div class="modal-visual-col" data-layer="visual-col" data-layer-name="좌측: 선수 사진 영역">
+            <div class="modal-photo-court" data-layer="photo-court" data-layer-name="코트배경" aria-hidden="true"></div>
+            <img src="finela-logo.png" alt="FINELA" class="modal-photo-logo" data-layer="photo-logo" data-layer-name="로고">
+            <div class="modal-watermark-number" id="modalWatermarkNum" data-layer="watermark" data-layer-name="등번호">1</div>
+            <div class="modal-athlete-figure" data-layer="athlete-photo" data-layer-name="사진" data-layer-alpha-pick>
+              <img src="assets/detail/athlete_cutout.png" alt="Player Action Hero" class="modal-athlete-img"
                 id="modalPlayerImg">
             </div>
-            <div class="modal-player-header-box">
-              <h2 class="modal-player-name" id="modalPlayerName">SIXNN<br>HMKTATOV</h2>
-              <div class="modal-player-subinfo" id="modalPlayerSubinfo">POINT GUARD | #1</div>
+            <div class="modal-player-header-box" data-layer="name-box" data-layer-name="텍스트">
+              <h2 class="modal-player-name" id="modalPlayerName" data-layer="player-name" data-layer-name="영문 이름">SIXNN<br>HMKTATOV</h2>
+              <div class="modal-player-subinfo" id="modalPlayerSubinfo" data-layer="player-subinfo" data-layer-name="포지션 · 등번호">POINT GUARD | #1</div>
             </div>
           </div>
 
           <!-- 우측: 하이라이트 영상 카드 & 2x2 스탯 & 프로필/뉴스 & 버튼 -->
-          <div class="modal-stats-col">
+          <div class="modal-stats-col" data-layer="stats-col" data-layer-name="우측: 영상 · 스탯 영역">
 
             <!-- 4K 하이라이트 영상 박스 (시안 1:1 일치 - 단일 16:9 영상 플레이어 & 재생 시뮬레이션) -->
-            <div class="modal-video-card" id="modalVideoPlayBtn" role="button" tabindex="0" title="클릭하여 하이라이트 영상 재생">
+            <div class="modal-video-card" id="modalVideoPlayBtn" role="button" tabindex="0" title="클릭하여 하이라이트 영상 재생"
+              data-layer="video" data-layer-name="하이라이트 영상">
               <div class="video-thumb-wrap">
-                <img src="assets/detail/video_highlight_thumb.jpg" alt="Highlight Video"
+                <img src="assets/detail/video_highlight_clean.jpg" alt="Highlight Video"
                   class="modal-video-thumbnail">
               </div>
             </div>
 
             <!-- 중단 2x2 그리드: 좌상(PTS & AST), 우상(PROFILE), 좌하(REB & STL + 버튼), 우하(RECENT NEWS) -->
-            <div class="modal-middle-grid">
+            <div class="modal-middle-grid" data-layer="card-grid" data-layer-name="스탯 · 프로필 카드 묶음">
 
               <!-- 좌측 서브컬럼: 상단(PTS & AST 페어 카드), 하단(REB & STL 페어 카드 + 액션 버튼) -->
               <div class="modal-stats-subcol">
                 <!-- 상단: PTS & AST 2열 페어 카드 -->
-                <div class="stat-metric-card stat-pair-card">
-                  <div class="stat-cell">
+                <div class="stat-metric-card stat-pair-card" data-layer="card-pts-ast" data-layer-name="PTS · AST 카드">
+                  <div class="stat-cell" data-layer="stat-pts" data-layer-name="PTS">
                     <div class="stat-metric-label">PTS</div>
                     <div class="stat-metric-val" id="statPts">22.4</div>
                   </div>
-                  <div class="stat-cell">
+                  <div class="stat-cell" data-layer="stat-ast" data-layer-name="AST">
                     <div class="stat-metric-label">AST</div>
                     <div class="stat-metric-val" id="statAst">8.2</div>
                   </div>
@@ -668,22 +677,24 @@
 
                 <!-- 하단: REB & STL 2열 페어 카드 및 액션 버튼 -->
                 <div class="stat-pair-bottom-group">
-                  <div class="stat-metric-card stat-pair-card">
-                    <div class="stat-cell">
+                  <div class="stat-metric-card stat-pair-card" data-layer="card-reb-stl" data-layer-name="REB · STL 카드">
+                    <div class="stat-cell" data-layer="stat-reb" data-layer-name="REB">
                       <div class="stat-metric-label">REB</div>
                       <div class="stat-metric-val" id="statReb">4.5</div>
                     </div>
-                    <div class="stat-cell">
+                    <div class="stat-cell" data-layer="stat-stl" data-layer-name="STL">
                       <div class="stat-metric-label">STL</div>
                       <div class="stat-metric-val" id="statStl">1.8</div>
                     </div>
                   </div>
 
-                  <div class="modal-action-buttons">
-                    <button class="btn-watch-highlight" id="btnWatchHighlight" onclick="alert('하이라이트 풀 영상 링크로 이동합니다.')">
+                  <div class="modal-action-buttons" data-layer="action-buttons" data-layer-name="버튼 묶음">
+                    <button class="btn-watch-highlight" id="btnWatchHighlight" onclick="alert('하이라이트 풀 영상 링크로 이동합니다.')"
+                      data-layer="btn-highlights" data-layer-name="WATCH HIGHLIGHTS 버튼">
                       WATCH HIGHLIGHTS
                     </button>
-                    <button class="btn-career-stats" id="btnCareerStats" onclick="alert('선수 커리어 상세 기록 PDF를 다운로드합니다.')">
+                    <button class="btn-career-stats" id="btnCareerStats" onclick="alert('선수 커리어 상세 기록 PDF를 다운로드합니다.')"
+                      data-layer="btn-career" data-layer-name="VIEW CAREER STATS 버튼">
                       VIEW CAREER STATS
                     </button>
                   </div>
@@ -692,30 +703,30 @@
 
               <!-- 우측 서브컬럼: 상단(PROFILE), 하단(RECENT NEWS) -->
               <div class="modal-profile-subcol">
-                <div class="profile-spec-card">
-                  <div class="card-mini-title">PROFILE</div>
+                <div class="profile-spec-card" data-layer="card-profile" data-layer-name="PROFILE 카드">
+                  <div class="card-mini-title" data-layer="profile-title" data-layer-name="PROFILE 제목">PROFILE</div>
                   <div class="spec-items-row">
-                    <div class="spec-cell">
+                    <div class="spec-cell" data-layer="spec-height" data-layer-name="HEIGHT">
                       <span class="spec-label">HEIGHT</span>
                       <span class="spec-val" id="specHeight">188CM</span>
                     </div>
-                    <div class="spec-cell">
+                    <div class="spec-cell" data-layer="spec-weight" data-layer-name="WEIGHT">
                       <span class="spec-label">WEIGHT</span>
                       <span class="spec-val" id="specWeight">82KG</span>
                     </div>
-                    <div class="spec-cell">
+                    <div class="spec-cell" data-layer="spec-age" data-layer-name="AGE">
                       <span class="spec-label">AGE</span>
                       <span class="spec-val" id="specAge">25</span>
                     </div>
                   </div>
-                  <div class="spec-team-info" id="specTeam">
+                  <div class="spec-team-info" id="specTeam" data-layer="spec-team" data-layer-name="소속팀">
                     국가대표 · 일라와라 호크스
                   </div>
                 </div>
 
-                <div class="recent-news-card">
-                  <div class="card-mini-title">RECENT NEWS</div>
-                  <div class="news-list" id="modalNewsList">
+                <div class="recent-news-card" data-layer="card-news" data-layer-name="RECENT NEWS 카드">
+                  <div class="card-mini-title" data-layer="news-title" data-layer-name="RECENT NEWS 제목">RECENT NEWS</div>
+                  <div class="news-list" id="modalNewsList" data-layer="news-list" data-layer-name="뉴스 목록">
                     <!-- JS 바인딩: 붉은색 사각 블릿과 텍스트 -->
                   </div>
                 </div>
@@ -728,7 +739,7 @@
         </div>
 
         <!-- 스크롤 다운 안내 가이드 -->
-        <div class="modal-scroll-guide" onclick="scrollToExtraSection()">
+        <div class="modal-scroll-guide" onclick="scrollToExtraSection()" data-layer="scroll-guide" data-layer-name="스크롤 안내">
           <span class="guide-text">SCROLL DOWN FOR ADDITIONAL INFO</span>
           <span class="guide-subtext">방송 활동 및 SNS 피드 보기</span>
           <div class="scroll-mouse-icon">
@@ -737,16 +748,20 @@
           <i class="fa-solid fa-chevron-down guide-arrow"></i>
         </div>
 
+        </div>
+        <!-- /농구 코트 영역 -->
+
       </div>
 
       <!-- ========================================================== -->
       <!-- 2페이지: 선수의 추가 정보 (CF & 방송 활동, SNS 피드)       -->
+      <!-- ※ 농구 코트 배경 없음                                       -->
       <!-- ========================================================== -->
       <div class="modal-extra-section" id="modalExtraSection">
 
         <div class="extra-section-inner">
           <div class="extra-section-header">
-            <h2 class="extra-main-title">02 / ATHLETE ACTIVITIES &amp; MEDIA</h2>
+            <h2 class="extra-main-title" data-layer="extra-title" data-layer-name="02 / ATHLETE ACTIVITIES & MEDIA 제목">02 / ATHLETE ACTIVITIES &amp; MEDIA</h2>
             <!-- 2페이지 상단 우측 X 닫기 버튼 (동일 위치) -->
             <button id="closeDetailBottomBtn" class="close-detail-btn close-detail-bottom-btn" title="닫기 (ROSTER로 돌아가기)"
               aria-label="선수 상세 닫기">
@@ -755,27 +770,27 @@
           </div>
 
           <!-- Commercial & Broadcast 섹션 -->
-          <div class="extra-content-group">
+          <div class="extra-content-group" data-layer="cf-group" data-layer-name="COMMERCIAL & BROADCAST 섹션">
             <div class="extra-group-title-row">
-              <h3 class="extra-group-title">COMMERCIAL &amp; BROADCAST</h3>
-              <span class="extra-group-badge">BRAND AMBASSADOR</span>
+              <h3 class="extra-group-title" data-layer="cf-title" data-layer-name="COMMERCIAL & BROADCAST 제목">COMMERCIAL &amp; BROADCAST</h3>
+              <span class="extra-group-badge" data-layer="cf-badge" data-layer-name="BRAND AMBASSADOR 배지">BRAND AMBASSADOR</span>
             </div>
-            <div class="extra-group-sub">브랜드 앰버서더 및 주요 방송·광고 출연 활동</div>
-            <div class="cf-cards-grid" id="modalCfGrid">
+            <div class="extra-group-sub" data-layer="cf-sub" data-layer-name="광고 · 방송 설명">브랜드 앰버서더 및 주요 방송·광고 출연 활동</div>
+            <div class="cf-cards-grid" id="modalCfGrid" data-layer="cf-grid" data-layer-name="광고 · 방송 카드 목록">
               <!-- JS 바인딩: aspect-video 슬림 다크 카드 그리드 -->
             </div>
           </div>
 
           <!-- Official Social Media 섹션 -->
-          <div class="extra-content-group" style="margin-top: 55px;">
+          <div class="extra-content-group" style="margin-top: 55px;" data-layer="sns-group" data-layer-name="OFFICIAL SOCIAL MEDIA 섹션">
             <div class="extra-group-title-row">
               <div>
-                <h3 class="extra-group-title">OFFICIAL SOCIAL MEDIA</h3>
-                <span class="extra-group-sub" id="instaAccountLabel">선수 공식 인스타그램 피드</span>
+                <h3 class="extra-group-title" data-layer="sns-title" data-layer-name="OFFICIAL SOCIAL MEDIA 제목">OFFICIAL SOCIAL MEDIA</h3>
+                <span class="extra-group-sub" id="instaAccountLabel" data-layer="sns-sub" data-layer-name="인스타그램 설명">선수 공식 인스타그램 피드</span>
               </div>
-              <span class="follow-badge"><i class="fa-brands fa-instagram mr-2"></i>FOLLOW @ATHLETE</span>
+              <span class="follow-badge" data-layer="sns-follow" data-layer-name="FOLLOW 배지"><i class="fa-brands fa-instagram mr-2"></i>FOLLOW @ATHLETE</span>
             </div>
-            <div class="insta-cards-grid" id="modalInstaGrid">
+            <div class="insta-cards-grid" id="modalInstaGrid" data-layer="sns-grid" data-layer-name="인스타그램 카드 목록">
               <!-- JS 바인딩: aspect-square 중앙 인스타그램 아이콘 그리드 -->
             </div>
           </div>
@@ -872,6 +887,8 @@
   <!-- 데이터 및 메인 JS 로드 (순서 중요: finela-data.js -> main.js) -->
   <script src="finela-data.js"></script>
   <script src="main.js"></script>
+  <!-- 선수 상세 페이지 레이어 레이아웃 적용 (player-layout.json) + 로컬 전용 레이어 편집기 -->
+  <script src="player-layout.js"></script>
 
 </body>
 
