@@ -24,6 +24,8 @@
   let coachGroupKey = 'physical';
   let coachIndex = 0;
   let lastFocus = null;
+  let currentView = null;      // 'center' | 'coach' | 'suite' | 'fnb'
+  let returnTo = null;         // 센터 상세 창에서 코치 팝업을 열었을 때: 닫으면 돌아갈 화면 { scroll, index }
 
   const coachGroup = (key) => D.coachGroups.find((g) => g.key === key) || D.coachGroups[0];
 
@@ -103,9 +105,15 @@
     if (cap) cap.textContent = it.caption;
     const cnt = body.querySelector('.svc-gallery-count');
     if (cnt) cnt.textContent = `${gallery.index + 1} / ${n}`;
+    // 선택한 썸네일을 썸네일 줄 가운데로 (줄만 가로로 이동 — 상세 창 전체 스크롤은 건드리지 않음)
+    const strip = body.querySelector('.svc-gallery-thumbs');
     body.querySelectorAll('.svc-thumb').forEach((t, k) => {
       t.classList.toggle('active', k === gallery.index);
-      if (k === gallery.index) t.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'smooth' });
+      if (k === gallery.index && strip) {
+        const sr = strip.getBoundingClientRect();
+        const tr = t.getBoundingClientRect();
+        strip.scrollBy({ left: tr.left - sr.left - (sr.width - tr.width) / 2, behavior: 'smooth' });
+      }
     });
     if (gallery.onChange) gallery.onChange(it, gallery.index);
   }
@@ -279,6 +287,7 @@
     else return;
 
     // 코치는 화면 중앙 팝업, 나머지는 전체화면 상세 창
+    currentView = type;
     modal.classList.toggle('is-popup', type === 'coach');
 
     if (!modal.classList.contains('active')) {
@@ -295,23 +304,44 @@
 
   function close() {
     modal.classList.remove('active');
+    modal.classList.remove('is-popup');
     modal.setAttribute('aria-hidden', 'true');
     document.body.classList.remove('svc-modal-open');
     document.body.style.overflow = '';
     gallery = null;
+    currentView = null;
+    returnTo = null;
     if (lastFocus && lastFocus.focus) lastFocus.focus({ preventScroll: true });
   }
 
-  // 서비스 카드 클릭 / 키보드
+  // 코치 팝업 닫기: 센터 상세 창에서 열었다면 센터 상세 창으로 복귀, 아니면 완전히 닫기
+  function closeOrReturn() {
+    if (currentView === 'coach' && returnTo) {
+      const r = returnTo;
+      returnTo = null;
+      renderCenter();
+      currentView = 'center';
+      modal.classList.remove('is-popup');
+      showGallery(r.index);          // 보던 사진 복원
+      modal.scrollTop = r.scroll;    // 스크롤 위치 복원
+      closeBtn.focus({ preventScroll: true });
+      return;
+    }
+    close();
+  }
+
+  // 서비스 카드 클릭 / 키보드 (서비스 탭 화면에서 직접 열기 — 닫으면 탭 화면으로)
   document.addEventListener('click', (e) => {
     const card = e.target.closest('[data-service-open]');
     if (card && !modal.contains(card)) {
+      returnTo = null;
       open(card.dataset.serviceOpen, card.dataset.coachGroup);
     }
   });
   document.addEventListener('keydown', (e) => {
     if ((e.key === 'Enter' || e.key === ' ') && e.target.matches && e.target.matches('[data-service-open]')) {
       e.preventDefault();
+      returnTo = null;
       open(e.target.dataset.serviceOpen, e.target.dataset.coachGroup);
     }
   });
@@ -320,8 +350,8 @@
   modal.addEventListener('click', (e) => {
     const t = e.target;
     // 바깥 여백 클릭 시 닫기 (팝업은 팝업 카드 바깥 전체가 여백)
-    if (t === modal || (t === body && modal.classList.contains('is-popup'))) return close();
-    if (t.closest('[data-svc-close]')) return close();
+    if (t === modal || (t === body && modal.classList.contains('is-popup'))) return closeOrReturn();
+    if (t.closest('[data-svc-close]')) return closeOrReturn();
     const step = t.closest('[data-gallery-step]');
     if (step) return showGallery(gallery.index + Number(step.dataset.galleryStep));
     const thumb = t.closest('[data-gallery-index]');
@@ -333,7 +363,13 @@
       return;
     }
     const group = t.closest('[data-open-coach-group]');
-    if (group) return open('coach', group.dataset.openCoachGroup);
+    if (group) {
+      // 센터 상세 창에서 연 코치 팝업: 닫으면 이 화면(스크롤·사진 위치 포함)으로 돌아오도록 기억
+      if (currentView === 'center') {
+        returnTo = { scroll: modal.scrollTop, index: gallery ? gallery.index : 0 };
+      }
+      return open('coach', group.dataset.openCoachGroup);
+    }
     const cstep = t.closest('[data-coach-step]');
     if (cstep) return renderCoach(coachGroupKey, coachIndex + Number(cstep.dataset.coachStep));
     const jump = t.closest('[data-coach-jump]');
@@ -344,7 +380,7 @@
 
   window.addEventListener('keydown', (e) => {
     if (!modal.classList.contains('active')) return;
-    if (e.key === 'Escape') { e.preventDefault(); close(); return; }
+    if (e.key === 'Escape') { e.preventDefault(); closeOrReturn(); return; }
     if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
       const dir = e.key === 'ArrowLeft' ? -1 : 1;
       if (gallery) showGallery(gallery.index + dir);
