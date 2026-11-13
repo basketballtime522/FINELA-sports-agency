@@ -4918,12 +4918,12 @@ body.cart-open .scroll-dot-nav {
   /* 위치(left/top)는 즉시 적용, 색·빛만 부드럽게 */
   transition: background 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease !important;
   background: rgba(14, 16, 24, 0.82) !important;
-  border: 1.5px solid rgba(255, 60, 70, 0.9) !important;
+  /* 코트 라인과 비슷한 밝기의 은은한 빨간 라이트 */
+  border: 1px solid rgba(230, 0, 18, 0.5) !important;
   color: #fff !important;
   box-shadow:
-    0 0 10px rgba(230, 0, 18, 0.75),
-    0 0 26px rgba(230, 0, 18, 0.4),
-    inset 0 0 8px rgba(230, 0, 18, 0.35) !important;
+    0 0 8px rgba(230, 0, 18, 0.28),
+    0 0 18px rgba(230, 0, 18, 0.12) !important;
 }
 
 .player-modal .modal-nav-arrow:hover {
@@ -5044,4 +5044,162 @@ body.cart-open .scroll-dot-nav {
   border: 1px solid rgba(230, 0, 18, 0.75) !important;
   backdrop-filter: blur(10px) !important;
   -webkit-backdrop-filter: blur(10px) !important;
+}
+
+/* ==============================================================================
+   선수 상세 2페이지 (COMMERCIAL & BROADCAST / OFFICIAL SOCIAL MEDIA)
+   - '02 / ATHLETE ACTIVITIES & MEDIA' 대제목 삭제 → 섹션 제목을 크게, 빨간색으로
+   - 한글 설명 문구 가독성 강화 (크기·밝기·굵기)
+   - 카드 목록은 가로 한 줄 트랙: 넘칠 때만 섹션 전용 '‹ ›' 버튼 표시
+   ============================================================================== */
+/* 2페이지로 이동했을 때 첫 섹션 제목이 상단 메뉴바에 가려지지 않도록 */
+.player-modal .modal-extra-section {
+  scroll-margin-top: var(--header-height);
+}
+
+.player-modal .extra-content-group {
+  margin: 0 0 clamp(44px, 6vh, 64px) 0 !important;
+}
+
+.player-modal .extra-group-title-row {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: flex-end !important;
+  gap: 24px !important;
+  margin-bottom: 22px !important;
+}
+
+.player-modal .extra-group-heading {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.player-modal .extra-group-title {
+  font-family: var(--font-display) !important;
+  font-size: clamp(30px, 3.4vw, 46px) !important;
+  font-weight: 700 !important;
+  line-height: 1.05 !important;
+  letter-spacing: 1.5px !important;
+  color: #e8262a !important;
+  text-shadow: 0 0 22px rgba(230, 0, 18, 0.35) !important;
+  margin: 0 !important;
+}
+
+.player-modal .extra-group-sub {
+  display: block !important;
+  font-size: clamp(15px, 1.15vw, 18px) !important;
+  font-weight: 500 !important;
+  line-height: 1.5 !important;
+  letter-spacing: 0.2px !important;
+  color: #d9dde6 !important;
+  margin: 0 !important;
+}
+
+.player-modal .extra-group-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex: none;
+}
+
+/* 섹션 넘김 버튼 (화면 양옆 '다음 선수' 버튼과 구분되는 작은 버튼) */
+.extra-carousel-nav {
+  display: flex;
+  gap: 8px;
+}
+
+.extra-carousel-nav[hidden] {
+  display: none !important;
+}
+
+.extra-carousel-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(20, 20, 26, 0.7);
+  color: #fff;
+  font-size: 13px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease, opacity 0.2s ease;
+}
+
+.extra-carousel-btn:hover:not(:disabled) {
+  background: rgba(230, 0, 18, 0.25);
+  border-color: rgba(230, 0, 18, 0.8);
+}
+
+.extra-carousel-btn:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+/* 카드 목록: 가로 한 줄 트랙 (기존 열 개수 그대로 한 화면에 보이고, 더 많으면 가로로 넘김) */
+.player-modal .extra-carousel-track {
+  display: grid !important;
+  grid-template-columns: none !important;
+  grid-auto-flow: column !important;
+  overflow-x: auto !important;
+  overflow-y: visible !important;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  padding: 6px 0 10px !important;
+}
+
+.player-modal .extra-carousel-track::-webkit-scrollbar {
+  display: none;
+}
+
+.player-modal .extra-carousel-track > * {
+  scroll-snap-align: start;
+}
+
+.player-modal .cf-cards-grid.extra-carousel-track {
+  gap: 24px !important;
+  grid-auto-columns: calc((100% - 2 * 24px) / 3) !important;
+}
+
+.player-modal .insta-cards-grid.extra-carousel-track {
+  gap: 20px !important;
+  grid-auto-columns: calc((100% - 3 * 20px) / 4) !important;
+}
+
+/* 선수 전환 안내 (2페이지에서 다음 선수로 넘어갈 때) */
+.player-switch-toast {
+  position: fixed;
+  left: 50%;
+  top: calc(var(--header-height) + 18px);
+  transform: translate(-50%, -8px);
+  z-index: 5600;
+  padding: 10px 22px;
+  border-radius: 999px;
+  background: rgba(14, 14, 18, 0.88);
+  border: 1px solid rgba(230, 0, 18, 0.55);
+  box-shadow: 0 0 18px rgba(230, 0, 18, 0.3);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: #fff;
+  font-family: var(--font-display);
+  font-size: 16px;
+  letter-spacing: 1px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.player-switch-toast b {
+  color: #ff3341;
+  margin-right: 10px;
+}
+
+.player-switch-toast.show {
+  opacity: 1;
+  transform: translate(-50%, 0);
 }

@@ -768,38 +768,50 @@
       <div class="modal-extra-section" id="modalExtraSection">
 
         <div class="extra-section-inner">
-          <div class="extra-section-header">
-            <h2 class="extra-main-title" data-layer="extra-title" data-layer-name="02 / ATHLETE ACTIVITIES & MEDIA 제목">02 / ATHLETE ACTIVITIES &amp; MEDIA</h2>
-            <!-- 2페이지 상단 우측 X 닫기 버튼 (동일 위치) -->
-            <button id="closeDetailBottomBtn" class="close-detail-btn close-detail-bottom-btn" title="닫기 (ROSTER로 돌아가기)"
-              aria-label="선수 상세 닫기">
-              <i class="fa-solid fa-xmark"></i>
-            </button>
-          </div>
+
+          <!--
+            각 섹션 카드 목록은 가로 한 줄 트랙.
+            카드가 한 화면에 다 들어가면 '‹ ›' 섹션 넘김 버튼은 자동으로 숨겨짐 (main.js updateExtraCarouselNav)
+            ※ 화면 양옆의 큰 좌우 버튼은 항상 '다음 선수' 이동 전용
+          -->
 
           <!-- Commercial & Broadcast 섹션 -->
           <div class="extra-content-group" data-layer="cf-group" data-layer-name="COMMERCIAL & BROADCAST 섹션">
             <div class="extra-group-title-row">
-              <h3 class="extra-group-title" data-layer="cf-title" data-layer-name="COMMERCIAL & BROADCAST 제목">COMMERCIAL &amp; BROADCAST</h3>
-              <span class="extra-group-badge" data-layer="cf-badge" data-layer-name="BRAND AMBASSADOR 배지">BRAND AMBASSADOR</span>
+              <div class="extra-group-heading">
+                <h3 class="extra-group-title" data-layer="cf-title" data-layer-name="COMMERCIAL & BROADCAST 제목">COMMERCIAL &amp; BROADCAST</h3>
+                <div class="extra-group-sub" data-layer="cf-sub" data-layer-name="광고 · 방송 설명">브랜드 앰버서더 및 주요 방송·광고 출연 활동</div>
+              </div>
+              <div class="extra-group-actions">
+                <span class="extra-group-badge" data-layer="cf-badge" data-layer-name="BRAND AMBASSADOR 배지">BRAND AMBASSADOR</span>
+                <div class="extra-carousel-nav" data-carousel-for="modalCfGrid" data-layer="cf-nav" data-layer-name="광고 · 방송 넘김 버튼" hidden>
+                  <button type="button" class="extra-carousel-btn" data-dir="-1" aria-label="이전 광고 · 방송"><i class="fa-solid fa-chevron-left"></i></button>
+                  <button type="button" class="extra-carousel-btn" data-dir="1" aria-label="다음 광고 · 방송"><i class="fa-solid fa-chevron-right"></i></button>
+                </div>
+              </div>
             </div>
-            <div class="extra-group-sub" data-layer="cf-sub" data-layer-name="광고 · 방송 설명">브랜드 앰버서더 및 주요 방송·광고 출연 활동</div>
-            <div class="cf-cards-grid" id="modalCfGrid" data-layer="cf-grid" data-layer-name="광고 · 방송 카드 목록">
-              <!-- JS 바인딩: aspect-video 슬림 다크 카드 그리드 -->
+            <div class="cf-cards-grid extra-carousel-track" id="modalCfGrid" data-layer="cf-grid" data-layer-name="광고 · 방송 카드 목록">
+              <!-- JS 바인딩: aspect-video 슬림 다크 카드 -->
             </div>
           </div>
 
           <!-- Official Social Media 섹션 -->
-          <div class="extra-content-group" style="margin-top: 55px;" data-layer="sns-group" data-layer-name="OFFICIAL SOCIAL MEDIA 섹션">
+          <div class="extra-content-group" data-layer="sns-group" data-layer-name="OFFICIAL SOCIAL MEDIA 섹션">
             <div class="extra-group-title-row">
-              <div>
+              <div class="extra-group-heading">
                 <h3 class="extra-group-title" data-layer="sns-title" data-layer-name="OFFICIAL SOCIAL MEDIA 제목">OFFICIAL SOCIAL MEDIA</h3>
-                <span class="extra-group-sub" id="instaAccountLabel" data-layer="sns-sub" data-layer-name="인스타그램 설명">선수 공식 인스타그램 피드</span>
+                <div class="extra-group-sub" id="instaAccountLabel" data-layer="sns-sub" data-layer-name="인스타그램 설명">선수 공식 인스타그램 피드</div>
               </div>
-              <span class="follow-badge" data-layer="sns-follow" data-layer-name="FOLLOW 배지"><i class="fa-brands fa-instagram mr-2"></i>FOLLOW @ATHLETE</span>
+              <div class="extra-group-actions">
+                <span class="follow-badge" data-layer="sns-follow" data-layer-name="FOLLOW 배지"><i class="fa-brands fa-instagram mr-2"></i>FOLLOW @ATHLETE</span>
+                <div class="extra-carousel-nav" data-carousel-for="modalInstaGrid" data-layer="sns-nav" data-layer-name="인스타그램 넘김 버튼" hidden>
+                  <button type="button" class="extra-carousel-btn" data-dir="-1" aria-label="이전 게시물"><i class="fa-solid fa-chevron-left"></i></button>
+                  <button type="button" class="extra-carousel-btn" data-dir="1" aria-label="다음 게시물"><i class="fa-solid fa-chevron-right"></i></button>
+                </div>
+              </div>
             </div>
-            <div class="insta-cards-grid" id="modalInstaGrid" data-layer="sns-grid" data-layer-name="인스타그램 카드 목록">
-              <!-- JS 바인딩: aspect-square 중앙 인스타그램 아이콘 그리드 -->
+            <div class="insta-cards-grid extra-carousel-track" id="modalInstaGrid" data-layer="sns-grid" data-layer-name="인스타그램 카드 목록">
+              <!-- JS 바인딩: aspect-square 중앙 인스타그램 아이콘 카드 -->
             </div>
           </div>
 
@@ -896,6 +908,7 @@
   <script src="finela-data.js"></script>
   <script src="main.js"></script>
   <!-- 선수 상세 페이지 레이어 레이아웃 적용 (player-layout.json) + 로컬 전용 레이어 편집기 -->
+  <script src="player-layout.data.js"></script>
   <script src="player-layout.js"></script>
 
 </body>

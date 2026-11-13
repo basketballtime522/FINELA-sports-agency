@@ -96,15 +96,33 @@
     if (changed && typeof window.fitPlayerModalCourt === 'function') window.fitPlayerModalCourt();
   }
 
+  // 레이아웃 불러오기
+  //  1순위: player-layout.json (서버로 열었을 때 — 항상 최신)
+  //  2순위: player-layout.data.js 가 넣어둔 window.FINELA_PLAYER_LAYOUT
+  //         (index.html 파일을 직접 열면(file://) 브라우저 보안 규칙상 JSON을 읽을 수 없으므로 대체 사용)
+  function useEmbeddedLayout() {
+    const embedded = window.FINELA_PLAYER_LAYOUT;
+    if (embedded && typeof embedded === 'object' && embedded.layers) {
+      layout = { version: 1, layers: JSON.parse(JSON.stringify(embedded.layers)) };
+    }
+  }
+
   function loadLayout() {
+    if (location.protocol === 'file:') {
+      useEmbeddedLayout();
+      applyAndRefit();
+      return Promise.resolve();
+    }
     return fetch(LAYOUT_URL, { cache: 'no-store' })
       .then((r) => (r.ok ? r.json() : null))
       .then((json) => {
         if (json && typeof json === 'object' && json.layers) {
           layout = { version: 1, layers: json.layers };
+        } else {
+          useEmbeddedLayout();
         }
       })
-      .catch(() => { /* 파일이 없으면 기본 배치 사용 */ })
+      .catch(useEmbeddedLayout)
       .then(applyAndRefit);
   }
 

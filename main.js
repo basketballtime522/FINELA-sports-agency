@@ -264,6 +264,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const p = PLAYERS_DATA[index];
     if (!p) return;
 
+    // 이미 열린 상세 페이지에서 다른 선수로 넘어가는 경우인지,
+    // 그리고 2페이지(광고·방송 / SNS)를 보고 있었는지 확인 → 2페이지면 그 위치 유지
+    const wasOpen = playerModal.classList.contains('active');
+    const extraSectionEl = document.getElementById('modalExtraSection');
+    const stayOnExtraPage = wasOpen && extraSectionEl &&
+      playerModal.scrollTop >= extraSectionEl.offsetTop - window.innerHeight * 0.5;
+
     // 모달 데이터 바인딩: 대형 등번호 워터마크
     const watermarkEl = document.getElementById('modalWatermarkNum');
     if (watermarkEl) watermarkEl.innerText = p.number;
@@ -371,14 +378,77 @@ document.addEventListener('DOMContentLoaded', () => {
       counterEl.innerText = `ATHLETE ${String(index + 1).padStart(2, '0')} / ${String(PLAYERS_DATA.length).padStart(2, '0')}`;
     }
 
-    // 모달 노출 및 스크롤 최상단(1페이지) 리셋
+    // 모달 노출: 처음 열 때·1페이지에서 넘길 때는 맨 위(1페이지), 2페이지에서 넘길 때는 2페이지 유지
     playerModal.classList.add('active');
-      playerModal.scrollTop = 0;
-      document.body.style.overflow = 'hidden';
-      document.body.classList.add('modal-open');
+    if (!stayOnExtraPage) playerModal.scrollTop = 0;
+    document.body.style.overflow = 'hidden';
+    document.body.classList.add('modal-open');
+
+    // 섹션 카드 목록은 새 선수 기준 처음부터
+    document.querySelectorAll('#playerModal .extra-carousel-track').forEach((track) => {
+      track.scrollTo({ left: 0, behavior: 'instant' });
+    });
+    requestAnimationFrame(updateExtraCarouselNav);
+
+    // 다른 선수로 넘어갈 때 어떤 선수인지 잠깐 안내
+    if (wasOpen) showPlayerSwitchToast(p);
 
     schedulePlayerModalFit();
   }
+
+  // ----------------------------------------------------------------------------
+  // 4-2. 선수 전환 안내 토스트 (예: #36 EDDIE DANIEL)
+  // ----------------------------------------------------------------------------
+  const playerSwitchToast = document.createElement('div');
+  playerSwitchToast.className = 'player-switch-toast';
+  playerSwitchToast.setAttribute('role', 'status');
+  playerSwitchToast.setAttribute('aria-live', 'polite');
+  document.body.appendChild(playerSwitchToast);
+  let playerSwitchToastTimer = null;
+
+  function showPlayerSwitchToast(p) {
+    playerSwitchToast.textContent = '';
+    const num = document.createElement('b');
+    num.textContent = `#${p.number}`;
+    playerSwitchToast.append(num, p.nameEn.toUpperCase());
+    playerSwitchToast.classList.add('show');
+    clearTimeout(playerSwitchToastTimer);
+    playerSwitchToastTimer = setTimeout(() => playerSwitchToast.classList.remove('show'), 1600);
+  }
+
+  // ----------------------------------------------------------------------------
+  // 4-3. 2페이지 섹션별 카드 넘김 (화면 양옆 큰 버튼은 '다음 선수' 전용, 이 버튼은 섹션 카드 전용)
+  //  - 카드가 한 줄에 다 보이면 버튼 숨김, 넘칠 때만 표시
+  // ----------------------------------------------------------------------------
+  const extraCarouselNavs = document.querySelectorAll('#playerModal .extra-carousel-nav');
+
+  function updateExtraCarouselNav() {
+    extraCarouselNavs.forEach((nav) => {
+      const track = document.getElementById(nav.dataset.carouselFor);
+      if (!track) return;
+      const maxScroll = track.scrollWidth - track.clientWidth;
+      nav.hidden = maxScroll <= 2;
+      const [prevBtn, nextBtn] = nav.querySelectorAll('.extra-carousel-btn');
+      if (prevBtn) prevBtn.disabled = track.scrollLeft <= 2;
+      if (nextBtn) nextBtn.disabled = track.scrollLeft >= maxScroll - 2;
+    });
+  }
+
+  extraCarouselNavs.forEach((nav) => {
+    const track = document.getElementById(nav.dataset.carouselFor);
+    if (!track) return;
+    nav.querySelectorAll('.extra-carousel-btn').forEach((btn) => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const card = track.firstElementChild;
+        const gap = parseFloat(getComputedStyle(track).columnGap) || 0;
+        const step = card ? card.getBoundingClientRect().width + gap : track.clientWidth;
+        track.scrollBy({ left: step * Number(btn.dataset.dir), behavior: 'smooth' });
+      });
+    });
+    track.addEventListener('scroll', () => requestAnimationFrame(updateExtraCarouselNav), { passive: true });
+  });
+  window.addEventListener('resize', () => requestAnimationFrame(updateExtraCarouselNav));
 
   // ----------------------------------------------------------------------------
   // 4-1. 선수 상세 1페이지 코트 맞춤 (ROSTER와 동일 기준)
