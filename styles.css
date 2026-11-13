@@ -2222,10 +2222,7 @@ button {
   transition: var(--transition-smooth);
 }
 
-.mgmt-card:hover {
-  border-color: rgba(230, 0, 18, 0.5);
-  background: var(--bg-surface-hover);
-}
+/* 매니저 · 자문단 카드는 클릭 동작이 없으므로 hover 효과 없음 */
 
 .mgmt-icon {
   font-size: 42px;
@@ -5383,8 +5380,9 @@ body.cart-open .scroll-dot-nav {
 
 .svc-modal-close {
   position: fixed;
-  top: 22px;
-  right: 28px;
+  /* 화면 맨 구석이 아니라 콘텐츠(최대 1200px) 오른쪽 끝에 맞춤 */
+  top: 24px;
+  right: max(20px, calc((100vw - 1200px) / 2 - 8px));
   z-index: 2;
   width: 48px;
   height: 48px;
@@ -5924,16 +5922,12 @@ body.cart-open .scroll-dot-nav {
   overflow: hidden;
 }
 
+/* 부대시설 카드는 클릭 동작이 없으므로 hover 확대 없음 */
 .svc-amenity-img img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
-  transition: transform 0.5s ease;
-}
-
-.svc-amenity:hover .svc-amenity-img img {
-  transform: scale(1.05);
 }
 
 .svc-amenity-body {
@@ -6126,6 +6120,156 @@ body.cart-open .scroll-dot-nav {
 
 .svc-staff-info .svc-career li {
   font-size: 13.5px;
+}
+
+/* ------------------------------------------------------------------------------
+   코치 소개 팝업 (화면 중앙)
+   ------------------------------------------------------------------------------ */
+.svc-modal.is-popup {
+  background: rgba(6, 7, 9, 0.82);
+}
+
+.svc-modal.is-popup .svc-modal-close {
+  display: none;
+}
+
+.svc-modal.is-popup .svc-modal-inner {
+  max-width: none;
+  min-height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 96px;
+  box-sizing: border-box;
+}
+
+.svc-popup {
+  position: relative;
+  width: min(1040px, 100%);
+  padding: 34px 44px 26px;
+  border-radius: 18px;
+  background: linear-gradient(180deg, #16171d 0%, #0e0f14 100%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 0 0 1px rgba(230, 0, 18, 0.08), 0 30px 80px rgba(0, 0, 0, 0.6);
+  animation: svcPopupIn 0.28s ease;
+}
+
+@keyframes svcPopupIn {
+  from { opacity: 0; transform: translateY(14px) scale(0.98); }
+  to { opacity: 1; transform: none; }
+}
+
+.svc-popup-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 1px solid rgba(230, 0, 18, 0.5);
+  background: rgba(14, 16, 24, 0.85);
+  color: #fff;
+  font-size: 18px;
+  cursor: pointer;
+  box-shadow: 0 0 8px rgba(230, 0, 18, 0.28);
+  transition: background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.svc-popup-close:hover {
+  background: var(--finela-red, #e60012);
+  box-shadow: 0 0 18px rgba(230, 0, 18, 0.6);
+}
+
+/* 좌우 이동 버튼: 선수 상세 페이지 좌우 버튼과 동일한 모양 (팝업 테두리 위에 걸침) */
+.svc-popup-arrow {
+  position: absolute;
+  top: 50%;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: rgba(14, 16, 24, 0.82);
+  border: 1px solid rgba(230, 0, 18, 0.5);
+  color: #fff;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 2;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 0 8px rgba(230, 0, 18, 0.28), 0 0 18px rgba(230, 0, 18, 0.12);
+  transform: translateY(-50%);
+  transition: background 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+}
+
+.svc-popup-arrow.prev { left: -26px; }
+.svc-popup-arrow.next { right: -26px; }
+
+.svc-popup-arrow:hover {
+  background: var(--finela-red, #e60012);
+  border-color: #ff4d57;
+  box-shadow: 0 0 14px rgba(230, 0, 18, 0.95), 0 0 36px rgba(230, 0, 18, 0.55);
+  transform: translateY(-50%) scale(1.08);
+}
+
+.svc-popup-head {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+  margin-bottom: 22px;
+  padding-right: 56px;
+}
+
+.svc-popup-head .svc-eyebrow {
+  width: 100%;
+  margin-bottom: 0;
+}
+
+.svc-popup-title {
+  font-family: var(--font-display);
+  font-size: 30px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 1px;
+  margin: 0;
+}
+
+.svc-popup-count {
+  padding: 3px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  color: #c4c9d4;
+  font-family: var(--font-display);
+  font-size: 14px;
+  letter-spacing: 1px;
+}
+
+.svc-popup .svc-coach {
+  grid-template-columns: minmax(240px, 330px) 1fr;
+  gap: 40px;
+}
+
+.svc-popup .svc-coach-photo {
+  max-height: min(56vh, 420px);
+}
+
+.svc-popup .svc-coach-name {
+  font-size: 40px;
+}
+
+.svc-popup .svc-coach-quote {
+  margin-top: 18px;
+}
+
+.svc-popup .svc-sub-title {
+  margin-top: 18px;
+}
+
+.svc-popup .svc-coach-dots {
+  justify-content: center;
+  margin-top: 24px;
 }
 
 /* 좁은 화면 (모바일 상세 작업은 추후 일괄 진행) */

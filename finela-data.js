@@ -795,52 +795,114 @@ const SERVICE_DETAILS = {
     ]
   },
 
-  // ---------------------------------------------------------------- 전담 코치진
-  coaches: [
+  // ---------------------------------------------------------------- 전담 코치진 (카테고리별)
+  // 코치 팝업의 좌우 이동은 같은 카테고리 안에서만 이루어집니다.
+  coachGroups: [
     {
+      key: "physical",
       role: "피지컬 트레이닝 코치",
-      name: "강태오",
-      nameEn: "TAEO KANG",
-      title: "수석 피지컬 코치 (Head of Strength & Conditioning)",
-      photo: "assets/services/people/coach_physical.jpg",
-      quote: "강한 몸은 부상을 막는 가장 확실한 기술입니다.",
-      career: [
-        "前 KBL 프로구단 S&C 코치 (7시즌)",
-        "前 남자농구 국가대표팀 피지컬 트레이너 (2022–2024)",
-        "NSCA-CSCS 공인 스트렝스 & 컨디셔닝 전문가",
-        "체육학 석사 — 운동생리학 전공"
-      ],
-      programs: ["맞춤형 웨이트 트레이닝", "수직 점프 · 파워 향상", "가동성 · 유연성 루틴", "부상 예방 · 재활 연계", "시즌 중 컨디션 관리"]
+      coaches: [
+        {
+          name: "강태오", nameEn: "TAEO KANG",
+          title: "수석 피지컬 코치 (Head of Strength & Conditioning)",
+          photo: "assets/services/people/coach_physical.jpg",
+          quote: "강한 몸은 부상을 막는 가장 확실한 기술입니다.",
+          career: ["前 KBL 프로구단 S&C 코치 (7시즌)", "前 남자농구 국가대표팀 피지컬 트레이너 (2022–2024)", "NSCA-CSCS 공인 스트렝스 & 컨디셔닝 전문가", "체육학 석사 — 운동생리학 전공"],
+          programs: ["맞춤형 웨이트 트레이닝", "수직 점프 · 파워 향상", "가동성 · 유연성 루틴", "부상 예방 · 재활 연계", "시즌 중 컨디션 관리"]
+        },
+        {
+          name: "류지환", nameEn: "JIHWAN RYU",
+          title: "스트렝스 코치 (Strength Coach)",
+          photo: "assets/services/people/coach_physical_2.jpg",
+          quote: "기록은 거짓말을 하지 않습니다. 매주 숫자로 성장을 증명합니다.",
+          career: ["前 프로배구 구단 스트렝스 코치 (5시즌)", "NSCA-CSCS · USAW 역도 지도자 자격", "포스 플레이트 기반 근력 평가 프로그램 설계"],
+          programs: ["최대 근력 · 파워 블록 훈련", "올림픽 리프팅 테크닉", "웨이트 기록 관리 · 피드백", "하체 · 코어 강화"]
+        },
+        {
+          name: "서윤아", nameEn: "YUNA SEO",
+          title: "스피드 & 어질리티 코치 (Speed & Agility Coach)",
+          photo: "assets/services/people/coach_physical_3.jpg",
+          quote: "한 발 먼저 움직이는 선수가 경기를 지배합니다.",
+          career: ["前 육상 단거리 국가대표 상비군", "前 대학 농구부 스피드 · 컨디셔닝 코치 (4년)", "레이저 타이밍 기반 스프린트 분석 전문"],
+          programs: ["첫 스텝 · 가속 훈련", "방향 전환 · 사이드 스텝", "점프 착지 메커니즘", "코트 컨디셔닝 인터벌"]
+        },
+        {
+          name: "박도현", nameEn: "DOHYUN PARK",
+          title: "재활 트레이너 · 물리치료사 (Rehab Trainer, PT)",
+          photo: "assets/services/people/coach_physical_4.jpg",
+          quote: "복귀가 목표가 아니라, 다치기 전보다 강해지는 것이 목표입니다.",
+          career: ["물리치료사 면허 · 스포츠재활 석사", "前 정형외과 스포츠재활센터 수석 트레이너 (6년)", "ACL · 발목 부상 선수 복귀 프로그램 120건+"],
+          programs: ["부상 후 단계별 복귀 프로그램", "도수 치료 · 근막 이완", "발목 · 무릎 안정화 훈련", "부상 위험 스크리닝"]
+        },
+        {
+          name: "한지민", nameEn: "JIMIN HAN",
+          title: "모빌리티 & 리커버리 코치 (Mobility & Recovery Coach)",
+          photo: "assets/services/people/coach_physical_5.jpg",
+          quote: "잘 쉬는 것도 훈련입니다. 회복이 다음 경기력을 만듭니다.",
+          career: ["필라테스 · 요가 국제 지도자 자격", "前 프로축구 구단 리커버리 코치 (3시즌)", "수면 · 회복 데이터 기반 컨디셔닝 설계"],
+          programs: ["가동 범위 · 유연성 루틴", "회복일 리커버리 세션", "호흡 · 코어 컨트롤", "수면 · 컨디션 모니터링"]
+        }
+      ]
     },
     {
+      key: "skill",
       role: "스킬 & 전술 트레이너",
-      name: "마이클 정",
-      nameEn: "MICHAEL JUNG",
-      title: "스킬 디벨롭먼트 디렉터 (Skill & Tactics Director)",
-      photo: "assets/services/people/coach_skill.jpg",
-      quote: "좋은 슛은 반복이 아니라 정확한 반복에서 나옵니다.",
-      career: [
-        "前 미국 NCAA Division I 어시스턴트 코치 (5년)",
-        "前 NBA G리그 플레이어 디벨롭먼트 코치",
-        "FIBA 공인 코치 라이선스 Level 3",
-        "국내외 프로 선수 1:1 스킬 트레이닝 400회+"
-      ],
-      programs: ["슈팅 폼 교정 · 영상 분석", "핸들링 · 드리블 콤보", "포지션별 실전 전술", "픽앤롤 · 오프볼 무브", "상대 팀 스카우팅 리포트"]
+      coaches: [
+        {
+          name: "마이클 정", nameEn: "MICHAEL JUNG",
+          title: "스킬 디벨롭먼트 디렉터 (Skill & Tactics Director)",
+          photo: "assets/services/people/coach_skill.jpg",
+          quote: "좋은 슛은 반복이 아니라 정확한 반복에서 나옵니다.",
+          career: ["前 미국 NCAA Division I 어시스턴트 코치 (5년)", "前 NBA G리그 플레이어 디벨롭먼트 코치", "FIBA 공인 코치 라이선스 Level 3", "국내외 프로 선수 1:1 스킬 트레이닝 400회+"],
+          programs: ["슈팅 폼 교정 · 영상 분석", "핸들링 · 드리블 콤보", "포지션별 실전 전술", "픽앤롤 · 오프볼 무브", "상대 팀 스카우팅 리포트"]
+        },
+        {
+          name: "이준호", nameEn: "JUNHO LEE",
+          title: "슈팅 코치 (Shooting Coach)",
+          photo: "assets/services/people/coach_skill_2.jpg",
+          quote: "슛은 손끝이 아니라 발끝에서 시작됩니다.",
+          career: ["前 KBL 프로구단 슈팅 코치 (4시즌)", "前 3x3 농구 국가대표 선수", "슈팅 트래킹 장비 기반 폼 분석 전문"],
+          programs: ["캐치 앤 슛 · 풀업 점퍼", "자유투 루틴 교정", "3점 슛 릴리스 속도 향상", "슈팅 데이터 리포트"]
+        },
+        {
+          name: "에밀리 카터", nameEn: "EMILY CARTER",
+          title: "전술 분석 코치 (Tactical Analyst)",
+          photo: "assets/services/people/coach_skill_3.jpg",
+          quote: "경기는 코트에 서기 전, 영상 속에서 먼저 이깁니다.",
+          career: ["前 WNBA 구단 비디오 코디네이터 (3시즌)", "前 유럽 프로리그 전술 분석관", "시너지 스포츠 데이터 분석 전문가"],
+          programs: ["상대 팀 전술 영상 분석", "포지션별 수비 로테이션", "세트 오펜스 이해", "개인 경기 리뷰 미팅"]
+        }
+      ]
     },
     {
+      key: "mental",
       role: "멘탈 퍼포먼스 코치",
-      name: "한도윤",
-      nameEn: "DOYUN HAN, Ph.D.",
-      title: "스포츠 심리 전문가 (Mental Performance Coach)",
-      photo: "assets/services/people/coach_mental.jpg",
-      quote: "압박감은 피하는 것이 아니라 다루는 것입니다.",
-      career: [
-        "스포츠심리학 박사",
-        "前 국가대표 선수촌 심리 상담 위원",
-        "한국스포츠심리학회 공인 스포츠심리상담사 1급",
-        "프로·국가대표 선수 상담 1,200회기+"
-      ],
-      programs: ["경기 전 루틴 · 집중력 훈련", "슬럼프 · 번아웃 회복 상담", "압박 상황 시뮬레이션", "수면 · 스트레스 관리", "커리어 전환 멘토링"]
+      coaches: [
+        {
+          name: "한도윤", nameEn: "DOYUN HAN, Ph.D.",
+          title: "스포츠 심리 전문가 (Mental Performance Coach)",
+          photo: "assets/services/people/coach_mental.jpg",
+          quote: "압박감은 피하는 것이 아니라 다루는 것입니다.",
+          career: ["스포츠심리학 박사", "前 국가대표 선수촌 심리 상담 위원", "한국스포츠심리학회 공인 스포츠심리상담사 1급", "프로·국가대표 선수 상담 1,200회기+"],
+          programs: ["경기 전 루틴 · 집중력 훈련", "슬럼프 · 번아웃 회복 상담", "압박 상황 시뮬레이션", "수면 · 스트레스 관리", "커리어 전환 멘토링"]
+        },
+        {
+          name: "정수아", nameEn: "SUA JUNG",
+          title: "임상 · 상담 심리사 (Clinical Counselor)",
+          photo: "assets/services/people/coach_mental_2.jpg",
+          quote: "마음이 편해야 몸이 기억한 대로 움직입니다.",
+          career: ["임상심리전문가 · 상담심리 석사", "前 대학병원 스포츠 정신건강 클리닉 상담사", "운동선수 불안 · 수면 장애 상담 600회기+"],
+          programs: ["경기 불안 · 긴장 완화", "부상 후 심리 회복 상담", "수면 · 생활 리듬 관리", "가족 · 대인관계 상담"]
+        },
+        {
+          name: "최재원", nameEn: "JAEWON CHOI",
+          title: "퍼포먼스 & 커리어 멘토 (Performance & Career Mentor)",
+          photo: "assets/services/people/coach_mental_3.jpg",
+          quote: "은퇴 이후까지 설계해야 지금의 경기에 온전히 집중할 수 있습니다.",
+          career: ["前 프로농구 선수 (11시즌) · 구단 프런트 출신", "코칭 심리 국제 자격 (ICF PCC)", "선수 커리어 전환 멘토링 200명+"],
+          programs: ["목표 설정 · 동기 관리", "리더십 · 팀 커뮤니케이션", "미디어 인터뷰 멘탈 트레이닝", "은퇴 후 커리어 설계"]
+        }
+      ]
     }
   ],
 

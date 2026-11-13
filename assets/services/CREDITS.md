@@ -35,5 +35,13 @@
 | people/coach_mental.jpg | photo-1738523686879-cc1fc43b4afd |
 | people/chef.jpg | photo-1583394293214-28ded15ee548 |
 | people/nutritionist.jpg | photo-1585358682246-23acb1561f6b |
+| people/coach_physical_2.jpg | photo-1578924608828-79a71150f711 |
+| people/coach_physical_3.jpg | photo-1434847868581-86e8a2b8e7a3 |
+| people/coach_physical_4.jpg | photo-1701481080490-cb2e7f4fd5f8 |
+| people/coach_physical_5.jpg | photo-1548690312-e3b507d8c110 |
+| people/coach_skill_2.jpg | photo-1597075977139-8dc75509aeb1 |
+| people/coach_skill_3.jpg | photo-1744725845508-054bf3b6d80c |
+| people/coach_mental_2.jpg | photo-1734365294772-2f59212083d3 |
+| people/coach_mental_3.jpg | photo-1636730767840-531d283ccb31 |
 
 원본 주소: `https://images.unsplash.com/<이미지 ID>`

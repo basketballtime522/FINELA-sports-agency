@@ -2,7 +2,8 @@
    FINELA SERVICES 상세 창
    ------------------------------------------------------------------------------
    - [data-service-open="center"]  : 퍼포먼스 센터 (내부 사진 갤러리 + 시설 소개 + 코치진 바로가기)
-   - [data-service-open="coach"]   : 전담 코치 소개 (사진 · 경력 · 담당 트레이닝, 코치 간 이동)
+   - [data-service-open="coach"]   : 전담 코치 소개 팝업 (사진 · 경력 · 담당 트레이닝)
+                                     data-coach-group="physical|skill|mental", 좌우 이동은 같은 카테고리 안에서만
    - [data-service-open="suite"]   : 프라이빗 숙소 (객실 사진 갤러리 + 객실 특징 + 부대시설)
    - [data-service-open="fnb"]     : 맞춤형 식음료 (음식 사진 갤러리 + 메뉴별 영양 성분표 + 셰프 · 영양사)
    데이터: finela-data.js 의 SERVICE_DETAILS
@@ -20,8 +21,11 @@
 
   const D = SERVICE_DETAILS;
   let gallery = null;          // 현재 열린 갤러리 상태 { items, index, onChange }
+  let coachGroupKey = 'physical';
   let coachIndex = 0;
   let lastFocus = null;
+
+  const coachGroup = (key) => D.coachGroups.find((g) => g.key === key) || D.coachGroups[0];
 
   // ---------------------------------------------------------------------------
   // 공통 유틸
@@ -126,54 +130,62 @@
       </div>
       ${sectionTitle('전담 코치진')}
       <div class="svc-coach-mini-grid">
-        ${D.coaches.map((c, i) => `
-          <button type="button" class="svc-coach-mini" data-open-coach="${i}">
-            <img src="${esc(c.photo)}" alt="${esc(c.name)} 코치" loading="lazy">
-            <span class="role">${esc(c.role)}</span>
-            <strong>${esc(c.name)}</strong>
+        ${D.coachGroups.map((g) => `
+          <button type="button" class="svc-coach-mini" data-open-coach-group="${esc(g.key)}">
+            <img src="${esc(g.coaches[0].photo)}" alt="${esc(g.role)}" loading="lazy">
+            <span class="role">${esc(g.role)}</span>
+            <strong>${g.coaches.length}명</strong>
             <span class="more">코치 소개 보기 <i class="fa-solid fa-arrow-right"></i></span>
           </button>`).join('')}
       </div>`;
     setupGallery(d.gallery);
   }
 
-  function renderCoach(i) {
-    const list = D.coaches;
-    coachIndex = (i + list.length) % list.length;
+  // 코치 소개 팝업 (화면 중앙) — 좌우 이동은 같은 카테고리 안에서만
+  function renderCoach(groupKey, i) {
+    const g = coachGroup(groupKey);
+    coachGroupKey = g.key;
+    const list = g.coaches;
+    coachIndex = ((Number(i) || 0) % list.length + list.length) % list.length;
     const c = list[coachIndex];
     gallery = null;
     body.innerHTML = `
-      <header class="svc-head">
-        <div class="svc-eyebrow">PERFORMANCE TRAINING · 전담 코치진</div>
-        <h2 class="svc-title" id="svcModalTitle">${esc(c.role)}</h2>
-      </header>
-      <div class="svc-coach">
-        <div class="svc-coach-photo">
-          <img src="${esc(c.photo)}" alt="${esc(c.name)} 코치">
-        </div>
-        <div class="svc-coach-info">
-          <div class="svc-coach-name">${esc(c.name)} <span>${esc(c.nameEn)}</span></div>
-          <div class="svc-coach-title">${esc(c.title)}</div>
-          <blockquote class="svc-coach-quote">“${esc(c.quote)}”</blockquote>
+      <div class="svc-popup" role="document">
+        <button type="button" class="svc-popup-close" data-svc-close aria-label="닫기"><i class="fa-solid fa-xmark"></i></button>
+        <button type="button" class="svc-popup-arrow prev" data-coach-step="-1" aria-label="이전 코치"><i class="fa-solid fa-chevron-left"></i></button>
+        <button type="button" class="svc-popup-arrow next" data-coach-step="1" aria-label="다음 코치"><i class="fa-solid fa-chevron-right"></i></button>
 
-          <h4 class="svc-sub-title">주요 경력</h4>
-          <ul class="svc-career">
-            ${c.career.map((x) => `<li>${esc(x)}</li>`).join('')}
-          </ul>
+        <header class="svc-popup-head">
+          <div class="svc-eyebrow">PERFORMANCE TRAINING · 전담 코치진</div>
+          <h2 class="svc-popup-title" id="svcModalTitle">${esc(g.role)}</h2>
+          <div class="svc-popup-count">${coachIndex + 1} / ${list.length}</div>
+        </header>
 
-          <h4 class="svc-sub-title">담당 트레이닝</h4>
-          <div class="svc-chips">
-            ${c.programs.map((x) => `<span class="svc-chip">${esc(x)}</span>`).join('')}
+        <div class="svc-coach">
+          <div class="svc-coach-photo">
+            <img src="${esc(c.photo)}" alt="${esc(c.name)} 코치">
+          </div>
+          <div class="svc-coach-info">
+            <div class="svc-coach-name">${esc(c.name)} <span>${esc(c.nameEn)}</span></div>
+            <div class="svc-coach-title">${esc(c.title)}</div>
+            <blockquote class="svc-coach-quote">“${esc(c.quote)}”</blockquote>
+
+            <h4 class="svc-sub-title">주요 경력</h4>
+            <ul class="svc-career">
+              ${c.career.map((x) => `<li>${esc(x)}</li>`).join('')}
+            </ul>
+
+            <h4 class="svc-sub-title">담당 트레이닝</h4>
+            <div class="svc-chips">
+              ${c.programs.map((x) => `<span class="svc-chip">${esc(x)}</span>`).join('')}
+            </div>
           </div>
         </div>
-      </div>
-      <nav class="svc-coach-nav" aria-label="코치 이동">
-        <button type="button" data-coach-step="-1"><i class="fa-solid fa-chevron-left"></i> 이전 코치</button>
-        <div class="svc-coach-dots">
-          ${list.map((x, k) => `<button type="button" class="${k === coachIndex ? 'active' : ''}" data-open-coach="${k}" aria-label="${esc(x.role)}"></button>`).join('')}
+
+        <div class="svc-coach-dots" aria-label="${esc(g.role)} 코치 목록">
+          ${list.map((x, k) => `<button type="button" class="${k === coachIndex ? 'active' : ''}" data-coach-jump="${k}" aria-label="${esc(x.name)}"></button>`).join('')}
         </div>
-        <button type="button" data-coach-step="1">다음 코치 <i class="fa-solid fa-chevron-right"></i></button>
-      </nav>`;
+      </div>`;
   }
 
   function renderSuite() {
@@ -259,12 +271,15 @@
   // ---------------------------------------------------------------------------
   // 열기 / 닫기
   // ---------------------------------------------------------------------------
-  function open(type, index) {
+  function open(type, arg) {
     if (type === 'center') renderCenter();
-    else if (type === 'coach') renderCoach(Number(index) || 0);
+    else if (type === 'coach') renderCoach(arg, 0);
     else if (type === 'suite') renderSuite();
     else if (type === 'fnb') renderFnb();
     else return;
+
+    // 코치는 화면 중앙 팝업, 나머지는 전체화면 상세 창
+    modal.classList.toggle('is-popup', type === 'coach');
 
     if (!modal.classList.contains('active')) {
       lastFocus = document.activeElement;
@@ -274,7 +289,8 @@
       document.body.style.overflow = 'hidden';
     }
     modal.scrollTop = 0;
-    closeBtn.focus({ preventScroll: true });
+    const focusTarget = modal.classList.contains('is-popup') ? body.querySelector('[data-svc-close]') : closeBtn;
+    if (focusTarget) focusTarget.focus({ preventScroll: true });
   }
 
   function close() {
@@ -290,20 +306,22 @@
   document.addEventListener('click', (e) => {
     const card = e.target.closest('[data-service-open]');
     if (card && !modal.contains(card)) {
-      open(card.dataset.serviceOpen, card.dataset.coachIndex);
+      open(card.dataset.serviceOpen, card.dataset.coachGroup);
     }
   });
   document.addEventListener('keydown', (e) => {
     if ((e.key === 'Enter' || e.key === ' ') && e.target.matches && e.target.matches('[data-service-open]')) {
       e.preventDefault();
-      open(e.target.dataset.serviceOpen, e.target.dataset.coachIndex);
+      open(e.target.dataset.serviceOpen, e.target.dataset.coachGroup);
     }
   });
 
   // 상세 창 내부 동작
   modal.addEventListener('click', (e) => {
     const t = e.target;
-    if (t === modal) return close(); // 바깥 여백 클릭
+    // 바깥 여백 클릭 시 닫기 (팝업은 팝업 카드 바깥 전체가 여백)
+    if (t === modal || (t === body && modal.classList.contains('is-popup'))) return close();
+    if (t.closest('[data-svc-close]')) return close();
     const step = t.closest('[data-gallery-step]');
     if (step) return showGallery(gallery.index + Number(step.dataset.galleryStep));
     const thumb = t.closest('[data-gallery-index]');
@@ -314,10 +332,12 @@
       if (strip) strip.scrollBy({ left: strip.clientWidth * 0.8 * Number(tstep.dataset.thumbsStep), behavior: 'smooth' });
       return;
     }
-    const coach = t.closest('[data-open-coach]');
-    if (coach) return open('coach', coach.dataset.openCoach);
+    const group = t.closest('[data-open-coach-group]');
+    if (group) return open('coach', group.dataset.openCoachGroup);
     const cstep = t.closest('[data-coach-step]');
-    if (cstep) return renderCoach(coachIndex + Number(cstep.dataset.coachStep));
+    if (cstep) return renderCoach(coachGroupKey, coachIndex + Number(cstep.dataset.coachStep));
+    const jump = t.closest('[data-coach-jump]');
+    if (jump) return renderCoach(coachGroupKey, Number(jump.dataset.coachJump));
   });
 
   closeBtn.addEventListener('click', close);
@@ -328,7 +348,7 @@
     if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
       const dir = e.key === 'ArrowLeft' ? -1 : 1;
       if (gallery) showGallery(gallery.index + dir);
-      else if (body.querySelector('.svc-coach')) renderCoach(coachIndex + dir);
+      else if (body.querySelector('.svc-coach')) renderCoach(coachGroupKey, coachIndex + dir);
       e.preventDefault();
     }
   });
