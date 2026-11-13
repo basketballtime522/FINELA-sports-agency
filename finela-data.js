@@ -64,6 +64,7 @@ const PLAYERS_DATA = [
     photo: "assets/players/player_1_photo.jpg",
     cardImg: "assets/players/player_1_card.jpg",
     actionHero: "assets/detail/athlete_cutout.png",
+    instagram: "", // 선수 인스타그램 프로필 주소 (예: https://www.instagram.com/아이디/)
     isHighlighted: false,
     tag: "CAPTAIN & SHARPSHOOTER",
     summary: "2026 아시안게임 국가대표 핵심 에이스 · 압도적인 3점슛과 코트 비전",
@@ -72,15 +73,15 @@ const PLAYERS_DATA = [
       "글로벌 스포츠 브랜드 글로벌 캠페인 메인 모델 전격 발탁"
     ],
     commercials: [
-      { title: "스포츠 브랜드 공식 캠페인", tag: "TV CF", img: "assets/media/cf_sports_brand.jpg" },
-      { title: "예능 프로그램 특별 출연", tag: "BROADCAST", img: "assets/media/cf_variety_show.jpg" },
-      { title: "음료 브랜드 앰버서더 활동", tag: "COMMERCIAL", img: "assets/media/cf_beverage_brand.jpg" }
+      { title: "스포츠 브랜드 공식 캠페인", tag: "TV CF", img: "assets/media/cf_sports_brand.jpg", url: "" },
+      { title: "예능 프로그램 특별 출연", tag: "BROADCAST", img: "assets/media/cf_variety_show.jpg", url: "" },
+      { title: "음료 브랜드 앰버서더 활동", tag: "COMMERCIAL", img: "assets/media/cf_beverage_brand.jpg", url: "" }
     ],
     instagramPosts: [
-      { img: "assets/media/insta_training.jpg", likes: "14.2K", caption: "새벽 훈련 완료. 항상 다음 경기를 준비합니다." },
-      { img: "assets/media/insta_buzzer_beater.jpg", likes: "28.5K", caption: "Buzzer beater moment. 팬 여러분 감사합니다!" },
-      { img: "assets/media/insta_fashion.jpg", likes: "19.8K", caption: "Game day tunnel fit. #FINELA #OOTD" },
-      { img: "assets/media/insta_trophy.jpg", likes: "35.1K", caption: "With my team. 우리는 하나입니다." }
+      { img: "assets/media/insta_training.jpg", likes: "14.2K", caption: "새벽 훈련 완료. 항상 다음 경기를 준비합니다.", url: "" },
+      { img: "assets/media/insta_buzzer_beater.jpg", likes: "28.5K", caption: "Buzzer beater moment. 팬 여러분 감사합니다!", url: "" },
+      { img: "assets/media/insta_fashion.jpg", likes: "19.8K", caption: "Game day tunnel fit. #FINELA #OOTD", url: "" },
+      { img: "assets/media/insta_trophy.jpg", likes: "35.1K", caption: "With my team. 우리는 하나입니다.", url: "" }
     ]
   },
   {
@@ -102,6 +103,7 @@ const PLAYERS_DATA = [
     photo: "assets/players/player_2_photo.jpg",
     cardImg: "assets/players/player_2_card.jpg",
     actionHero: "assets/detail/athlete_cutout.png",
+    instagram: "", // 선수 인스타그램 프로필 주소 (예: https://www.instagram.com/아이디/)
     isHighlighted: false,
     tag: "POINT FORWARD",
     summary: "정규리그 MVP 출신 · 코트 전체를 지배하는 다재다능한 포인트 포워드",
@@ -110,15 +112,15 @@ const PLAYERS_DATA = [
       "FINELA 독점 미디어 인터뷰 유튜브 조회수 50만 돌파"
     ],
     commercials: [
-      { title: "프리미엄 슈트 브랜드 앰버서더", tag: "TV CF", img: "assets/media/cf_sports_brand.jpg" },
-      { title: "지상파 토크쇼 단독 게스트 출연", tag: "BROADCAST", img: "assets/media/cf_variety_show.jpg" },
-      { title: "스포츠 영양제 공식 모델", tag: "COMMERCIAL", img: "assets/media/cf_beverage_brand.jpg" }
+      { title: "프리미엄 슈트 브랜드 앰버서더", tag: "TV CF", img: "assets/media/cf_sports_brand.jpg", url: "" },
+      { title: "지상파 토크쇼 단독 게스트 출연", tag: "BROADCAST", img: "assets/media/cf_variety_show.jpg", url: "" },
+      { title: "스포츠 영양제 공식 모델", tag: "COMMERCIAL", img: "assets/media/cf_beverage_brand.jpg", url: "" }
     ],
     instagramPosts: [
-      { img: "assets/media/insta_training.jpg", likes: "12.1K", caption: "Focus on the process. 멈추지 않는다." },
-      { img: "assets/media/insta_buzzer_beater.jpg", likes: "22.4K", caption: "승리의 순간. 함께 뛰어준 동료들에게 감사." },
-      { img: "assets/media/insta_fashion.jpg", likes: "18.2K", caption: "Off the court style check." },
-      { img: "assets/media/insta_trophy.jpg", likes: "31.0K", caption: "Gold medal mission begins now." }
+      { img: "assets/media/insta_training.jpg", likes: "12.1K", caption: "Focus on the process. 멈추지 않는다.", url: "" },
+      { img: "assets/media/insta_buzzer_beater.jpg", likes: "22.4K", caption: "승리의 순간. 함께 뛰어준 동료들에게 감사.", url: "" },
+      { img: "assets/media/insta_fashion.jpg", likes: "18.2K", caption: "Off the court style check.", url: "" },
+      { img: "assets/media/insta_trophy.jpg", likes: "31.0K", caption: "Gold medal mission begins now.", url: "" }
     ]
   },
   {
@@ -140,6 +142,7 @@ const PLAYERS_DATA = [
     photo: "assets/players/player_3_photo.jpg",
     cardImg: "assets/players/player_3_card.jpg",
     actionHero: "assets/detail/athlete_cutout.png",
+    instagram: "", // 선수 인스타그램 프로필 주소 (예: https://www.instagram.com/아이디/)
     isHighlighted: false,
     tag: "ELITE PLAYMAKER",
     summary: "강력한 파워와 스텝백 · 승부처에서 폭발하는 클러치 능력자",
@@ -148,15 +151,15 @@ const PLAYERS_DATA = [
       "FA 대형 계약 체결 완료 협상 성공"
     ],
     commercials: [
-      { title: "글로벌 헤드폰 브랜드 캠페인", tag: "TV CF", img: "assets/media/cf_sports_brand.jpg" },
-      { title: "스포츠 다큐멘터리 '코트의 지배자'", tag: "BROADCAST", img: "assets/media/cf_variety_show.jpg" },
-      { title: "에너지 드링크 메인 모델", tag: "COMMERCIAL", img: "assets/media/cf_beverage_brand.jpg" }
+      { title: "글로벌 헤드폰 브랜드 캠페인", tag: "TV CF", img: "assets/media/cf_sports_brand.jpg", url: "" },
+      { title: "스포츠 다큐멘터리 '코트의 지배자'", tag: "BROADCAST", img: "assets/media/cf_variety_show.jpg", url: "" },
+      { title: "에너지 드링크 메인 모델", tag: "COMMERCIAL", img: "assets/media/cf_beverage_brand.jpg", url: "" }
     ],
     instagramPosts: [
-      { img: "assets/media/insta_training.jpg", likes: "9.8K", caption: "드리블 디테일 훈련. 매일 조금씩 더 강하게." },
-      { img: "assets/media/insta_buzzer_beater.jpg", likes: "18.1K", caption: "앤드원! 팬들의 함성이 만든 득점." },
-      { img: "assets/media/insta_fashion.jpg", likes: "14.5K", caption: "Tunnel walk in all black." },
-      { img: "assets/media/insta_trophy.jpg", likes: "25.3K", caption: "팀과 함께 최고의 결과를 만들겠습니다." }
+      { img: "assets/media/insta_training.jpg", likes: "9.8K", caption: "드리블 디테일 훈련. 매일 조금씩 더 강하게.", url: "" },
+      { img: "assets/media/insta_buzzer_beater.jpg", likes: "18.1K", caption: "앤드원! 팬들의 함성이 만든 득점.", url: "" },
+      { img: "assets/media/insta_fashion.jpg", likes: "14.5K", caption: "Tunnel walk in all black.", url: "" },
+      { img: "assets/media/insta_trophy.jpg", likes: "25.3K", caption: "팀과 함께 최고의 결과를 만들겠습니다.", url: "" }
     ]
   },
   {
@@ -178,6 +181,7 @@ const PLAYERS_DATA = [
     photo: "assets/players/player_4_photo.jpg",
     cardImg: "assets/players/player_4_card.jpg",
     actionHero: "assets/detail/athlete_cutout.png",
+    instagram: "", // 선수 인스타그램 프로필 주소 (예: https://www.instagram.com/아이디/)
     isHighlighted: false,
     tag: "SCORING MACHINE",
     summary: "KBL 최고 수준의 득점력과 어시스트를 겸비한 차세대 백코트 리더",
@@ -186,15 +190,15 @@ const PLAYERS_DATA = [
       "국가대표팀 주전 포인트가드 낙점"
     ],
     commercials: [
-      { title: "농구 전문 용품 글로벌 캠페인", tag: "TV CF", img: "assets/media/cf_sports_brand.jpg" },
-      { title: "스포츠 뉴스 인터뷰 스페셜 코너", tag: "BROADCAST", img: "assets/media/cf_variety_show.jpg" },
-      { title: "이온 음료 공식 파트너십", tag: "COMMERCIAL", img: "assets/media/cf_beverage_brand.jpg" }
+      { title: "농구 전문 용품 글로벌 캠페인", tag: "TV CF", img: "assets/media/cf_sports_brand.jpg", url: "" },
+      { title: "스포츠 뉴스 인터뷰 스페셜 코너", tag: "BROADCAST", img: "assets/media/cf_variety_show.jpg", url: "" },
+      { title: "이온 음료 공식 파트너십", tag: "COMMERCIAL", img: "assets/media/cf_beverage_brand.jpg", url: "" }
     ],
     instagramPosts: [
-      { img: "assets/media/insta_training.jpg", likes: "11.5K", caption: "슈팅 1000개 챌린지 성공." },
-      { img: "assets/media/insta_buzzer_beater.jpg", likes: "26.0K", caption: "클러치 타임. 믿어주셔서 감사합니다." },
-      { img: "assets/media/insta_fashion.jpg", likes: "17.3K", caption: "비시즌 화보 촬영 현장 스케치." },
-      { img: "assets/media/insta_trophy.jpg", likes: "28.9K", caption: "국가대표의 자부심을 가슴에 품고." }
+      { img: "assets/media/insta_training.jpg", likes: "11.5K", caption: "슈팅 1000개 챌린지 성공.", url: "" },
+      { img: "assets/media/insta_buzzer_beater.jpg", likes: "26.0K", caption: "클러치 타임. 믿어주셔서 감사합니다.", url: "" },
+      { img: "assets/media/insta_fashion.jpg", likes: "17.3K", caption: "비시즌 화보 촬영 현장 스케치.", url: "" },
+      { img: "assets/media/insta_trophy.jpg", likes: "28.9K", caption: "국가대표의 자부심을 가슴에 품고.", url: "" }
     ]
   },
   {
@@ -216,6 +220,7 @@ const PLAYERS_DATA = [
     photo: "assets/players/player_5_photo.jpg",
     cardImg: "assets/players/player_5_card.jpg",
     actionHero: "assets/detail/athlete_cutout.png",
+    instagram: "", // 선수 인스타그램 프로필 주소 (예: https://www.instagram.com/아이디/)
     isHighlighted: false,
     tag: "3PT SPECIALIST",
     summary: "신인 3점슛 성공 역대 1위 기록 보유자 · 빈틈없는 캐치앤슛 슈터",
@@ -224,15 +229,15 @@ const PLAYERS_DATA = [
       "FINELA 스킬 트레이닝 캠프 우수 선수 선정"
     ],
     commercials: [
-      { title: "아이웨어 스포츠 선글라스 모델", tag: "TV CF", img: "assets/media/cf_sports_brand.jpg" },
-      { title: "청춘 스포츠 예능 프로그램 게스트", tag: "BROADCAST", img: "assets/media/cf_variety_show.jpg" },
-      { title: "기능성 프로틴 브랜드 앰버서더", tag: "COMMERCIAL", img: "assets/media/cf_beverage_brand.jpg" }
+      { title: "아이웨어 스포츠 선글라스 모델", tag: "TV CF", img: "assets/media/cf_sports_brand.jpg", url: "" },
+      { title: "청춘 스포츠 예능 프로그램 게스트", tag: "BROADCAST", img: "assets/media/cf_variety_show.jpg", url: "" },
+      { title: "기능성 프로틴 브랜드 앰버서더", tag: "COMMERCIAL", img: "assets/media/cf_beverage_brand.jpg", url: "" }
     ],
     instagramPosts: [
-      { img: "assets/media/insta_training.jpg", likes: "8.9K", caption: "완벽한 포물선을 만들기 위한 반복 훈련." },
-      { img: "assets/media/insta_buzzer_beater.jpg", likes: "15.4K", caption: "Back to back 3pt! 응원 감사합니다." },
-      { img: "assets/media/insta_fashion.jpg", likes: "12.8K", caption: "Street casual look." },
-      { img: "assets/media/insta_trophy.jpg", likes: "21.0K", caption: "아이치-나고야를 향해 달려갑니다." }
+      { img: "assets/media/insta_training.jpg", likes: "8.9K", caption: "완벽한 포물선을 만들기 위한 반복 훈련.", url: "" },
+      { img: "assets/media/insta_buzzer_beater.jpg", likes: "15.4K", caption: "Back to back 3pt! 응원 감사합니다.", url: "" },
+      { img: "assets/media/insta_fashion.jpg", likes: "12.8K", caption: "Street casual look.", url: "" },
+      { img: "assets/media/insta_trophy.jpg", likes: "21.0K", caption: "아이치-나고야를 향해 달려갑니다.", url: "" }
     ]
   },
   {
@@ -254,6 +259,7 @@ const PLAYERS_DATA = [
     photo: "assets/players/player_6_photo.jpg",
     cardImg: "assets/players/player_6_card.jpg",
     actionHero: "assets/detail/athlete_cutout.png",
+    instagram: "", // 선수 인스타그램 프로필 주소 (예: https://www.instagram.com/아이디/)
     isHighlighted: false,
     tag: "ALL-ROUND FORWARD",
     summary: "골밑과 외곽을 넘나드는 탄탄한 체격과 다재다능한 연결고리 포워드",
@@ -262,15 +268,15 @@ const PLAYERS_DATA = [
       "KBL 올해의 수비 5걸 선정"
     ],
     commercials: [
-      { title: "아웃도어 스포츠 웨어 화보", tag: "TV CF", img: "assets/media/cf_sports_brand.jpg" },
-      { title: "농구 유망주 육성 프로그램 멘토 출연", tag: "BROADCAST", img: "assets/media/cf_variety_show.jpg" },
-      { title: "헬스케어 마사지기 공식 모델", tag: "COMMERCIAL", img: "assets/media/cf_beverage_brand.jpg" }
+      { title: "아웃도어 스포츠 웨어 화보", tag: "TV CF", img: "assets/media/cf_sports_brand.jpg", url: "" },
+      { title: "농구 유망주 육성 프로그램 멘토 출연", tag: "BROADCAST", img: "assets/media/cf_variety_show.jpg", url: "" },
+      { title: "헬스케어 마사지기 공식 모델", tag: "COMMERCIAL", img: "assets/media/cf_beverage_brand.jpg", url: "" }
     ],
     instagramPosts: [
-      { img: "assets/media/insta_training.jpg", likes: "10.2K", caption: "웨이트 트레이닝 세션 완료. 몸 상태 최상." },
-      { img: "assets/media/insta_buzzer_beater.jpg", likes: "17.9K", caption: "코트 위의 허슬 플레이는 언제나 내 몫." },
-      { img: "assets/media/insta_fashion.jpg", likes: "13.6K", caption: "편안한 일상 속 휴식 시간." },
-      { img: "assets/media/insta_trophy.jpg", likes: "24.5K", caption: "대표팀 유니폼의 무게를 잊지 않겠습니다." }
+      { img: "assets/media/insta_training.jpg", likes: "10.2K", caption: "웨이트 트레이닝 세션 완료. 몸 상태 최상.", url: "" },
+      { img: "assets/media/insta_buzzer_beater.jpg", likes: "17.9K", caption: "코트 위의 허슬 플레이는 언제나 내 몫.", url: "" },
+      { img: "assets/media/insta_fashion.jpg", likes: "13.6K", caption: "편안한 일상 속 휴식 시간.", url: "" },
+      { img: "assets/media/insta_trophy.jpg", likes: "24.5K", caption: "대표팀 유니폼의 무게를 잊지 않겠습니다.", url: "" }
     ]
   },
   {
@@ -292,6 +298,7 @@ const PLAYERS_DATA = [
     photo: "assets/players/player_7_photo.jpg",
     cardImg: "assets/players/player_7_card.jpg",
     actionHero: "assets/detail/athlete_cutout.png",
+    instagram: "", // 선수 인스타그램 프로필 주소 (예: https://www.instagram.com/아이디/)
     isHighlighted: false,
     tag: "TALL GUARD",
     summary: "196cm 장신 가드의 강력한 트랜지션 공격과 코트 비전",
@@ -300,15 +307,15 @@ const PLAYERS_DATA = [
       "시즌 최다 리바운드 가드 부문 1위 등극"
     ],
     commercials: [
-      { title: "스마트 러닝화 글로벌 앰버서더", tag: "TV CF", img: "assets/media/cf_sports_brand.jpg" },
-      { title: "스포츠 라디오 스타 초대석", tag: "BROADCAST", img: "assets/media/cf_variety_show.jpg" },
-      { title: "프리미엄 미네랄 워터 CF", tag: "COMMERCIAL", img: "assets/media/cf_beverage_brand.jpg" }
+      { title: "스마트 러닝화 글로벌 앰버서더", tag: "TV CF", img: "assets/media/cf_sports_brand.jpg", url: "" },
+      { title: "스포츠 라디오 스타 초대석", tag: "BROADCAST", img: "assets/media/cf_variety_show.jpg", url: "" },
+      { title: "프리미엄 미네랄 워터 CF", tag: "COMMERCIAL", img: "assets/media/cf_beverage_brand.jpg", url: "" }
     ],
     instagramPosts: [
-      { img: "assets/media/insta_training.jpg", likes: "11.1K", caption: "속공 마무리 훈련. 스피드와 정확도." },
-      { img: "assets/media/insta_buzzer_beater.jpg", likes: "20.3K", caption: "원맨 패스트브레이크 덩크!" },
-      { img: "assets/media/insta_fashion.jpg", likes: "16.4K", caption: "Styling with my favorite kicks." },
-      { img: "assets/media/insta_trophy.jpg", likes: "27.2K", caption: "아시안게임 메달을 향해 원팀으로!" }
+      { img: "assets/media/insta_training.jpg", likes: "11.1K", caption: "속공 마무리 훈련. 스피드와 정확도.", url: "" },
+      { img: "assets/media/insta_buzzer_beater.jpg", likes: "20.3K", caption: "원맨 패스트브레이크 덩크!", url: "" },
+      { img: "assets/media/insta_fashion.jpg", likes: "16.4K", caption: "Styling with my favorite kicks.", url: "" },
+      { img: "assets/media/insta_trophy.jpg", likes: "27.2K", caption: "아시안게임 메달을 향해 원팀으로!", url: "" }
     ]
   },
   {
@@ -330,6 +337,7 @@ const PLAYERS_DATA = [
     photo: "assets/players/player_8_photo.jpg",
     cardImg: "assets/players/player_8_card.jpg",
     actionHero: "assets/detail/athlete_cutout.png",
+    instagram: "", // 선수 인스타그램 프로필 주소 (예: https://www.instagram.com/아이디/)
     isHighlighted: false,
     tag: "HIGH FLYER",
     summary: "폭발적인 운동능력과 인유어페이스 덩크 · 대한민국 최고의 탄력 포워드",
@@ -338,15 +346,15 @@ const PLAYERS_DATA = [
       "미국 현지 스킬 트레이너 극찬 및 NBA 서머리그 루머"
     ],
     commercials: [
-      { title: "글로벌 덩크 콘테스트 메인 비주얼", tag: "TV CF", img: "assets/media/cf_sports_brand.jpg" },
-      { title: "해외 스포츠 채널 특집 다큐 방영", tag: "BROADCAST", img: "assets/media/cf_variety_show.jpg" },
-      { title: "피트니스 리커버리 장비 전속 모델", tag: "COMMERCIAL", img: "assets/media/cf_beverage_brand.jpg" }
+      { title: "글로벌 덩크 콘테스트 메인 비주얼", tag: "TV CF", img: "assets/media/cf_sports_brand.jpg", url: "" },
+      { title: "해외 스포츠 채널 특집 다큐 방영", tag: "BROADCAST", img: "assets/media/cf_variety_show.jpg", url: "" },
+      { title: "피트니스 리커버리 장비 전속 모델", tag: "COMMERCIAL", img: "assets/media/cf_beverage_brand.jpg", url: "" }
     ],
     instagramPosts: [
-      { img: "assets/media/insta_training.jpg", likes: "18.5K", caption: "Vertical jump training day. 더 높이." },
-      { img: "assets/media/insta_buzzer_beater.jpg", likes: "42.0K", caption: "Windmill dunk in transition!" },
-      { img: "assets/media/insta_fashion.jpg", likes: "25.1K", caption: "Seattle vibe. #FINELA" },
-      { img: "assets/media/insta_trophy.jpg", likes: "48.9K", caption: "태극마크를 달고 최고의 퍼포먼스를 약속합니다." }
+      { img: "assets/media/insta_training.jpg", likes: "18.5K", caption: "Vertical jump training day. 더 높이.", url: "" },
+      { img: "assets/media/insta_buzzer_beater.jpg", likes: "42.0K", caption: "Windmill dunk in transition!", url: "" },
+      { img: "assets/media/insta_fashion.jpg", likes: "25.1K", caption: "Seattle vibe. #FINELA", url: "" },
+      { img: "assets/media/insta_trophy.jpg", likes: "48.9K", caption: "태극마크를 달고 최고의 퍼포먼스를 약속합니다.", url: "" }
     ]
   },
   {
@@ -368,6 +376,7 @@ const PLAYERS_DATA = [
     photo: "assets/players/player_9_photo.jpg",
     cardImg: "assets/players/player_9_card.jpg",
     actionHero: "assets/detail/athlete_cutout.png",
+    instagram: "", // 선수 인스타그램 프로필 주소 (예: https://www.instagram.com/아이디/)
     isHighlighted: false,
     tag: "RISING STAR",
     summary: "대담한 승부사 기질과 전광석화 같은 스틸 · 차세대 대한민국 넘버원 가드",
@@ -376,15 +385,15 @@ const PLAYERS_DATA = [
       "FINELA 루키 매니지먼트 계약 체결"
     ],
     commercials: [
-      { title: "영 제너레이션 스트릿웨어 캠페인", tag: "TV CF", img: "assets/media/cf_sports_brand.jpg" },
-      { title: "대학 스포츠 스타 특집 토크쇼 출연", tag: "BROADCAST", img: "assets/media/cf_variety_show.jpg" },
-      { title: "에너지 젤 영양 보충제 모델", tag: "COMMERCIAL", img: "assets/media/cf_beverage_brand.jpg" }
+      { title: "영 제너레이션 스트릿웨어 캠페인", tag: "TV CF", img: "assets/media/cf_sports_brand.jpg", url: "" },
+      { title: "대학 스포츠 스타 특집 토크쇼 출연", tag: "BROADCAST", img: "assets/media/cf_variety_show.jpg", url: "" },
+      { title: "에너지 젤 영양 보충제 모델", tag: "COMMERCIAL", img: "assets/media/cf_beverage_brand.jpg", url: "" }
     ],
     instagramPosts: [
-      { img: "assets/media/insta_training.jpg", likes: "9.2K", caption: "선배들과 함께하는 훈련, 배울 점이 너무 많습니다." },
-      { img: "assets/media/insta_buzzer_beater.jpg", likes: "16.8K", caption: "게임 위닝 레이업. 끝까지 포기하지 않았습니다." },
-      { img: "assets/media/insta_fashion.jpg", likes: "11.4K", caption: "Weekend campus look." },
-      { img: "assets/media/insta_trophy.jpg", likes: "23.0K", caption: "더 높은 무대를 향해 멈추지 않고 전진합니다." }
+      { img: "assets/media/insta_training.jpg", likes: "9.2K", caption: "선배들과 함께하는 훈련, 배울 점이 너무 많습니다.", url: "" },
+      { img: "assets/media/insta_buzzer_beater.jpg", likes: "16.8K", caption: "게임 위닝 레이업. 끝까지 포기하지 않았습니다.", url: "" },
+      { img: "assets/media/insta_fashion.jpg", likes: "11.4K", caption: "Weekend campus look.", url: "" },
+      { img: "assets/media/insta_trophy.jpg", likes: "23.0K", caption: "더 높은 무대를 향해 멈추지 않고 전진합니다.", url: "" }
     ]
   },
   {
@@ -406,6 +415,7 @@ const PLAYERS_DATA = [
     photo: "assets/players/player_10_photo.jpg",
     cardImg: "assets/players/player_10_card.jpg",
     actionHero: "assets/detail/athlete_cutout.png",
+    instagram: "", // 선수 인스타그램 프로필 주소 (예: https://www.instagram.com/아이디/)
     isHighlighted: false,
     tag: "PAINT TOWER",
     summary: "풍부한 국제대회 경험과 탄탄한 스크린 · 골밑을 지키는 든든한 빅맨",
@@ -414,15 +424,15 @@ const PLAYERS_DATA = [
       "대표팀 골밑 안정화의 핵심 베테랑으로 활약"
     ],
     commercials: [
-      { title: "프리미엄 남성 헬스케어 브랜드", tag: "TV CF", img: "assets/media/cf_sports_brand.jpg" },
-      { title: "베테랑 스포츠 스타 인터뷰 다큐", tag: "BROADCAST", img: "assets/media/cf_variety_show.jpg" },
-      { title: "관절 케어 건강기능식품 모델", tag: "COMMERCIAL", img: "assets/media/cf_beverage_brand.jpg" }
+      { title: "프리미엄 남성 헬스케어 브랜드", tag: "TV CF", img: "assets/media/cf_sports_brand.jpg", url: "" },
+      { title: "베테랑 스포츠 스타 인터뷰 다큐", tag: "BROADCAST", img: "assets/media/cf_variety_show.jpg", url: "" },
+      { title: "관절 케어 건강기능식품 모델", tag: "COMMERCIAL", img: "assets/media/cf_beverage_brand.jpg", url: "" }
     ],
     instagramPosts: [
-      { img: "assets/media/insta_training.jpg", likes: "7.8K", caption: "베테랑의 무게감. 후배들을 이끌고 솔선수범." },
-      { img: "assets/media/insta_buzzer_beater.jpg", likes: "13.2K", caption: "골밑 블록슛으로 지켜낸 승리." },
-      { img: "assets/media/insta_fashion.jpg", likes: "9.5K", caption: "Family time." },
-      { img: "assets/media/insta_trophy.jpg", likes: "19.8K", caption: "마지막 아시안게임이라는 마음가짐으로." }
+      { img: "assets/media/insta_training.jpg", likes: "7.8K", caption: "베테랑의 무게감. 후배들을 이끌고 솔선수범.", url: "" },
+      { img: "assets/media/insta_buzzer_beater.jpg", likes: "13.2K", caption: "골밑 블록슛으로 지켜낸 승리.", url: "" },
+      { img: "assets/media/insta_fashion.jpg", likes: "9.5K", caption: "Family time.", url: "" },
+      { img: "assets/media/insta_trophy.jpg", likes: "19.8K", caption: "마지막 아시안게임이라는 마음가짐으로.", url: "" }
     ]
   },
   {
@@ -444,6 +454,7 @@ const PLAYERS_DATA = [
     photo: "assets/players/player_11_photo.jpg",
     cardImg: "assets/players/player_11_card.jpg",
     actionHero: "assets/detail/athlete_cutout.png",
+    instagram: "", // 선수 인스타그램 프로필 주소 (예: https://www.instagram.com/아이디/)
     isHighlighted: false,
     tag: "DUGUMBO / ANCHOR",
     summary: "두목호랑이의 헌신적인 수비와 미드레인지 점퍼 · 팀의 정신적 지주",
@@ -452,15 +463,15 @@ const PLAYERS_DATA = [
       "팬들이 뽑은 가장 투지 넘치는 선수 1위"
     ],
     commercials: [
-      { title: "스포츠 테이핑 & 보호대 공식 모델", tag: "TV CF", img: "assets/media/cf_sports_brand.jpg" },
-      { title: "스포츠 명사 특강 강연 프로그램 출연", tag: "BROADCAST", img: "assets/media/cf_variety_show.jpg" },
-      { title: "정통 스포츠 타월 브랜드 캠페인", tag: "COMMERCIAL", img: "assets/media/cf_beverage_brand.jpg" }
+      { title: "스포츠 테이핑 & 보호대 공식 모델", tag: "TV CF", img: "assets/media/cf_sports_brand.jpg", url: "" },
+      { title: "스포츠 명사 특강 강연 프로그램 출연", tag: "BROADCAST", img: "assets/media/cf_variety_show.jpg", url: "" },
+      { title: "정통 스포츠 타월 브랜드 캠페인", tag: "COMMERCIAL", img: "assets/media/cf_beverage_brand.jpg", url: "" }
     ],
     instagramPosts: [
-      { img: "assets/media/insta_training.jpg", likes: "12.3K", caption: "땀은 배신하지 않는다. 오늘도 묵묵하게." },
-      { img: "assets/media/insta_buzzer_beater.jpg", likes: "24.1K", caption: "리바운드 하나가 승부를 바꿉니다." },
-      { img: "assets/media/insta_fashion.jpg", likes: "15.0K", caption: "Post-game chill." },
-      { img: "assets/media/insta_trophy.jpg", likes: "32.4K", caption: "우리의 목표는 오직 금메달 하나뿐입니다." }
+      { img: "assets/media/insta_training.jpg", likes: "12.3K", caption: "땀은 배신하지 않는다. 오늘도 묵묵하게.", url: "" },
+      { img: "assets/media/insta_buzzer_beater.jpg", likes: "24.1K", caption: "리바운드 하나가 승부를 바꿉니다.", url: "" },
+      { img: "assets/media/insta_fashion.jpg", likes: "15.0K", caption: "Post-game chill.", url: "" },
+      { img: "assets/media/insta_trophy.jpg", likes: "32.4K", caption: "우리의 목표는 오직 금메달 하나뿐입니다.", url: "" }
     ]
   },
   {
@@ -482,6 +493,7 @@ const PLAYERS_DATA = [
     photo: "assets/players/player_12_photo.jpg",
     cardImg: "assets/players/player_12_card.jpg",
     actionHero: "assets/detail/athlete_cutout.png",
+    instagram: "", // 선수 인스타그램 프로필 주소 (예: https://www.instagram.com/아이디/)
     isHighlighted: false,
     tag: "POWER ATHELETE",
     summary: "경이로운 윙스팬과 체공력 · 공수 양면에서 판도를 바꾸는 슈퍼 유망주",
@@ -490,15 +502,15 @@ const PLAYERS_DATA = [
       "FINELA 글로벌 유망주 육성 프로그램 1기 장학생"
     ],
     commercials: [
-      { title: "글로벌 스포츠 슈즈 넥스트 제너레이션", tag: "TV CF", img: "assets/media/cf_sports_brand.jpg" },
-      { title: "스포츠 루키 다큐멘터리 '더 넥스트'", tag: "BROADCAST", img: "assets/media/cf_variety_show.jpg" },
-      { title: "에너지 바 & 뉴트리션 메인 스폰서십", tag: "COMMERCIAL", img: "assets/media/cf_beverage_brand.jpg" }
+      { title: "글로벌 스포츠 슈즈 넥스트 제너레이션", tag: "TV CF", img: "assets/media/cf_sports_brand.jpg", url: "" },
+      { title: "스포츠 루키 다큐멘터리 '더 넥스트'", tag: "BROADCAST", img: "assets/media/cf_variety_show.jpg", url: "" },
+      { title: "에너지 바 & 뉴트리션 메인 스폰서십", tag: "COMMERCIAL", img: "assets/media/cf_beverage_brand.jpg", url: "" }
     ],
     instagramPosts: [
-      { img: "assets/media/insta_training.jpg", likes: "15.2K", caption: "Grinding every single day. No shortcuts." },
-      { img: "assets/media/insta_buzzer_beater.jpg", likes: "33.7K", caption: "Posterize dunk! Loving the energy." },
-      { img: "assets/media/insta_fashion.jpg", likes: "20.1K", caption: "Seoul street culture. 🔥" },
-      { img: "assets/media/insta_trophy.jpg", likes: "38.5K", caption: "Ready to represent with everything I got." }
+      { img: "assets/media/insta_training.jpg", likes: "15.2K", caption: "Grinding every single day. No shortcuts.", url: "" },
+      { img: "assets/media/insta_buzzer_beater.jpg", likes: "33.7K", caption: "Posterize dunk! Loving the energy.", url: "" },
+      { img: "assets/media/insta_fashion.jpg", likes: "20.1K", caption: "Seoul street culture. 🔥", url: "" },
+      { img: "assets/media/insta_trophy.jpg", likes: "38.5K", caption: "Ready to represent with everything I got.", url: "" }
     ]
   }
 ];
@@ -744,5 +756,166 @@ const SERVICES_DATA = {
         { icon: "fa-solid fa-shield-halved", text: "악성 루머, 명예훼손에 대한 신속한 법적 대응 및 권익 보호" }
       ]
     }
+  }
+};
+
+// ==============================================================================
+// SERVICES 상세 창 데이터 (센터 · 코치 · 숙소 · 식음료)
+// ※ 가상 홈페이지용 가상 정보입니다. 인물·경력·수치는 모두 가상이며,
+//   사진은 Unsplash 무료 라이선스 사진입니다 (assets/services/CREDITS.md).
+// ==============================================================================
+const SERVICE_DETAILS = {
+
+  // ---------------------------------------------------------------- 퍼포먼스 센터
+  center: {
+    eyebrow: "PERFORMANCE TRAINING",
+    title: "FINELA 퍼포먼스 센터",
+    subtitle: "선수 전용 데이터 기반 트레이닝 센터 · 서울 강남",
+    gallery: [
+      { img: "assets/services/center/center_1.jpg", caption: "메인 트레이닝 존 — 프리웨이트 & 머신 라인" },
+      { img: "assets/services/center/center_2.jpg", caption: "근력 머신 존 — 플레이트 로디드 머신" },
+      { img: "assets/services/center/center_3.jpg", caption: "파워 랙 존 — 올림픽 리프팅 플랫폼" },
+      { img: "assets/services/center/center_4.jpg", caption: "케이블 & 기능성 트레이닝 존" },
+      { img: "assets/services/center/center_5.jpg", caption: "스트렝스 랩 — 파워랙 · 바벨 · 범퍼 플레이트" },
+      { img: "assets/services/center/center_6.jpg", caption: "덤벨 존 — 2.5kg~60kg 풀 라인업" },
+      { img: "assets/services/center/center_7.jpg", caption: "컨디셔닝 존 — 유산소 & 회복 장비" },
+      { img: "assets/services/center/center_8.jpg", caption: "머신 라인 — 하체·후면 사슬 전용 장비" }
+    ],
+    stats: [
+      { value: "1,980㎡", label: "센터 전용 면적" },
+      { value: "24H", label: "선수 전용 운영" },
+      { value: "120+", label: "트레이닝 장비" },
+      { value: "4단계", label: "분석 → 설계 → 적용 → 피드백" }
+    ],
+    zones: [
+      { icon: "fa-solid fa-dumbbell", title: "스트렝스 랩", desc: "파워랙 8대, 올림픽 플랫폼, 포스 플레이트로 근력과 점프 출력을 측정하며 훈련합니다." },
+      { icon: "fa-solid fa-person-running", title: "스피드 & 어질리티 트랙", desc: "레이저 타이밍 게이트가 설치된 30m 인조잔디 트랙에서 첫 스텝과 방향 전환을 훈련합니다." },
+      { icon: "fa-solid fa-chart-line", title: "모션 분석실", desc: "3D 모션 캡처와 영상 분석으로 슈팅 폼·착지 자세를 수치화해 부상 위험을 사전에 줄입니다." },
+      { icon: "fa-solid fa-heart-pulse", title: "리커버리 존", desc: "공압 마사지, 냉온 교대욕, 스트레칭 존을 갖춘 훈련 후 회복 전용 공간입니다." }
+    ]
+  },
+
+  // ---------------------------------------------------------------- 전담 코치진
+  coaches: [
+    {
+      role: "피지컬 트레이닝 코치",
+      name: "강태오",
+      nameEn: "TAEO KANG",
+      title: "수석 피지컬 코치 (Head of Strength & Conditioning)",
+      photo: "assets/services/people/coach_physical.jpg",
+      quote: "강한 몸은 부상을 막는 가장 확실한 기술입니다.",
+      career: [
+        "前 KBL 프로구단 S&C 코치 (7시즌)",
+        "前 남자농구 국가대표팀 피지컬 트레이너 (2022–2024)",
+        "NSCA-CSCS 공인 스트렝스 & 컨디셔닝 전문가",
+        "체육학 석사 — 운동생리학 전공"
+      ],
+      programs: ["맞춤형 웨이트 트레이닝", "수직 점프 · 파워 향상", "가동성 · 유연성 루틴", "부상 예방 · 재활 연계", "시즌 중 컨디션 관리"]
+    },
+    {
+      role: "스킬 & 전술 트레이너",
+      name: "마이클 정",
+      nameEn: "MICHAEL JUNG",
+      title: "스킬 디벨롭먼트 디렉터 (Skill & Tactics Director)",
+      photo: "assets/services/people/coach_skill.jpg",
+      quote: "좋은 슛은 반복이 아니라 정확한 반복에서 나옵니다.",
+      career: [
+        "前 미국 NCAA Division I 어시스턴트 코치 (5년)",
+        "前 NBA G리그 플레이어 디벨롭먼트 코치",
+        "FIBA 공인 코치 라이선스 Level 3",
+        "국내외 프로 선수 1:1 스킬 트레이닝 400회+"
+      ],
+      programs: ["슈팅 폼 교정 · 영상 분석", "핸들링 · 드리블 콤보", "포지션별 실전 전술", "픽앤롤 · 오프볼 무브", "상대 팀 스카우팅 리포트"]
+    },
+    {
+      role: "멘탈 퍼포먼스 코치",
+      name: "한도윤",
+      nameEn: "DOYUN HAN, Ph.D.",
+      title: "스포츠 심리 전문가 (Mental Performance Coach)",
+      photo: "assets/services/people/coach_mental.jpg",
+      quote: "압박감은 피하는 것이 아니라 다루는 것입니다.",
+      career: [
+        "스포츠심리학 박사",
+        "前 국가대표 선수촌 심리 상담 위원",
+        "한국스포츠심리학회 공인 스포츠심리상담사 1급",
+        "프로·국가대표 선수 상담 1,200회기+"
+      ],
+      programs: ["경기 전 루틴 · 집중력 훈련", "슬럼프 · 번아웃 회복 상담", "압박 상황 시뮬레이션", "수면 · 스트레스 관리", "커리어 전환 멘토링"]
+    }
+  ],
+
+  // ---------------------------------------------------------------- 프라이빗 숙소 (+ 부대시설)
+  suite: {
+    eyebrow: "PREMIUM ACCOMMODATION",
+    title: "프라이빗 하이엔드 숙소",
+    subtitle: "1인 1실 · 회복과 수면에 최적화된 선수 전용 레지던스",
+    gallery: [
+      { img: "assets/services/suite/suite_1.jpg", caption: "디럭스 룸 — 킹 사이즈 회복 전용 매트리스" },
+      { img: "assets/services/suite/suite_2.jpg", caption: "스위트 룸 — 조명·온도 자동 수면 모드" },
+      { img: "assets/services/suite/suite_3.jpg", caption: "스위트 룸 — 리빙 & 워크 스페이스" },
+      { img: "assets/services/suite/suite_4.jpg", caption: "스위트 룸 — 리빙 다이닝 공간" },
+      { img: "assets/services/suite/suite_5.jpg", caption: "스탠다드 룸 — 완전 방음 · 암막 설계" },
+      { img: "assets/services/suite/suite_6.jpg", caption: "라운지 — 선수 전용 휴식 공간" }
+    ],
+    stats: [
+      { value: "1인 1실", label: "모든 선수 개인 객실" },
+      { value: "42㎡", label: "기본 객실 면적" },
+      { value: "24H", label: "컨시어지 · 보안" },
+      { value: "3분", label: "트레이닝 센터까지 도보" }
+    ],
+    features: [
+      "인체공학 회복 매트리스 · 체형별 맞춤 베개",
+      "수면 데이터 연동 스마트 조명 · 온습도 자동 조절",
+      "완전 방음 · 암막 설계, 외부인 출입 통제",
+      "객실 내 회복 키트 (마사지건 · 폼롤러 · 컴프레션 기어)"
+    ],
+    amenities: [
+      { img: "assets/services/amenity/amenity_pool.jpg", icon: "fa-solid fa-person-swimming", title: "인피니티 풀 & 하이드로 테라피", desc: "관절에 무리를 주지 않는 수중 재활 훈련과 젖산 분해를 돕는 냉온 교대욕 시설을 갖추고 있습니다." },
+      { img: "assets/services/amenity/amenity_pool_lounge.jpg", icon: "fa-solid fa-water", title: "아쿠아 리커버리 라운지", desc: "수영장과 연결된 휴식 라운지에서 훈련 후 스트레칭과 회복 세션을 진행합니다." },
+      { img: "assets/services/facility_physical.jpg", icon: "fa-solid fa-dumbbell", title: "24h 프라이빗 헬스장", desc: "외부인 출입이 통제된 선수 전용 프리웨이트·유산소 존으로, 원하는 시간에 개인 훈련이 가능합니다." },
+      { img: "assets/services/facility_cryo.jpg", icon: "fa-solid fa-child-reaching", title: "리커버리 스튜디오", desc: "요가 · 필라테스 · 모빌리티 클래스로 훈련 후 유연성과 관절 가동 범위를 회복합니다." },
+      { img: "assets/services/amenity/amenity_sauna.jpg", icon: "fa-solid fa-snowflake", title: "크라이오테라피 & 건식 사우나", desc: "영하 130도 전신 냉각 장비로 근육 염증을 빠르게 진정시키고, 핀란드식 건식 사우나로 혈액순환과 근육 이완을 돕습니다." },
+      { img: "assets/services/amenity/amenity_sauna_2.jpg", icon: "fa-solid fa-spa", title: "스파 & 릴랙스 룸", desc: "아로마 스팀과 명상 존을 갖춘 휴식 공간에서 수면 전 긴장을 풀어줍니다." }
+    ]
+  },
+
+  // ---------------------------------------------------------------- 맞춤형 식음료 (F&B)
+  fnb: {
+    eyebrow: "PREMIUM ACCOMMODATION",
+    title: "맞춤형 식음료 (F&B) 케어",
+    subtitle: "호텔 셰프 × 스포츠 영양사 — 선수별 체성분·훈련량 기반 식단",
+    // 사진마다 메뉴 이름 · 영양 성분 (1인분 기준, 가상 수치)
+    gallery: [
+      { img: "assets/services/fnb/fnb_1.jpg", caption: "치킨 퀴노아 파워 볼", nutrition: { kcal: 640, protein: 48, carbs: 62, fat: 20, sodium: 720 }, tag: "훈련 후 회복식" },
+      { img: "assets/services/fnb/fnb_2.jpg", caption: "그릴드 연어 & 퀴노아 플레이트", nutrition: { kcal: 580, protein: 42, carbs: 45, fat: 24, sodium: 540 }, tag: "경기 전날 저녁" },
+      { img: "assets/services/fnb/fnb_3.jpg", caption: "수란 & 아보카도 브렉퍼스트", nutrition: { kcal: 520, protein: 28, carbs: 48, fat: 24, sodium: 610 }, tag: "아침 식사" },
+      { img: "assets/services/fnb/fnb_4.jpg", caption: "레인보우 그린 샐러드 볼", nutrition: { kcal: 430, protein: 22, carbs: 46, fat: 18, sodium: 480 }, tag: "회복일 점심" },
+      { img: "assets/services/fnb/fnb_5.jpg", caption: "하이프로틴 브런치 세트", nutrition: { kcal: 760, protein: 52, carbs: 78, fat: 26, sodium: 830 }, tag: "고강도 훈련일" },
+      { img: "assets/services/fnb/fnb_6.jpg", caption: "스테이크 & 고구마 리커버리 플레이트", nutrition: { kcal: 820, protein: 58, carbs: 72, fat: 30, sodium: 760 }, tag: "경기 후 회복식" }
+    ],
+    principles: [
+      "정밀 혈액 검사 · 체성분 기반 1:1 식단 설계",
+      "훈련 · 경기 일정에 맞춘 칼로리와 수분 공급",
+      "도핑 프리(Doping-Free) 인증 커스텀 보충제",
+      "알레르기 · 종교 · 선호를 반영한 개인 메뉴"
+    ],
+    staff: [
+      {
+        role: "총괄 셰프",
+        name: "오세훈",
+        nameEn: "SEHOON OH",
+        photo: "assets/services/people/chef.jpg",
+        desc: "5성급 호텔 레스토랑 수셰프 출신으로, 고단백·저염 조리법을 바탕으로 맛과 영양을 모두 잡은 선수 전용 메뉴를 개발합니다.",
+        career: ["前 5성급 호텔 레스토랑 수셰프 (12년)", "스포츠 다이어트 메뉴 개발 150종+", "조리기능장"]
+      },
+      {
+        role: "스포츠 영양사",
+        name: "김하린",
+        nameEn: "HARIN KIM",
+        photo: "assets/services/people/nutritionist.jpg",
+        desc: "선수별 혈액 검사와 체성분 데이터를 분석해 시즌·훈련 단계에 맞는 영양 계획과 보충제 프로그램을 설계합니다.",
+        career: ["임상영양사 · 스포츠영양학 석사", "前 국가대표 선수촌 영양 관리 담당", "ISSN 공인 스포츠 영양 전문가"]
+      }
+    ]
   }
 };

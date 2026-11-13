@@ -330,7 +330,25 @@ document.addEventListener('DOMContentLoaded', () => {
       `).join('');
     }
 
-    // CF 및 방송 출연 썸네일 (슬림 다크 카드 그리드 + 대형 영문 타이틀 + 하단 활동 바)
+    // ------------------------------------------------------------------
+    // 외부 링크 (finela-data.js)
+    //  - p.instagram           : 선수 인스타그램 프로필 주소
+    //  - p.commercials[].url   : 광고·방송 영상/페이지 주소
+    //  - p.instagramPosts[].url: 인스타그램 게시물 주소 (없으면 선수 프로필로 연결)
+    //  주소가 없으면 클릭되지 않는 '링크 준비 중' 상태로 표시
+    // ------------------------------------------------------------------
+    const profileUrl = safeExternalUrl(p.instagram);
+
+    // FOLLOW 버튼 → 선수 인스타그램 프로필
+    const followLink = document.getElementById('modalFollowLink');
+    if (followLink) {
+      const handle = instagramHandle(profileUrl);
+      followLink.querySelector('.follow-text').textContent = `FOLLOW @${handle || 'ATHLETE'}`;
+      setExternalLink(followLink, profileUrl, `${p.nameKo} 선수 인스타그램 열기`,
+        `${p.nameKo} 선수의 인스타그램 프로필로 이동합니다`);
+    }
+
+    // CF 및 방송 출연 카드 → 해당 광고·방송 주소
     const cfContainer = document.getElementById('modalCfGrid');
     if (cfContainer && p.commercials) {
       cfContainer.innerHTML = p.commercials.map((cf, idx) => {
@@ -340,7 +358,7 @@ document.addEventListener('DOMContentLoaded', () => {
         else if (cf.tag === "COMMERCIAL") heroTitle = "BEVERAGE AD";
 
         return `
-          <div class="cf-card group">
+          <a class="cf-card group">
             <div class="cf-thumb-wrap">
               <img src="${cf.img}" alt="${cf.title}" class="cf-thumb-img">
               <div class="cf-center-overlay">
@@ -351,16 +369,22 @@ document.addEventListener('DOMContentLoaded', () => {
                 <p class="cf-desc-text">${cf.title}</p>
               </div>
             </div>
-          </div>
+          </a>
         `;
       }).join('');
+      cfContainer.querySelectorAll('.cf-card').forEach((card, idx) => {
+        const cf = p.commercials[idx];
+        const kind = cf.tag === 'BROADCAST' ? '방송' : '광고';
+        setExternalLink(card, safeExternalUrl(cf.url), `${cf.title} 보기`,
+          `'${cf.title}' ${kind} 영상 페이지로 이동합니다`);
+      });
     }
 
-    // 공식 인스타그램 포스트 피드 (정사각형 직관적인 그리드 + 중앙 인스타그램 아이콘)
+    // 공식 인스타그램 게시물 카드 → 게시물 주소 (없으면 선수 프로필)
     const instaContainer = document.getElementById('modalInstaGrid');
     if (instaContainer && p.instagramPosts) {
       instaContainer.innerHTML = p.instagramPosts.map(post => `
-        <div class="insta-card group">
+        <a class="insta-card group">
           <img src="${post.img}" alt="Instagram" class="insta-img">
           <div class="insta-center-icon-wrap">
             <i class="fa-brands fa-instagram insta-center-icon"></i>
@@ -368,8 +392,13 @@ document.addEventListener('DOMContentLoaded', () => {
           <div class="insta-hover-bar">
             <span class="insta-likes-pill"><i class="fa-solid fa-heart mr-1"></i> ${post.likes}</span>
           </div>
-        </div>
+        </a>
       `).join('');
+      instaContainer.querySelectorAll('.insta-card').forEach((card, idx) => {
+        const post = p.instagramPosts[idx];
+        setExternalLink(card, safeExternalUrl(post.url) || profileUrl, '인스타그램 게시물 보기',
+          `${p.nameKo} 선수의 인스타그램 게시물로 이동합니다`);
+      });
     }
 
     // 카운터 업데이트
@@ -394,6 +423,87 @@ document.addEventListener('DOMContentLoaded', () => {
     if (wasOpen) showPlayerSwitchToast(p);
 
     schedulePlayerModalFit();
+  }
+
+  // ----------------------------------------------------------------------------
+  // 외부 링크 헬퍼: http(s) 주소만 허용, 새 탭으로 열기, 없으면 '링크 준비 중'
+  // ----------------------------------------------------------------------------
+  function safeExternalUrl(url) {
+    if (typeof url !== 'string' || !url.trim()) return '';
+    try {
+      const u = new URL(url.trim());
+      return (u.protocol === 'https:' || u.protocol === 'http:') ? u.href : '';
+    } catch (err) {
+      return '';
+    }
+  }
+
+  function instagramHandle(url) {
+    if (!url) return '';
+    try {
+      const u = new URL(url);
+      if (!/(^|\.)instagram\.com$/.test(u.hostname)) return '';
+      return u.pathname.split('/').filter(Boolean)[0] || '';
+    } catch (err) {
+      return '';
+    }
+  }
+
+  // url 있음 → 새 탭으로 실제 페이지 열기
+  // url 없음 → 클릭 시 '어디로 이동하는지' 안내 문구만 표시 (data-link-message)
+  function setExternalLink(el, url, label, message) {
+    if (url) {
+      el.href = url;
+      el.target = '_blank';
+      el.rel = 'noopener noreferrer';
+      el.removeAttribute('role');
+      el.removeAttribute('tabindex');
+      el.removeAttribute('data-link-message');
+      el.title = label;
+      el.setAttribute('aria-label', label);
+    } else {
+      el.removeAttribute('href');
+      el.removeAttribute('target');
+      el.setAttribute('role', 'button');
+      el.setAttribute('tabindex', '0');
+      el.dataset.linkMessage = message;
+      el.title = message;
+      el.setAttribute('aria-label', message);
+    }
+  }
+
+  // 안내 문구 표시 (클릭 · Enter · Space)
+  const linkInfoToast = document.createElement('div');
+  linkInfoToast.className = 'link-info-toast';
+  linkInfoToast.setAttribute('role', 'status');
+  linkInfoToast.setAttribute('aria-live', 'polite');
+  document.body.appendChild(linkInfoToast);
+  let linkInfoToastTimer = null;
+
+  function showLinkInfo(message) {
+    linkInfoToast.textContent = '';
+    const icon = document.createElement('i');
+    icon.className = 'fa-solid fa-arrow-up-right-from-square';
+    linkInfoToast.append(icon, message);
+    linkInfoToast.classList.add('show');
+    clearTimeout(linkInfoToastTimer);
+    linkInfoToastTimer = setTimeout(() => linkInfoToast.classList.remove('show'), 2200);
+  }
+
+  if (playerModal) {
+    playerModal.addEventListener('click', (e) => {
+      const el = e.target.closest('[data-link-message]');
+      if (!el || el.hasAttribute('href')) return;
+      e.preventDefault();
+      showLinkInfo(el.dataset.linkMessage);
+    });
+    playerModal.addEventListener('keydown', (e) => {
+      if (e.key !== 'Enter' && e.key !== ' ') return;
+      const el = e.target.closest('[data-link-message]');
+      if (!el || el.hasAttribute('href')) return;
+      e.preventDefault();
+      showLinkInfo(el.dataset.linkMessage);
+    });
   }
 
   // ----------------------------------------------------------------------------

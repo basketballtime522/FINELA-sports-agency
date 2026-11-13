@@ -228,10 +228,11 @@
       <!-- 탭 1: 퍼포먼스 트레이닝 -->
       <div class="svc-tab-panel active" id="tab-training">
 
-        <!-- 최첨단 시설 카드 -->
-        <div class="facility-feature-box">
+        <!-- 최첨단 시설 카드 (클릭 → 센터 내부 사진 · 시설 소개 상세 창) -->
+        <div class="facility-feature-box svc-open-card" data-service-open="center" role="button" tabindex="0"
+          aria-label="FINELA 퍼포먼스 센터 둘러보기">
           <div class="facility-img-wrap">
-            <img src="assets/services/facility_hightech.jpg" alt="최첨단 퍼포먼스 센터" class="facility-img" loading="lazy">
+            <img src="assets/services/center/center_1.jpg" alt="최첨단 퍼포먼스 센터" class="facility-img" loading="lazy">
           </div>
           <div class="facility-info-wrap">
             <h3>최첨단 퍼포먼스 센터</h3>
@@ -240,30 +241,37 @@
               FINELA 전용 훈련 센터는 NBA 및 유럽 명문 구단에서 사용하는 최신 모션 트래킹 시스템과 생체 데이터 분석 장비를 완비하고 있습니다. '정밀 분석 ➔ 맞춤형 프로그램 설계 ➔ 실전
               적용 ➔ 피드백'의 체계적 프로세스로 선수의 약점을 지우고 강점을 극대화합니다.
             </p>
+            <span class="svc-open-hint">센터 둘러보기 <i class="fa-solid fa-arrow-right"></i></span>
           </div>
         </div>
 
-        <!-- 3인 전담 코치진 그리드 -->
+        <!-- 3인 전담 코치진 그리드 (클릭 → 코치 소개 상세 창) -->
         <div class="coaches-grid">
-          <div class="coach-card">
+          <div class="coach-card svc-open-card" data-service-open="coach" data-coach-index="0" role="button" tabindex="0"
+            aria-label="피지컬 트레이닝 코치 소개 보기">
             <div class="coach-icon-box"><i class="fa-solid fa-dumbbell"></i></div>
             <h4 class="coach-title">피지컬 트레이닝 코치</h4>
             <div class="coach-sub">근력 강화 및 부상 방지</div>
             <p class="coach-desc">개인별 신체 데이터(근력, 유연성, 체공 시간 등)를 정밀 분석하여 최적화된 웨이트 트레이닝과 가동성 훈련을 전담합니다.</p>
+            <span class="svc-open-hint">코치 소개 보기 <i class="fa-solid fa-arrow-right"></i></span>
           </div>
 
-          <div class="coach-card">
+          <div class="coach-card svc-open-card" data-service-open="coach" data-coach-index="1" role="button" tabindex="0"
+            aria-label="스킬 & 전술 트레이너 소개 보기">
             <div class="coach-icon-box"><i class="fa-solid fa-basketball"></i></div>
             <h4 class="coach-title">스킬 & 전술 트레이너</h4>
             <div class="coach-sub">포지션별 맞춤 실전 기술</div>
             <p class="coach-desc">슈팅 폼 교정, 드리블 스킬, 포지션별 맞춤 전술 등 코트 위에서 즉시 활용 가능한 디테일한 기술 향상을 1:1 지도합니다.</p>
+            <span class="svc-open-hint">코치 소개 보기 <i class="fa-solid fa-arrow-right"></i></span>
           </div>
 
-          <div class="coach-card">
+          <div class="coach-card svc-open-card" data-service-open="coach" data-coach-index="2" role="button" tabindex="0"
+            aria-label="멘탈 퍼포먼스 코치 소개 보기">
             <div class="coach-icon-box"><i class="fa-solid fa-brain"></i></div>
             <h4 class="coach-title">멘탈 퍼포먼스 코치</h4>
             <div class="coach-sub">심리 상담 및 마인드 컨트롤</div>
             <p class="coach-desc">큰 경기를 앞둔 중압감 극복, 슬럼프 탈출, 번아웃 방지를 위한 전문적인 스포츠 심리 상담을 정기적으로 지원합니다.</p>
+            <span class="svc-open-hint">코치 소개 보기 <i class="fa-solid fa-arrow-right"></i></span>
           </div>
         </div>
 
@@ -271,62 +279,41 @@
 
       <!-- 탭 2: 프리미엄 숙소 및 편의시설 -->
       <div class="svc-tab-panel" id="tab-accommodation">
+        <!-- 숙소 / 식음료(F&B) 두 카드 — 클릭 시 상세 창 (부대시설은 숙소 상세 창 안으로 이동) -->
         <div class="accommodation-grid">
 
-          <!-- 숙소 및 F&B 블록 -->
-          <div class="acc-card">
-            <div class="acc-sub-block">
-              <h3 class="acc-title"><i class="fa-solid fa-bed text-red-500 mr-2" style="color: var(--finela-red);"></i>
-                프라이빗 하이엔드 숙소</h3>
-              <p class="acc-desc">최상의 수면과 완전한 휴식을 위해 인체공학적으로 설계된 1인 1실 프리미엄 룸을 제공합니다. 최고급 매트리스와 방음 설계로 완벽한 사생활을 보장합니다.
-              </p>
-              <div class="acc-img-frame">
-                <img src="assets/services/facility_suite.jpg" alt="프라이빗 숙소" class="acc-img" loading="lazy">
-              </div>
+          <!-- 숙소 -->
+          <div class="acc-card svc-open-card" data-service-open="suite" role="button" tabindex="0"
+            aria-label="프라이빗 하이엔드 숙소 둘러보기">
+            <div class="acc-img-frame">
+              <img src="assets/services/suite/suite_2.jpg" alt="프라이빗 숙소" class="acc-img" loading="lazy">
             </div>
-
-            <div class="acc-sub-block" style="border-top: 1px solid var(--border-subtle); padding-top: 24px;">
-              <h3 class="acc-title"><i class="fa-solid fa-utensils text-red-500 mr-2"
-                  style="color: var(--finela-red);"></i> 맞춤형 식음료 (F&B) 케어</h3>
-              <p class="acc-desc">전담 호텔 셰프와 스포츠 전문 영양사가 상주하여 맞춤형 식단을 제공합니다.</p>
-              <div class="bullet-list">
-                <div class="bullet-item"><i class="fa-solid fa-circle-check"></i> 정밀 혈액 검사 및 체성분 기반 식단 설계</div>
-                <div class="bullet-item"><i class="fa-solid fa-circle-check"></i> 훈련/경기 당일 컨디션에 맞춘 칼로리 및 수분 공급</div>
-                <div class="bullet-item"><i class="fa-solid fa-circle-check"></i> 도핑 프리(Doping-Free) 인증 커스텀 보충제 제작</div>
-              </div>
+            <h3 class="acc-title"><i class="fa-solid fa-bed mr-2" style="color: var(--finela-red);"></i>
+              프라이빗 하이엔드 숙소</h3>
+            <p class="acc-desc">최상의 수면과 완전한 휴식을 위해 인체공학적으로 설계된 1인 1실 프리미엄 룸을 제공합니다. 최고급 매트리스와 방음 설계로 완벽한 사생활을 보장합니다.</p>
+            <div class="bullet-list">
+              <div class="bullet-item"><i class="fa-solid fa-circle-check"></i> 1인 1실 · 수면 데이터 연동 스마트 객실</div>
+              <div class="bullet-item"><i class="fa-solid fa-circle-check"></i> 인피니티 풀 · 크라이오테라피 · 사우나 등 부대시설</div>
+              <div class="bullet-item"><i class="fa-solid fa-circle-check"></i> 24시간 컨시어지 · 외부인 출입 통제</div>
             </div>
+            <span class="svc-open-hint">숙소 · 부대시설 둘러보기 <i class="fa-solid fa-arrow-right"></i></span>
           </div>
 
-          <!-- 부대시설 블록 -->
-          <div class="acc-card">
-            <h3 class="acc-title">최고급 부대시설 (Amenities)</h3>
-            <div class="amenities-list">
-
-              <div class="amenity-row">
-                <div class="amenity-icon-box"><i class="fa-solid fa-person-swimming"></i></div>
-                <div class="amenity-content">
-                  <h4>인피니티 풀 & 하이드로 테라피</h4>
-                  <p>관절에 무리를 주지 않는 수중 재활 훈련과 빠른 젖산 분해를 돕는 냉온욕 교대 테라피 시설을 완비하고 있습니다.</p>
-                </div>
-              </div>
-
-              <div class="amenity-row">
-                <div class="amenity-icon-box"><i class="fa-solid fa-dumbbell"></i></div>
-                <div class="amenity-content">
-                  <h4>24h 프라이빗 헬스장</h4>
-                  <p>일반인의 출입이 완벽히 통제된 선수 전용 프리웨이트 및 유산소 존입니다. 언제든 원하는 시간에 개인 훈련이 가능합니다.</p>
-                </div>
-              </div>
-
-              <div class="amenity-row">
-                <div class="amenity-icon-box"><i class="fa-solid fa-snowflake"></i></div>
-                <div class="amenity-content">
-                  <h4>크라이오테라피 & 건식 사우나</h4>
-                  <p>영하 130도의 환경에서 극도로 지친 근육의 염증을 3분 만에 치료하는 첨단 장비와 혈액순환 사우나를 운영합니다.</p>
-                </div>
-              </div>
-
+          <!-- 식음료 (F&B) -->
+          <div class="acc-card svc-open-card" data-service-open="fnb" role="button" tabindex="0"
+            aria-label="맞춤형 식음료 메뉴와 영양 정보 보기">
+            <div class="acc-img-frame">
+              <img src="assets/services/fnb/fnb_2.jpg" alt="맞춤형 식단" class="acc-img" loading="lazy">
             </div>
+            <h3 class="acc-title"><i class="fa-solid fa-utensils mr-2" style="color: var(--finela-red);"></i>
+              맞춤형 식음료 (F&B) 케어</h3>
+            <p class="acc-desc">전담 호텔 셰프와 스포츠 전문 영양사가 상주하여 선수별 체성분과 훈련량에 맞춘 식단을 제공합니다.</p>
+            <div class="bullet-list">
+              <div class="bullet-item"><i class="fa-solid fa-circle-check"></i> 정밀 혈액 검사 및 체성분 기반 식단 설계</div>
+              <div class="bullet-item"><i class="fa-solid fa-circle-check"></i> 훈련/경기 당일 컨디션에 맞춘 칼로리 및 수분 공급</div>
+              <div class="bullet-item"><i class="fa-solid fa-circle-check"></i> 도핑 프리(Doping-Free) 인증 커스텀 보충제 제작</div>
+            </div>
+            <span class="svc-open-hint">메뉴 · 영양 정보 보기 <i class="fa-solid fa-arrow-right"></i></span>
           </div>
 
         </div>
@@ -783,7 +770,6 @@
                 <div class="extra-group-sub" data-layer="cf-sub" data-layer-name="광고 · 방송 설명">브랜드 앰버서더 및 주요 방송·광고 출연 활동</div>
               </div>
               <div class="extra-group-actions">
-                <span class="extra-group-badge" data-layer="cf-badge" data-layer-name="BRAND AMBASSADOR 배지">BRAND AMBASSADOR</span>
                 <div class="extra-carousel-nav" data-carousel-for="modalCfGrid" data-layer="cf-nav" data-layer-name="광고 · 방송 넘김 버튼" hidden>
                   <button type="button" class="extra-carousel-btn" data-dir="-1" aria-label="이전 광고 · 방송"><i class="fa-solid fa-chevron-left"></i></button>
                   <button type="button" class="extra-carousel-btn" data-dir="1" aria-label="다음 광고 · 방송"><i class="fa-solid fa-chevron-right"></i></button>
@@ -803,7 +789,8 @@
                 <div class="extra-group-sub" id="instaAccountLabel" data-layer="sns-sub" data-layer-name="인스타그램 설명">선수 공식 인스타그램 피드</div>
               </div>
               <div class="extra-group-actions">
-                <span class="follow-badge" data-layer="sns-follow" data-layer-name="FOLLOW 배지"><i class="fa-brands fa-instagram mr-2"></i>FOLLOW @ATHLETE</span>
+                <!-- 선수 인스타그램 프로필 링크 (주소: finela-data.js 의 instagram) -->
+                <a class="follow-badge" id="modalFollowLink" data-layer="sns-follow" data-layer-name="FOLLOW 버튼"><i class="fa-brands fa-instagram mr-2"></i><span class="follow-text">FOLLOW @ATHLETE</span></a>
                 <div class="extra-carousel-nav" data-carousel-for="modalInstaGrid" data-layer="sns-nav" data-layer-name="인스타그램 넘김 버튼" hidden>
                   <button type="button" class="extra-carousel-btn" data-dir="-1" aria-label="이전 게시물"><i class="fa-solid fa-chevron-left"></i></button>
                   <button type="button" class="extra-carousel-btn" data-dir="1" aria-label="다음 게시물"><i class="fa-solid fa-chevron-right"></i></button>
@@ -823,6 +810,12 @@
 
     </div>
   </div>
+  <!-- A-2. SERVICES 상세 창 (센터 · 코치 · 숙소 · 식음료) — 내용은 main.js가 SERVICE_DETAILS로 렌더링 -->
+  <div class="svc-modal" id="svcModal" role="dialog" aria-modal="true" aria-labelledby="svcModalTitle" aria-hidden="true">
+    <button type="button" class="svc-modal-close" id="svcModalClose" aria-label="닫기"><i class="fa-solid fa-xmark"></i></button>
+    <div class="svc-modal-inner" id="svcModalBody"></div>
+  </div>
+
   <!-- B. 상품 상세 퀵뷰 모달 (PRODUCT MODAL) -->
   <div class="product-modal" id="productModal">
     <div class="product-modal-box">
@@ -908,6 +901,8 @@
   <script src="finela-data.js"></script>
   <script src="main.js"></script>
   <!-- 선수 상세 페이지 레이어 레이아웃 적용 (player-layout.json) + 로컬 전용 레이어 편집기 -->
+  <!-- SERVICES 상세 창 (센터 · 코치 · 숙소 · 식음료) -->
+  <script src="services-detail.js"></script>
   <script src="player-layout.data.js"></script>
   <script src="player-layout.js"></script>
 
