@@ -976,13 +976,75 @@ document.addEventListener('DOMContentLoaded', () => {
   // ============================================================================
   const sponsorsGrid = document.getElementById('sponsorsGrid');
   if (sponsorsGrid) {
-    sponsorsGrid.innerHTML = SPONSORS_DATA.map(sp => `
-      <a href="${sp.url}" target="_blank" class="sponsor-card" style="--brand-accent: ${sp.accentColor};" title="${sp.name}">
-        <i class="${sp.iconClass} sponsor-icon"></i>
-        <h3 class="sponsor-brand-name">${sp.name}</h3>
-        <p class="sponsor-role-tag">${sp.role}</p>
-      </a>
-    `).join('');
+    // 메인 스폰서: 소개 블록을 좌우 번갈아 배치 / 나머지: 하단 로고 그리드 (partners.css)
+    const mainSponsors = SPONSORS_DATA.filter(sp => sp.tier === 'main').sort((a, b) => (a.order || 0) - (b.order || 0));
+    const otherSponsors = SPONSORS_DATA.filter(sp => sp.tier !== 'main');
+
+    const mainHtml = mainSponsors.map((sp, i) => {
+      const athletes = (sp.athleteIdx || []).map(k => PLAYERS_DATA[k]).filter(Boolean);
+      return `
+        <article class="sp-main${i % 2 ? ' is-reverse' : ''}" style="--brand-accent: ${sp.accentColor};">
+          <div class="sp-main-media">
+            ${sp.image
+              ? `<img src="${sp.image}" alt="${sp.name}" loading="lazy">`
+              : `<div class="sp-photo-ph"><i class="${sp.iconClass}"></i><span>LOGO / 대표 이미지</span></div>`}
+          </div>
+          <div class="sp-main-info">
+            <div class="sp-eyebrow">MAIN SPONSOR${sp.since ? ` · ${sp.since} – 현재` : ''}</div>
+            <h3 class="sp-main-name">${sp.name}</h3>
+            <p class="sp-main-desc"><b>${sp.roleKo}</b><br>${sp.desc || ''}</p>
+            <div class="sp-cols">
+              ${(sp.collab || []).length ? `
+                <div>
+                  <h4 class="sp-sub">COLLABORATION</h4>
+                  <ul class="sp-collab">${sp.collab.map(c => `<li>${c}</li>`).join('')}</ul>
+                </div>` : ''}
+              ${athletes.length ? `
+                <div>
+                  <h4 class="sp-sub">CONNECTED ATHLETES</h4>
+                  <div class="sp-chips">${athletes.map(p => `<span class="sp-chip">${p.nameKo}</span>`).join('')}</div>
+                </div>` : ''}
+            </div>
+            <a class="sp-visit" href="${sp.url}" target="_blank" rel="noopener">공식 사이트 방문 <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+          </div>
+        </article>`;
+    }).join('');
+
+    const cellHtml = otherSponsors.map(sp => `
+      <a href="${sp.url}" target="_blank" rel="noopener" class="sp-cell" style="--brand-accent: ${sp.accentColor};" title="${sp.name} · ${sp.roleKo}">
+        ${sp.logo
+          ? `<img src="${sp.logo}" alt="${sp.name}" loading="lazy">`
+          : `<i class="${sp.iconClass}"></i><span>${sp.name}</span>`}
+      </a>`).join('');
+
+    // 4열 그리드의 빈 칸은 파트너 제안 칸으로 채움
+    const empty = (4 - (otherSponsors.length % 4)) % 4;
+    const ctaHtml = empty ? `
+      <a href="#contact" class="sp-cell sp-cell-cta" style="grid-column: span ${empty};">
+        <span>YOUR BRAND HERE</span><em>파트너십 문의하기 <i class="fa-solid fa-arrow-right"></i></em>
+      </a>` : '';
+
+    // 첫 화면은 메인 스폰서가 꽉 채우고, 추가 스폰서는 그 아래(화면을 내려야 보임)
+    sponsorsGrid.innerHTML = `
+      <div class="sp-mains" id="spMains">${mainHtml}</div>
+      <div class="sp-extra" id="spExtra">
+        <div class="sp-sub-title">ADDITIONAL SPONSORS</div>
+        <div class="sp-grid">${cellHtml}${ctaHtml}</div>
+      </div>`;
+
+    // 메인 스폰서 영역 높이 = (화면 높이 - 그 영역 위쪽 높이) → 추가 스폰서는 정확히 다음 화면에서 시작
+    const fitPartnersFirstPage = () => {
+      const sec = document.getElementById('partners');
+      const mains = document.getElementById('spMains');
+      if (!sec || !mains) return;
+      mains.style.minHeight = '0px';
+      const top = mains.getBoundingClientRect().top - sec.getBoundingClientRect().top;
+      mains.style.minHeight = Math.max(420, window.innerHeight - top) + 'px';
+    };
+    fitPartnersFirstPage();
+    window.addEventListener('resize', fitPartnersFirstPage);
+    window.addEventListener('load', fitPartnersFirstPage);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitPartnersFirstPage);
   }
 
   // ============================================================================

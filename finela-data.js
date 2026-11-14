@@ -772,6 +772,30 @@ const SPONSORS_DATA = [
   }
 ];
 
+/* ------------------------------------------------------------------------------
+   파트너스 탭용 추가 정보 (파트너 이름 기준). 아래 내용은 모두 가상 예시다.
+   - tier: "main"(좌우 번갈아 소개) / 그 외(하단 로고 그리드)
+   - logo: 로고 이미지 경로 (비어 있으면 아이콘+이름으로 표시), image: 메인 스폰서 대표 이미지 경로
+   - athleteIdx: 연결 선수 (PLAYERS_DATA 순번)
+   ------------------------------------------------------------------------------ */
+(function () {
+  const EXTRA = {
+    "SAMSUNG": {
+      tier: "main", order: 1, since: "2024",
+      desc: "선수 훈련 데이터 측정과 경기 영상 분석 장비를 지원하는 공식 메인 테크놀로지 스폰서입니다.",
+      collab: ["선수 전용 웨어러블 기반 컨디션 관리", "시즌 하이라이트 공동 콘텐츠 제작", "팬 이벤트 및 경기장 체험존 운영"],
+      athleteIdx: [0, 1, 2]
+    },
+    "NIKE": {
+      tier: "main", order: 2, since: "2025",
+      desc: "국가대표 선수단의 유니폼과 훈련 용품을 후원하는 공식 키트 스폰서입니다.",
+      collab: ["선수별 시그니처 컬러 훈련복 제작", "FINELA 스토어 공동 기획 컬렉션", "시즌 개막 캠페인 촬영"],
+      athleteIdx: [3, 4]
+    }
+  };
+  SPONSORS_DATA.forEach((sp) => Object.assign(sp, { tier: "supporting", logo: "", image: "" }, EXTRA[sp.name] || {}));
+})();
+
 // 5. 통합 서비스 (TOTAL SERVICES) 상세 데이터
 const SERVICES_DATA = {
   training: {
