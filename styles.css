@@ -2994,14 +2994,16 @@ button {
 
 .footer-top {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   margin-bottom: 60px;
   flex-wrap: wrap;
   gap: 40px;
 }
 
+/* 회사 정보 가운데 정렬 (NAVIGATION · CONTACT 열 제거 후) */
 .footer-brand {
-  max-width: 520px;
+  max-width: 620px;
+  text-align: center;
 }
 
 .footer-logo {
