@@ -18,6 +18,7 @@
 
   <!-- 통합 스타일시트 -->
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="store-ring.css">
 </head>
 
 <body>
@@ -386,10 +387,8 @@
         </p>
       </div>
 
-      <!-- 굿즈 상품 카드 그리드 (JS 동적 렌더링) -->
-      <div class="products-grid" id="productsGrid">
-        <!-- main.js에서 PRODUCTS_DATA 기반으로 6개 상품이 자동 렌더링됩니다 -->
-      </div>
+      <!-- 카테고리 링 (store-ring.js 가 STORE_CATEGORIES 로 렌더링) -->
+      <div class="sr-stage" id="storeRing" tabindex="0" aria-label="스토어 카테고리 링. 좌우 화살표로 돌리고 Enter로 열기"></div>
 
     </div>
   </section>
@@ -816,7 +815,13 @@
     <div class="svc-modal-inner" id="svcModalBody"></div>
   </div>
 
-  <!-- B. 상품 상세 퀵뷰 모달 (PRODUCT MODAL) -->
+  <!-- A-3. STORE 상세 창 (카테고리 상세 → 상품 상세) — 내용은 store-ring.js 가 렌더링 -->
+  <div class="sm-modal" id="storeModal" role="dialog" aria-modal="true" aria-hidden="true">
+    <button type="button" class="sm-close" id="storeModalClose" aria-label="닫기"><i class="fa-solid fa-xmark"></i></button>
+    <div class="sm-inner" id="storeModalBody"></div>
+  </div>
+
+  <!-- B. 상품 상세 퀵뷰 모달 (PRODUCT MODAL) — 기존 그리드용, 현재는 사용하지 않음 -->
   <div class="product-modal" id="productModal">
     <div class="product-modal-box">
       <button class="modal-close-btn" id="closeProdModal">&times;</button>
@@ -903,6 +908,8 @@
   <!-- 선수 상세 페이지 레이어 레이아웃 적용 (player-layout.json) + 로컬 전용 레이어 편집기 -->
   <!-- SERVICES 상세 창 (센터 · 코치 · 숙소 · 식음료) -->
   <script src="services-detail.js"></script>
+  <!-- STORE 카테고리 링 + 상세 창 -->
+  <script src="store-ring.js"></script>
   <script src="player-layout.data.js"></script>
   <script src="player-layout.js"></script>
 

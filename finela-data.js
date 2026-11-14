@@ -528,12 +528,12 @@ const PRODUCTS_DATA = [
     sizes: ["S", "M", "L", "XL"],
     image: "assets/store/product_tshirt.jpg",
     tag: "BESTSELLER",
-    category: "apparel"
+    category: "lifestyle"
   },
   {
     id: 2,
     title: "#1 이현중 Replica Jersey",
-    titleKo: "2026 아시안게임 #1 이현중 공식 레플리카 져지",
+    titleKo: "2026 아시안게임 #1 이현중 공식 레플리카 져지 (홈)",
     price: 89000,
     priceStr: "89,000",
     description: "국가대표 이현중 선수의 2026 아이치-나고야 아시안게임 공식 레플리카 져지입니다. 실제 선수들이 착용하는 유니폼과 동일한 흡한속건 기능성 소재가 적용되었으며, 등면에는 등번호 1번과 이름이 마킹되어 있습니다.",
@@ -541,7 +541,7 @@ const PRODUCTS_DATA = [
     sizes: ["S", "M", "L", "XL", "2XL"],
     image: "assets/store/product_jersey.jpg",
     tag: "OFFICIAL ROSTER",
-    category: "jersey"
+    category: "apparel"
   },
   {
     id: 3,
@@ -566,7 +566,7 @@ const PRODUCTS_DATA = [
     sizes: ["M", "L", "XL", "2XL"],
     image: "assets/store/product_hoodie.jpg",
     tag: "HOT ITEM",
-    category: "apparel"
+    category: "lifestyle"
   },
   {
     id: 5,
@@ -578,7 +578,7 @@ const PRODUCTS_DATA = [
     hasSize: false,
     image: "assets/store/product_towel.jpg",
     tag: "FAN ESSENTIAL",
-    category: "goods"
+    category: "cheer"
   },
   {
     id: 6,
@@ -592,6 +592,108 @@ const PRODUCTS_DATA = [
     tag: "COLLECTORS",
     category: "goods"
   }
+];
+
+/* ------------------------------------------------------------------------------
+   STORE 링 카테고리 8종 + 카테고리별 상품 (store-ring.js 가 사용)
+   - 위 PRODUCTS_DATA 6개(id 1~6) 외 나머지 상품은 "가상 상품"(이름·가격·설명 모두 예시)이며 사진이 아직 없다.
+   - 사진 넣는 법: 상품은 image(대표 1장) 또는 images(배열, 갤러리용)에 경로를 적는다.
+     카테고리 대표 사진은 STORE_CATEGORIES 각 항목의 photo 에 적는다.
+     비어 있으면 화면에 "PHOTO" 빈 사진칸이 표시된다.
+   ------------------------------------------------------------------------------ */
+(function () {
+  // mk(id, 카테고리, 영문명, 국문명, 가격, 태그, 사이즈(없으면 null), 설명)
+  const mk = (id, category, title, titleKo, price, tag, sizes, description) => ({
+    id, title, titleKo, price,
+    priceStr: price.toLocaleString('en-US'),
+    description,
+    hasSize: !!sizes,
+    sizes: sizes || [],
+    image: "",
+    tag,
+    category
+  });
+  const CL = ["S", "M", "L", "XL"];
+  const CL2 = ["S", "M", "L", "XL", "2XL"];
+  const SML = ["S", "M", "L"];
+
+  PRODUCTS_DATA.push(
+    // ── 한정판: 특정 기록 달성 시 생성되는 굿즈 ──
+    mk(7, "limited", "FINELA Gold Keyring", "FINELA 1,400점 한정 골드 키링", 49000, "1,400 PCS", null, "선수가 1,400점을 달성했을 때만 제작되는 골드 키링입니다. 달성 기록과 개별 시리얼 넘버가 뒷면에 각인되며 1,400점 한정으로 생산됩니다."),
+    mk(8, "limited", "Triple-Double Edition Ball", "트리플더블 달성 기념 농구공", 99000, "RECORD", null, "트리플더블 달성 경기 날짜와 기록이 각인된 기념 농구공입니다. 전용 케이스와 인증서가 함께 제공됩니다."),
+    mk(9, "limited", "Gold Medal Replica", "금메달 획득 기념 메달 레플리카", 59000, "MEDALIST", null, "금메달 획득을 기념해 제작되는 레플리카 메달입니다. 리본과 전용 보관 케이스가 포함됩니다."),
+    mk(10, "limited", "Season MVP Jersey", "시즌 MVP 기념 한정 져지", 139000, "MVP", CL2, "시즌 MVP 선정 시에만 제작되는 골드 포인트 져지입니다. 등번호 아래에 MVP 시즌 표기가 들어갑니다."),
+
+    // ── 스포츠 의류 ──
+    mk(11, "apparel", "Away Replica Jersey", "선수 유니폼 어웨이 레플리카 (블랙)", 89000, "AWAY", CL2, "블랙 바디에 레드 포인트가 들어간 어웨이 레플리카 져지입니다. 흡한속건 기능성 소재입니다."),
+    mk(12, "apparel", "Shooting Shirt", "슈팅복", 69000, "WARM-UP", CL, "경기 전 워밍업에 입는 롱슬리브 슈팅 셔츠입니다. 어깨 움직임이 편한 패턴으로 재단했습니다."),
+    mk(13, "apparel", "Training Set", "트레이닝복 세트", 119000, "TEAM WEAR", CL2, "상하의 세트로 구성된 팀 트레이닝복입니다. 측면 라인과 가슴 로고가 포인트입니다."),
+    mk(14, "apparel", "Performance Short Sleeve Tee", "기능성 반팔티", 35000, "FUNCTIONAL", CL2, "땀을 빠르게 배출하는 경량 기능성 반팔 티셔츠입니다."),
+    mk(15, "apparel", "Performance Shorts", "기능성 반바지", 39000, "FUNCTIONAL", CL2, "무릎 위로 오는 길이의 농구용 기능성 반바지입니다. 허리 밴딩과 양옆 포켓이 있습니다."),
+    mk(16, "apparel", "Performance Long Sleeve Tee", "기능성 긴팔티", 42000, "FUNCTIONAL", CL2, "쌀쌀한 날 훈련용으로 좋은 기능성 긴팔 티셔츠입니다. 신축성이 좋아 이너로도 입을 수 있습니다."),
+    mk(17, "apparel", "Performance Training Pants", "기능성 츄리닝 바지", 59000, "FUNCTIONAL", CL2, "발목 지퍼가 달린 기능성 트레이닝 바지입니다. 가볍고 신축성이 좋습니다."),
+    mk(18, "apparel", "Basketball Crew Socks", "농구 양말 (3켤레)", 19000, "3 PACK", null, "쿠션 밑창을 적용한 농구용 크루 삭스 3켤레 세트입니다."),
+
+    // ── 라이프 스타일 ──
+    mk(19, "lifestyle", "FINELA Eco Bag", "FINELA 에코백", 19000, "DAILY", null, "두꺼운 캔버스 원단에 로고를 프린트한 에코백입니다."),
+    mk(20, "lifestyle", "FINELA Sweatpants", "FINELA 데일리 바지", 59000, "NEW", CL2, "기모 안감 없이 사계절 입기 좋은 데일리 스웻 팬츠입니다."),
+    mk(21, "lifestyle", "FINELA Tumbler", "FINELA 텀블러", 29000, "NEW", null, "보온·보냉이 되는 스테인리스 텀블러(500ml)입니다."),
+    mk(22, "lifestyle", "FINELA Crewneck Sweatshirt", "FINELA 맨투맨", 69000, "NEW", CL2, "도톰한 코튼 소재의 크루넥 맨투맨입니다. 가슴에 작은 자수 로고가 들어갑니다."),
+    mk(23, "lifestyle", "FINELA Varsity Jacket", "FINELA 자켓", 129000, "OUTER", CL2, "블랙 바디에 레드 라인이 들어간 바시티 스타일 자켓입니다."),
+    mk(24, "lifestyle", "FINELA Gym Sack", "FINELA 짐색 가방", 25000, "DAILY", null, "끈으로 여닫는 가벼운 짐색입니다. 농구화와 간단한 짐을 넣기 좋습니다."),
+    mk(25, "lifestyle", "FINELA Mug", "FINELA 머그컵", 15000, "NEW", null, "로고가 새겨진 세라믹 머그컵입니다."),
+    mk(26, "lifestyle", "FINELA Snapback Cap", "FINELA 캡모자", 39000, "BESTSELLER", null, "플랫 브림 스냅백 캡입니다. 뒷면 스냅으로 사이즈를 조절합니다."),
+    mk(27, "lifestyle", "FINELA 2027 Calendar", "FINELA 2027 캘린더", 18000, "SEASON", null, "선수 사진으로 구성한 2027년 탁상 캘린더입니다. 경기 일정이 함께 표시됩니다."),
+
+    // ── 농구 용품 ──
+    mk(28, "gear", "FINELA Duffle Bag", "FINELA 더플백", 89000, "TRAVEL", null, "원정 경기 짐을 모두 담을 수 있는 대용량 더플백입니다. 신발 수납 칸이 따로 있습니다."),
+    mk(29, "gear", "FINELA Sports Towel", "스포츠 타월", 15000, "ESSENTIAL", null, "땀 흡수가 좋은 속건 스포츠 타월입니다."),
+    mk(30, "gear", "FINELA Arm Sleeve", "암슬리브", 17000, "SLEEVE", SML, "팔 근육을 잡아주는 압박 암슬리브입니다. 자외선 차단 기능이 있습니다."),
+    mk(31, "gear", "FINELA Leg Sleeve", "레그슬리브", 22000, "SLEEVE", SML, "종아리를 감싸는 압박 레그슬리브입니다. 훈련과 경기 모두 사용할 수 있습니다."),
+    mk(32, "gear", "FINELA Knee Support", "무릎 보호대", 29000, "SUPPORT", SML, "무릎 충격을 줄여주는 패드형 무릎 보호대입니다."),
+    mk(33, "gear", "FINELA Ankle Support", "발목 보호대", 25000, "SUPPORT", SML, "발목 움직임을 잡아주는 밴딩형 발목 보호대입니다."),
+    mk(34, "gear", "FINELA Wrist Support", "손목 아대", 15000, "SUPPORT", null, "손목을 안정적으로 잡아주는 신축성 아대입니다."),
+
+    // ── 응원 용품 ──
+    mk(35, "cheer", "Cheering Clapper", "응원 클래퍼", 12000, "GAME DAY", null, "경기장 직관용 막대 풍선 클래퍼 2개 세트입니다."),
+    mk(36, "cheer", "Light Stick", "응원봉", 25000, "GAME DAY", null, "FINELA 레드 컬러로 빛나는 응원봉입니다. 건전지가 포함되어 있습니다."),
+    mk(37, "cheer", "Cheering Headband", "응원 머리띠", 14000, "GAME DAY", null, "로고가 들어간 응원 머리띠입니다. 길이 조절이 가능합니다."),
+    mk(38, "cheer", "Cheering Fan", "응원 부채", 8000, "GAME DAY", null, "선수 사진이 들어간 응원 부채입니다."),
+    mk(39, "cheer", "Cheering Flag", "응원 깃발", 22000, "GAME DAY", null, "경기장에서 흔들 수 있는 대형 응원 깃발입니다."),
+    mk(40, "cheer", "Cheering Sketchbook", "응원 스케치북", 7000, "GAME DAY", null, "직접 문구를 써서 드는 응원용 스케치북입니다. 마커가 함께 제공됩니다."),
+    mk(41, "cheer", "Cheering Picket", "응원 피켓", 9000, "GAME DAY", null, "선수 이름과 등번호가 들어간 응원 피켓입니다."),
+
+    // ── 굿즈 ──
+    mk(42, "goods", "FINELA Keyring", "FINELA 키링", 12000, "BASIC", null, "FINELA 로고를 새긴 기본 키링입니다."),
+    mk(43, "goods", "Mini Diorama", "미니 디오라마", 39000, "COLLECTION", null, "선수의 명장면을 미니어처로 재현한 탁상용 디오라마입니다."),
+    mk(44, "goods", "Can Badge", "캔뱃지", 4000, "COLLECTION", null, "선수별 일러스트가 들어간 캔뱃지입니다."),
+    mk(45, "goods", "Phone Grip", "그립톡", 9000, "NEW", null, "로고와 선수 일러스트가 들어간 스마트폰 그립톡입니다."),
+    mk(46, "goods", "Sticker Pack", "스티커 팩", 8000, "PACK", null, "방수 소재의 로고·선수 스티커 10종 모음입니다."),
+    mk(47, "goods", "Photocard Book", "포토카드북", 25000, "COLLECTION", null, "포토카드를 보관하는 수납 북입니다. 20장을 넣을 수 있습니다."),
+    mk(48, "goods", "Metal Pin Badge", "뱃지", 7000, "COLLECTION", null, "금속 소재의 핀 뱃지입니다."),
+    mk(49, "goods", "Embroidered Patch", "와펜", 8000, "COLLECTION", null, "옷이나 가방에 붙이는 자수 와펜입니다."),
+    mk(50, "goods", "Last Season Photobook", "지난시즌 사진첩", 45000, "PHOTOBOOK", null, "지난 시즌 경기와 훈련 사진을 담은 하드커버 사진첩입니다."),
+
+    // ── 마스코트 ──
+    mk(51, "mascot", "Mascot Plush", "마스코트 봉제인형", 29000, "MASCOT", null, "FINELA 마스코트를 부드러운 봉제인형으로 만들었습니다. 높이 약 25cm입니다."),
+    mk(52, "mascot", "Mascot Keyring", "마스코트 키링", 12000, "MASCOT", null, "마스코트 모양의 아크릴 키링입니다."),
+    mk(53, "mascot", "Mascot Sticker", "마스코트 스티커", 6000, "MASCOT", null, "마스코트 표정 시리즈 스티커 팩입니다."),
+    mk(54, "mascot", "Mascot Can Badge", "마스코트 캔뱃지", 4000, "MASCOT", null, "마스코트 일러스트가 들어간 캔뱃지입니다."),
+    mk(55, "mascot", "Mascot Pin Badge", "마스코트 뱃지", 7000, "MASCOT", null, "마스코트를 금속으로 만든 핀 뱃지입니다."),
+    mk(56, "mascot", "Mascot Patch", "마스코트 와펜", 8000, "MASCOT", null, "마스코트 자수 와펜입니다.")
+  );
+})();
+
+// STORE 링 카테고리 (8종, 순서대로 링에 배치) — photo: 카테고리 대표 사진 경로(비어 있으면 빈 사진칸)
+const STORE_CATEGORIES = [
+  { key: "limited",   name: "LIMITED",    nameKo: "한정판",       tagline: "기록을 달성해야 만들어지는 한정 굿즈", desc: "선수가 특정 기록을 달성했을 때만 제작되는 한정 수량 굿즈입니다. 시리얼 넘버가 새겨지며 소진되면 재생산하지 않습니다.", photo: "" },
+  { key: "apparel",   name: "SPORTS WEAR", nameKo: "스포츠 의류",  tagline: "선수가 입는 그대로",                   desc: "홈·어웨이 유니폼부터 슈팅복, 트레이닝복, 기능성 의류와 양말까지 훈련과 경기에서 입는 라인업입니다.", photo: "" },
+  { key: "lifestyle", name: "LIFE STYLE", nameKo: "라이프 스타일", tagline: "일상에서 입고 쓰는 FINELA",            desc: "에코백, 티셔츠, 후드, 텀블러, 머그컵, 캘린더까지 평소에 쓰는 생활 아이템입니다.", photo: "" },
+  { key: "gear",      name: "BASKET BALL",  nameKo: "농구 용품",    tagline: "코트 위에서 쓰는 장비",                desc: "농구공, 더플백, 슬리브, 보호대 등 경기와 훈련에서 바로 쓰는 용품입니다.", photo: "" },
+  { key: "cheer",     name: "SUPPORTERS", nameKo: "응원 용품",    tagline: "관중석을 채우는 응원 도구",            desc: "클래퍼, 응원봉, 머리띠, 부채, 깃발, 피켓까지 경기장 직관을 위한 응원 용품입니다.", photo: "" },
+  { key: "goods",     name: "GOODS",      nameKo: "굿즈",         tagline: "모으고 싶은 FINELA 굿즈",              desc: "키링, 미니 디오라마, 캔뱃지, 포토카드, 와펜, 사진첩 등 팬을 위한 수집 굿즈입니다.", photo: "" },
+  { key: "mascot",    name: "MASCOT",     nameKo: "마스코트",     tagline: "FINELA 마스코트와 함께",               desc: "마스코트 봉제인형과 키링, 스티커, 뱃지, 와펜 등 마스코트 캐릭터 상품입니다.", photo: "" },
+  { key: "collab",    name: "COLLAB",     nameKo: "콜라보",       tagline: "COMING SOON",                          desc: "다른 브랜드·아티스트와 함께 만드는 콜라보 컬렉션입니다. 준비가 끝나면 공개됩니다.", photo: "", comingSoon: true }
 ];
 
 // 4. 공식 파트너사 (OUR PARTNERS & SPONSORS) 데이터

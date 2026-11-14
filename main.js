@@ -895,7 +895,9 @@ document.addEventListener('DOMContentLoaded', () => {
       sum += c.price * c.qty;
       return `
         <div class="cart-item-row">
-          <img src="${c.image}" alt="${c.title}" class="cart-item-img">
+          ${c.image
+            ? `<img src="${c.image}" alt="${c.title}" class="cart-item-img">`
+            : `<div class="cart-item-img cart-item-img-ph"><i class="fa-regular fa-image"></i></div>`}
           <div class="cart-item-info">
             <div class="cart-item-name">${c.title} ${c.size ? `(${c.size})` : ''}</div>
             <div class="cart-item-price">₩${(c.price * c.qty).toLocaleString()} (x${c.qty})</div>
@@ -927,6 +929,29 @@ document.addEventListener('DOMContentLoaded', () => {
       cartOverlay.classList.remove('active');
       document.body.classList.remove('cart-open');
   }
+
+  // 새 STORE 상세 창(store-ring.js)에서 장바구니에 담을 때 쓰는 연결 창구
+  window.FinelaCart = {
+    add(prod, size, qty) {
+      const n = Math.max(1, Number(qty) || 1);
+      const existing = cart.find(c => c.id === prod.id && c.size === (size || null));
+      if (existing) {
+        existing.qty += n;
+      } else {
+        cart.push({
+          id: prod.id,
+          title: prod.title,
+          price: prod.price,
+          priceStr: prod.priceStr,
+          image: prod.image || (prod.images && prod.images[0]) || '',
+          size: size || null,
+          qty: n
+        });
+      }
+      updateCartUI();
+      openCartDrawer();
+    }
+  };
 
   if (openCartBtn) openCartBtn.addEventListener('click', openCartDrawer);
   if (closeCartBtn) closeCartBtn.addEventListener('click', closeCartDrawer);
