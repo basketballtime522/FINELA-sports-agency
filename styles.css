@@ -2994,16 +2994,34 @@ button {
 
 .footer-top {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   margin-bottom: 60px;
   flex-wrap: wrap;
   gap: 40px;
 }
 
-/* 회사 정보 가운데 정렬 (NAVIGATION · CONTACT 열 제거 후) */
 .footer-brand {
-  max-width: 620px;
-  text-align: center;
+  max-width: 520px;
+}
+
+/* CONTACT 섹션 하단의 회사 정보 (왼쪽 정렬, 로고 + 정보를 가로로 배치) */
+.contact-company {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  margin-top: clamp(24px, 4vh, 44px);
+  padding-top: clamp(16px, 2.4vh, 26px);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  text-align: left;
+}
+
+.contact-company .footer-logo {
+  margin-bottom: 0;
+  flex: none;
+}
+
+.contact-company .footer-company-info {
+  margin: 0;
 }
 
 .footer-logo {
@@ -4457,6 +4475,8 @@ html {
 .contact-social-wrap {
   margin-top: clamp(10px, 1.6vh, 26px) !important;
   padding-top: clamp(8px, 1.2vh, 18px) !important;
+  /* CONNECT WITH US + 소셜 아이콘을 폼 하단 정렬보다 조금 위로 올림 */
+  margin-bottom: clamp(24px, 4.5vh, 56px);
 }
 
 .contact-form-card {

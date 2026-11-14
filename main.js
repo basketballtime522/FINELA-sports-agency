@@ -51,12 +51,10 @@ document.addEventListener('DOMContentLoaded', () => {
       });
 
       if (currentId) {
+        // 해당 섹션의 상단 탭만 활성화. 탭이 없는 섹션(CONTACT)이면 모든 탭 활성 해제
         navItems.forEach(item => {
           const link = item.querySelector('.nav-link');
-          if (link && link.getAttribute('href') === `#${currentId}`) {
-            navItems.forEach(i => i.classList.remove('active'));
-            item.classList.add('active');
-          }
+          item.classList.toggle('active', !!link && link.getAttribute('href') === `#${currentId}`);
         });
       }
     }
@@ -1050,26 +1048,6 @@ document.addEventListener('DOMContentLoaded', () => {
   // ============================================================================
   // 8. 고객센터 문의 폼 발송 시뮬레이션 (CONTACT)
   // ============================================================================
-  // CONTACT 화면 구도: 제목·부제는 그대로 두고, 연락처 정보 + 문의 폼 덩어리의 아래쪽 끝이 화면 높이의 3/4 지점에 오게 내림
-  // (화면이 낮아 아래가 넘치면 섹션 하단 여백까지만 내림)
-  const fitContactLayout = () => {
-    const sec = document.getElementById('contact');
-    const grid = sec && sec.querySelector('.contact-split-grid');
-    if (!sec || !grid) return;
-    grid.style.marginTop = '0px';
-    const vh = window.innerHeight;
-    const secPadBottom = parseFloat(getComputedStyle(sec).paddingBottom) || 0;
-    const top = grid.getBoundingClientRect().top - sec.getBoundingClientRect().top;
-    const h = grid.offsetHeight;
-    const want = vh * 0.75 - h - top;
-    const max = Math.max(sec.offsetHeight, vh) - secPadBottom - h - top;
-    grid.style.marginTop = Math.max(0, Math.min(want, max)) + 'px';
-  };
-  fitContactLayout();
-  window.addEventListener('resize', fitContactLayout);
-  window.addEventListener('load', fitContactLayout);
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitContactLayout);
-
   const contactForm = document.getElementById('contactForm');
   const btnSendMessage = document.getElementById('btnSendMessage');
   const formSuccessBanner = document.getElementById('formSuccessBanner');
@@ -1168,12 +1146,10 @@ document.addEventListener('DOMContentLoaded', () => {
             if (id === 'hero') {
               navItems.forEach(i => i.classList.remove('active'));
             } else {
+              // 탭이 없는 섹션(CONTACT)이면 모든 탭 활성 해제
               navItems.forEach(item => {
                 const link = item.querySelector('.nav-link');
-                if (link && link.getAttribute('href') === `#${id}`) {
-                  navItems.forEach(i => i.classList.remove('active'));
-                  item.classList.add('active');
-                }
+                item.classList.toggle('active', !!link && link.getAttribute('href') === `#${id}`);
               });
             }
           }
