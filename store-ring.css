@@ -45,8 +45,9 @@
   outline: none;
   user-select: none;
   -webkit-user-select: none;
-  --sr-w: clamp(160px, 26vh, 340px);
-  --sr-h: calc(var(--sr-w) * 1.32);
+  /* 다른 탭처럼 화면 높이를 꽉 채우도록: 카드 높이 = 화면 높이 - (헤더·제목·캡션 영역) */
+  --sr-h: clamp(240px, calc(70vh - 150px), 720px);
+  --sr-w: calc(var(--sr-h) / 1.32);
 }
 
 .sr-viewport {
@@ -140,30 +141,6 @@
 .sr-card.is-front .sr-card-name {
   color: #ff3341;
 }
-
-.sr-arrow {
-  position: absolute;
-  top: 50%;
-  z-index: 2000;
-  width: 44px;
-  height: 44px;
-  margin-top: -22px;
-  border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.22);
-  background: rgba(14, 16, 24, 0.8);
-  color: #fff;
-  font-size: 15px;
-  cursor: pointer;
-  transition: background 0.2s ease, border-color 0.2s ease;
-}
-.sr-arrow:hover {
-  background: #e60012;
-  border-color: #e60012;
-}
-/* 화살표는 링 중앙 기준으로 배치 — 화면 오른쪽 고정 섹션 이동 점(scroll-dot-nav)과 겹치지 않도록
-   화면 가장자리에서 최소 약 170px 안쪽에 둔다 (점 내비 영역은 라벨까지 약 150px 폭) */
-.sr-arrow.prev { left: calc(50% - min(var(--sr-w) * 1.55 + 40px, 50% - 175px) - 44px); }
-.sr-arrow.next { right: calc(50% - min(var(--sr-w) * 1.55 + 40px, 50% - 175px) - 44px); }
 
 .sr-caption {
   display: flex;

@@ -5,7 +5,7 @@
    - 카테고리 상세 : 대표 사진칸 + 그 카테고리 상품 목록 (이전/다음 카테고리 이동)
    - 상품 상세   : 사진 갤러리(칸) + 사이즈 + 수량 + 장바구니 (window.FinelaCart, main.js)
    데이터: finela-data.js 의 STORE_CATEGORIES, PRODUCTS_DATA
-   조작: 드래그 · ◀ ▶ 버튼 · 키보드 ← → / Enter · 상세 창 ESC(상품→카테고리→닫기), ← →
+   조작: 드래그 · 옆 카드 클릭 · 하단 점 · 키보드 ← → / Enter · 상세 창 ESC(상품→카테고리→닫기), ← →
    사진 칸: image / images / 카테고리 photo 가 비어 있으면 "PHOTO" 빈 칸으로 보인다.
    ============================================================================== */
 (function () {
@@ -55,8 +55,6 @@
             </div>
           </div>`).join('')}
       </div>
-      <button type="button" class="sr-arrow prev" id="srPrev" aria-label="이전 카테고리"><i class="fa-solid fa-chevron-left"></i></button>
-      <button type="button" class="sr-arrow next" id="srNext" aria-label="다음 카테고리"><i class="fa-solid fa-chevron-right"></i></button>
     </div>
     <div class="sr-caption" id="srCaption" aria-live="polite">
       <div class="sr-cap-text">
@@ -85,6 +83,8 @@
   let dragStartX = 0;
   let dragStartTarget = 0;
   let downCard = null;
+  let downActive = 0;
+  let lastInteract = 0;     // 마지막으로 직접 조작한 시각 (직후에는 자동 회전을 쉬게 함)
   let hovering = false;
   let visible = true;
   let rafId = 0;
@@ -147,6 +147,21 @@
     target = Math.round(target / THETA) * THETA - delta * THETA;
   }
 
+  // 클릭한 위치의 카드를 직접 계산한다.
+  // (3D로 돌아가는 카드는 브라우저의 클릭 판정이 특정 각도에서 카드를 놓치는 경우가 있어서,
+  //  화면에 보이는 카드 중 그 지점을 덮는 것 가운데 가장 정면에 가까운 카드를 고른다)
+  function cardAtPoint(x, y) {
+    let best = null;
+    let bestOpacity = 0.15;
+    cards.forEach((c) => {
+      const o = parseFloat(c.style.opacity) || 0;
+      if (o <= bestOpacity) return;
+      const r = c.getBoundingClientRect();
+      if (x >= r.left && x <= r.right && y >= r.top && y <= r.bottom) { best = c; bestOpacity = o; }
+    });
+    return best;
+  }
+
   // 드래그
   viewport.addEventListener('pointerdown', (e) => {
     if (e.target.closest('.sr-arrow')) return;
@@ -154,7 +169,9 @@
     dragMoved = 0;
     dragStartX = e.clientX;
     dragStartTarget = target;
-    downCard = e.target.closest('.sr-card');
+    downCard = e.target.closest('.sr-card') || cardAtPoint(e.clientX, e.clientY);
+    downActive = activeFromTarget();        // 누른 순간 정면이던 카드 (누르는 사이 자동 회전으로 바뀌어도 기준 유지)
+    lastInteract = Date.now();
     viewport.setPointerCapture(e.pointerId);
     viewport.classList.add('is-dragging');
   });
@@ -172,8 +189,9 @@
       // 클릭: 정면 카드면 열기, 옆 카드면 정면으로 돌리기
       target = Math.round(target / THETA) * THETA;
       if (downCard) {
+        // 정면 카드를 누르면 상세 열기, 옆 카드를 누르면 그 카드가 정면으로 이동
         const i = Number(downCard.dataset.index);
-        if (i === activeFromTarget()) openCategory(i);
+        if (i === downActive) openCategory(i);
         else rotateTo(i);
       }
     } else {
@@ -184,13 +202,12 @@
   viewport.addEventListener('pointerup', endDrag);
   viewport.addEventListener('pointercancel', endDrag);
 
-  document.getElementById('srPrev').addEventListener('click', () => rotateBy(-1));
-  document.getElementById('srNext').addEventListener('click', () => rotateBy(1));
   document.getElementById('srOpen').addEventListener('click', () => openCategory(activeFromTarget()));
-  dots.forEach((d) => d.addEventListener('click', () => rotateTo(Number(d.dataset.dot))));
+  dots.forEach((d) => d.addEventListener('click', () => { lastInteract = Date.now(); rotateTo(Number(d.dataset.dot)); }));
 
   stage.addEventListener('keydown', (e) => {
     if (modal.classList.contains('active')) return;
+    lastInteract = Date.now();
     if (e.key === 'ArrowLeft') { rotateBy(-1); e.preventDefault(); }
     else if (e.key === 'ArrowRight') { rotateBy(1); e.preventDefault(); }
     else if (e.key === 'Enter') { openCategory(activeFromTarget()); e.preventDefault(); }
@@ -207,6 +224,7 @@
   if (!reduceMotion) {
     setInterval(() => {
       if (hovering || dragging || !visible || modal.classList.contains('active') || document.hidden) return;
+      if (Date.now() - lastInteract < 10000) return;
       rotateBy(1);
     }, 4500);
   }
