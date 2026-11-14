@@ -68,6 +68,11 @@ window.FINELA_PLAYER_LAYOUT = {
     },
     "scroll-guide": {
       "y": 0.08505
+    },
+    "footer-mascot": {
+      "x": -0.05305,
+      "y": -0.00158,
+      "s": 0.864
     }
   }
 };

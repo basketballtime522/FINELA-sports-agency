@@ -3004,6 +3004,22 @@ button {
   max-width: 520px;
 }
 
+/* 푸터 오른쪽 마스코트: 높이를 회사 소개란(로고 + 회사 정보 4줄 = 168px)에 맞추고, 오른쪽 끝에서 한 발 왼쪽으로 */
+.footer-top {
+  align-items: flex-end;
+}
+
+.footer-mascot {
+  height: 168px;
+  width: auto;
+  margin-right: 64px;
+  position: relative;
+  z-index: 30;
+  filter: drop-shadow(0 6px 18px rgba(0, 0, 0, 0.55));
+  pointer-events: none;   /* 편집 모드(mascot-layout.js, 로컬 전용)에서만 드래그 가능 */
+  user-select: none;
+}
+
 .footer-logo {
   height: 48px;
   width: auto;
