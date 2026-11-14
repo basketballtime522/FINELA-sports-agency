@@ -3015,6 +3015,44 @@ button {
   text-align: left;
 }
 
+/* 회사 정보를 CONTACT 화면 맨 아래 끝에 거의 닿게 배치 (섹션 높이를 채워 위쪽 내용과 분리) */
+#contact.contact-section {
+  display: flex !important;
+  flex-direction: column !important;
+  padding-bottom: clamp(8px, 1.2vh, 16px) !important;
+}
+
+#contact.contact-section .section-container {
+  flex: 1 1 auto !important;
+}
+
+/* 맨 아래 묶음(회사 정보 + 저작권·약관 + 안내 문구)을 화면 맨 아래로 */
+#contact.contact-section .contact-bottom {
+  margin-top: auto;
+  padding-top: clamp(16px, 3vh, 36px);
+}
+
+.contact-bottom .contact-company {
+  margin-top: 0;
+  /* 회사 정보를 문구 한 줄 반(약 36px)만큼 위로: 아래 줄의 위쪽 여백(약 18px)과 겹쳐 계산되므로 18 + 36 = 54px */
+  margin-bottom: 54px;
+}
+
+.contact-bottom .footer-bottom {
+  margin-top: clamp(10px, 1.6vh, 18px);
+  padding-top: clamp(10px, 1.6vh, 18px);
+}
+
+.contact-bottom .footer-disclaimer {
+  margin-top: clamp(8px, 1.2vh, 14px);
+  padding-top: clamp(8px, 1.2vh, 14px);
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  font-size: 12px;
+  color: #767b8e;
+  text-align: center;
+  line-height: 1.6;
+}
+
 .contact-company .footer-logo {
   margin-bottom: 0;
   flex: none;
