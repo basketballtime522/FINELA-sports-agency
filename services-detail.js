@@ -314,7 +314,6 @@
       modal.classList.add('active');
       modal.setAttribute('aria-hidden', 'false');
       document.body.classList.add('svc-modal-open');
-      document.body.style.overflow = 'hidden';
     }
     modal.scrollTop = 0;
     const focusTarget = modal.classList.contains('is-popup') ? body.querySelector('[data-svc-close]') : closeBtn;
@@ -326,7 +325,6 @@
     modal.classList.remove('is-popup');
     modal.setAttribute('aria-hidden', 'true');
     document.body.classList.remove('svc-modal-open');
-    document.body.style.overflow = '';
     gallery = null;
     currentView = null;
     returnTo = null;
@@ -457,6 +455,7 @@
 
   window.addEventListener('keydown', (e) => {
     if (!modal.classList.contains('active')) return;
+    if (window.FinelaIsTyping && window.FinelaIsTyping(e.target)) return;
     if (e.key === 'Escape') { e.preventDefault(); closeOrReturn(); return; }
     if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
       const dir = e.key === 'ArrowLeft' ? -1 : 1;

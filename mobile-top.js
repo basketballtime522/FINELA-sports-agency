@@ -56,13 +56,15 @@
     }
   });
 
-  // 스크롤 이벤트(페이지·각 창)와 창 열림/닫힘을 한꺼번에 따라가도록 짧은 주기로 확인한다(가벼운 계산만 함)
+  // 스크롤 이벤트(페이지·각 창)와 창 열림/닫힘(클래스 변화)을 따라간다. 주기적인 타이머는 쓰지 않는다.
   window.addEventListener('scroll', update, { passive: true });
   ['storeModal', 'svcModal', 'playerModal'].forEach(function (id) {
     var el = byId(id);
-    if (el) el.addEventListener('scroll', update, { passive: true });
+    if (!el) return;
+    el.addEventListener('scroll', update, { passive: true });
+    new MutationObserver(update).observe(el, { attributes: true, attributeFilter: ['class'] });
   });
+  new MutationObserver(update).observe(document.body, { attributes: true, attributeFilter: ['class'], childList: true, subtree: true });
   window.addEventListener('resize', update);
-  setInterval(update, 250);
   update();
 })();

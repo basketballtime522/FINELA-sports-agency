@@ -100,7 +100,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function startSlideTimer() {
     clearInterval(slideTimer);
-    slideTimer = setInterval(nextSlide, 4500); // 4.5초마다 자연스러운 페이드 전환
+    slideTimer = setInterval(nextSlide, 3500); // 3.5초마다 자연스러운 페이드 전환 (STORE·SERVICES 사진 전환과 동일)
   }
 
   slideDots.forEach((dot, idx) => {
@@ -424,7 +424,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // 모달 노출: 처음 열 때·1페이지에서 넘길 때는 맨 위(1페이지), 2페이지에서 넘길 때는 2페이지 유지
     playerModal.classList.add('active');
     if (!stayOnExtraPage) playerModal.scrollTop = 0;
-    document.body.style.overflow = 'hidden';
     document.body.classList.add('modal-open');
 
     // 섹션 카드 목록은 새 선수 기준 처음부터
@@ -442,6 +441,12 @@ document.addEventListener('DOMContentLoaded', () => {
   // ----------------------------------------------------------------------------
   // 외부 링크 헬퍼: http(s) 주소만 허용, 새 탭으로 열기, 없으면 '링크 준비 중'
   // ----------------------------------------------------------------------------
+  // 글자를 입력하는 칸인지(이때 방향키·스페이스는 입력용이므로 창 단축키가 가로채지 않는다)
+  function isTypingTarget(t) {
+    return !!(t && t.closest && t.closest('input, textarea, select, [contenteditable="true"]'));
+  }
+  window.FinelaIsTyping = isTypingTarget;
+
   function safeExternalUrl(url) {
     if (typeof url !== 'string' || !url.trim()) return '';
     try {
@@ -700,8 +705,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function closePlayerModalFunc(silent) {
     if (!playerModal) return;
     playerModal.classList.remove('active');
-      document.body.style.overflow = 'auto';
-      document.body.classList.remove('modal-open');
+    document.body.classList.remove('modal-open');
 
     // Roster 섹션으로 즉시 부드럽게 복귀 (뒤로 가기로 닫을 때(silent === true)는 위치를 건드리지 않음)
     const rosterSec = document.getElementById('roster');
@@ -753,6 +757,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // 키보드 좌우 화살표 & ESC 키 지원
   window.addEventListener('keydown', (e) => {
     if (!playerModal.classList.contains('active')) return;
+    if (isTypingTarget(e.target)) return;   // 입력칸에서는 방향키가 커서 이동에 쓰이도록 둔다
     if (e.key === 'Escape') closePlayerModalFunc();
     if (e.key === 'ArrowLeft') openPlayerModal(currentModalPlayerIndex - 1);
     if (e.key === 'ArrowRight') openPlayerModal(currentModalPlayerIndex + 1);
@@ -760,11 +765,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 영상 재생 시뮬레이션 버튼
   const playBtn = document.getElementById('modalVideoPlayBtn');
+  const playHighlight = () => {
+    showLinkInfo(`${PLAYERS_DATA[currentModalPlayerIndex].nameKo} 선수의 하이라이트 영상은 준비 중입니다`);
+  };
   if (playBtn) {
-    playBtn.addEventListener('click', () => {
-      alert(`${PLAYERS_DATA[currentModalPlayerIndex].nameKo} 선수의 2026 아시안게임 하이라이트 영상이 재생됩니다.`);
+    playBtn.addEventListener('click', playHighlight);
+    // 키보드: Enter · Space 로도 같은 동작
+    playBtn.addEventListener('keydown', (e) => {
+      if (e.key !== 'Enter' && e.key !== ' ') return;
+      e.preventDefault();
+      playHighlight();
     });
   }
+  const watchBtn = document.getElementById('btnWatchHighlight');
+  if (watchBtn) watchBtn.addEventListener('click', playHighlight);
+
+  // 소셜 아이콘: 공식 계정 주소가 생기기 전까지는 안내 문구만 표시 (href 가 생기면 일반 링크로 동작)
+  document.querySelectorAll('.social-circle-link[data-link-message]').forEach((el) => {
+    const go = (e) => {
+      if (el.hasAttribute('href')) return;
+      e.preventDefault();
+      showLinkInfo(el.dataset.linkMessage);
+    };
+    el.addEventListener('click', go);
+    el.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') go(e); });
+  });
 
   // ============================================================================
   // 5. 통합 서비스 3대 탭 전환 (SERVICES)
@@ -787,9 +812,6 @@ document.addEventListener('DOMContentLoaded', () => {
   // ============================================================================
   // 6. 공식 스토어 굿즈 & 퀵뷰 & 장바구니 (STORE & CART)
   // ============================================================================
-  const productsGrid = document.getElementById('productsGrid');
-  const productModal = document.getElementById('productModal');
-  const closeProdModal = document.getElementById('closeProdModal');
   const cartDrawer = document.getElementById('cartDrawer');
   const cartOverlay = document.getElementById('cartOverlay');
   const closeCartBtn = document.getElementById('closeCartBtn');
@@ -866,98 +888,6 @@ document.addEventListener('DOMContentLoaded', () => {
       max,
       inCart: cartQtyOf(prod.id)
     };
-  }
-
-  let currentSelectedProduct = null;
-  let currentSelectedSize = 'L';
-
-  // 상품 그리드 렌더링
-  function renderProducts() {
-    if (!productsGrid) return;
-    productsGrid.innerHTML = '';
-
-    PRODUCTS_DATA.forEach(prod => {
-      const card = document.createElement('div');
-      card.className = 'product-card';
-      card.innerHTML = `
-        <div class="product-thumb-frame">
-          <span class="product-tag-pill">${prod.tag}</span>
-          <img src="${prod.image}" alt="${prod.title}" class="product-thumb-img" loading="lazy">
-        </div>
-        <div class="product-body">
-          <div>
-            <h3 class="product-title">${prod.title}</h3>
-            <p class="product-sub-ko">${prod.titleKo}</p>
-          </div>
-          <div class="product-bottom-row">
-            <span class="product-price">₩${prod.priceStr}</span>
-            <button class="product-quick-btn" title="자세히 보기 & 담기">
-              <i class="fa-solid fa-arrow-right"></i>
-            </button>
-          </div>
-        </div>
-      `;
-
-      card.addEventListener('click', () => openProductQuickView(prod));
-      productsGrid.appendChild(card);
-    });
-  }
-
-  renderProducts();
-
-  // 상품 퀵뷰 모달 오픈
-  function openProductQuickView(prod) {
-    currentSelectedProduct = prod;
-    currentSelectedSize = prod.hasSize ? 'L' : null;
-
-    document.getElementById('prodModalImg').src = prod.image;
-    document.getElementById('prodModalTitle').innerText = prod.title;
-    document.getElementById('prodModalPrice').innerText = `₩${prod.priceStr}`;
-    document.getElementById('prodModalDesc').innerText = prod.description;
-
-    const sizeGroup = document.getElementById('prodModalSizeGroup');
-    if (prod.hasSize) {
-      sizeGroup.style.display = 'block';
-      const sizeOptions = document.getElementById('prodSizeOptions');
-      sizeOptions.innerHTML = prod.sizes.map(s => `
-        <button class="size-btn ${s === 'L' ? 'active' : ''}" data-size="${s}">${s}</button>
-      `).join('');
-
-      sizeOptions.querySelectorAll('.size-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-          sizeOptions.querySelectorAll('.size-btn').forEach(b => b.classList.remove('active'));
-          btn.classList.add('active');
-          currentSelectedSize = btn.getAttribute('data-size');
-        });
-      });
-    } else {
-      sizeGroup.style.display = 'none';
-    }
-
-    productModal.classList.add('active');
-    document.body.style.overflow = 'hidden';
-  }
-
-  if (closeProdModal) {
-    closeProdModal.addEventListener('click', () => {
-      productModal.classList.remove('active');
-      document.body.style.overflow = 'auto';
-    });
-  }
-
-  // 장바구니 담기 버튼 이벤트
-  const btnAddCart = document.getElementById('btnAddCart');
-  if (btnAddCart) {
-    btnAddCart.addEventListener('click', () => {
-      if (!currentSelectedProduct) return;
-
-      addToCart(currentSelectedProduct, currentSelectedSize, 1);
-      productModal.classList.remove('active');
-      document.body.style.overflow = 'auto';
-
-      // 드로어 오픈 안내
-      openCartDrawer();
-    });
   }
 
   // 장바구니 UI 갱신
@@ -1242,8 +1172,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (playerModal && playerModal.classList.contains('active')) {
         // 모달 닫기 및 스크롤 복원
         playerModal.classList.remove('active');
-      document.body.style.overflow = 'auto';
-      document.body.classList.remove('modal-open');
+        document.body.classList.remove('modal-open');
 
         const href = link.getAttribute('href');
         if (href && href.startsWith('#')) {
@@ -1257,6 +1186,26 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 });
+// ==============================================================================
+// 스크롤 잠금 (한 곳에서만 관리)
+//  - 창(선수 상세 · SERVICES 상세 · STORE 상세 · 결제 · 주문 내역)이 하나라도 열려 있으면 뒤쪽 페이지 스크롤을 잠그고,
+//    모두 닫히면 푼다. 각 창 코드는 body.style.overflow 를 직접 건드리지 않고, 클래스만 켜고 끈다.
+// ==============================================================================
+document.addEventListener('DOMContentLoaded', () => {
+  const storeModal = document.getElementById('storeModal');
+  const LOCK_CLASSES = ['modal-open', 'svc-modal-open', 'checkout-open', 'orders-open'];
+  function syncScrollLock() {
+    const b = document.body;
+    const locked = LOCK_CLASSES.some(c => b.classList.contains(c)) ||
+      !!(storeModal && storeModal.classList.contains('active'));
+    const want = locked ? 'hidden' : '';
+    if (b.style.overflow !== want) b.style.overflow = want;
+  }
+  new MutationObserver(syncScrollLock).observe(document.body, { attributes: true, attributeFilter: ['class'] });
+  if (storeModal) new MutationObserver(syncScrollLock).observe(storeModal, { attributes: true, attributeFilter: ['class'] });
+  syncScrollLock();
+});
+
 // ==============================================================================
 // 풀스크린 스크롤 스냅 우측 플로팅 도트 내비게이션 & 섹션 옵저버
 // ==============================================================================

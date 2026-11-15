@@ -126,7 +126,9 @@
     capTagline.textContent = c.tagline;
   }
 
+  // 움직임이 있을 때만 프레임을 돌린다(가만히 서 있으면 멈춤 → ensureTick 으로 다시 시작)
   function tick() {
+    rafId = 0;
     const diff = target - angle;
     if (Math.abs(diff) > 0.02) {
       angle += diff * (dragging ? 0.35 : 0.11);
@@ -135,16 +137,20 @@
       angle = target;
       paint();
     }
-    rafId = requestAnimationFrame(tick);
+    if (dragging || angle !== target) rafId = requestAnimationFrame(tick);
+  }
+  function ensureTick() {
+    if (!rafId) rafId = requestAnimationFrame(tick);
   }
 
   const activeFromTarget = () => mod(Math.round(-target / THETA), N);
-  function rotateBy(steps) { target = Math.round(target / THETA) * THETA - steps * THETA; }
+  function rotateBy(steps) { target = Math.round(target / THETA) * THETA - steps * THETA; ensureTick(); }
   function rotateTo(index) {
     // 가장 가까운 방향으로 돌려서 index 를 정면으로
     const cur = activeFromTarget();
     let delta = mod(index - cur + N / 2, N) - N / 2;
     target = Math.round(target / THETA) * THETA - delta * THETA;
+    ensureTick();
   }
 
   // 클릭한 위치의 카드를 직접 계산한다.
@@ -174,17 +180,20 @@
     lastInteract = Date.now();
     viewport.setPointerCapture(e.pointerId);
     viewport.classList.add('is-dragging');
+    ensureTick();
   });
   viewport.addEventListener('pointermove', (e) => {
     if (!dragging) return;
     const dx = e.clientX - dragStartX;
     dragMoved = Math.max(dragMoved, Math.abs(dx));
     target = dragStartTarget + dx * 0.32;
+    ensureTick();
   });
   const endDrag = () => {
     if (!dragging) return;
     dragging = false;
     viewport.classList.remove('is-dragging');
+    ensureTick();
     if (dragMoved < 6) {
       // 클릭: 정면 카드면 열기, 옆 카드면 정면으로 돌리기
       target = Math.round(target / THETA) * THETA;
@@ -439,7 +448,6 @@
       lastFocus = document.activeElement;
       modal.classList.add('active');
       modal.setAttribute('aria-hidden', 'false');
-      document.body.style.overflow = 'hidden';
     }
     closeBtn.focus({ preventScroll: true });
     syncCatArrows();
@@ -449,7 +457,6 @@
     stopHero();
     modal.classList.remove('active');
     modal.setAttribute('aria-hidden', 'true');
-    document.body.style.overflow = '';
     view = null;
     prod = null;
     syncCatArrows();
@@ -582,6 +589,9 @@
 
   window.addEventListener('keydown', (e) => {
     if (!modal.classList.contains('active')) return;
+    // 결제·주문 내역 창이 위에 열려 있거나 글자 입력 중이면 방향키·ESC 를 가로채지 않는다
+    if (document.body.classList.contains('checkout-open') || document.body.classList.contains('orders-open')) return;
+    if (window.FinelaIsTyping && window.FinelaIsTyping(e.target)) return;
     if (e.key === 'Escape') {
       // 장바구니 서랍이 열려 있으면 그쪽이 먼저 닫히도록 둔다
       if (document.body.classList.contains('cart-open')) return;
@@ -590,6 +600,7 @@
       return;
     }
     if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+      if (document.body.classList.contains('cart-open')) return;   // 장바구니 서랍이 위에 있으면 뒤쪽 화면은 넘기지 않는다
       const dir = e.key === 'ArrowLeft' ? -1 : 1;
       if (view === 'product') showGallery(galIndex + dir);
       else if (view === 'category') renderCategory(catIndex + dir);

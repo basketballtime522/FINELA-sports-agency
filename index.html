@@ -5,13 +5,26 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>FINELA SPORTS AGENCY | Play With The Medalists</title>
+  <meta name="description" content="FINELA SPORTS AGENCY — KBL·해외 리그·국가대표 엘리트 농구 선수를 위한 프리미엄 통합 매니지먼트. 선수단, 서비스, 공식 스토어, 파트너를 만나보세요.">
+  <meta name="theme-color" content="#060709">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="FINELA SPORTS AGENCY">
+  <meta property="og:title" content="FINELA SPORTS AGENCY | Play With The Medalists">
+  <meta property="og:description" content="KBL·해외 리그·국가대표 엘리트 선수를 위한 프리미엄 통합 솔루션">
+  <meta property="og:image" content="assets/hero/hero_slide_1.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" type="image/png" href="finela-logo.png">
+  <link rel="apple-touch-icon" href="finela-logo.png">
 
-  <!-- 웹폰트: Montserrat, Oswald, Permanent Marker & Pretendard -->
+  <!-- 웹폰트: Montserrat, Oswald, Permanent Marker (Google Fonts) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
-    href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,600;0,700;0,800;0,900;1,900&family=Oswald:wght@500;600;700&family=Permanent+Marker&family=Pretendard:wght@300;400;500;600;700;800;900&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,600;0,700;0,800;0,900;1,900&family=Oswald:wght@500;600;700&family=Permanent+Marker&display=swap"
     rel="stylesheet">
+  <!-- 한글 폰트 Pretendard: Google Fonts에는 없어서 jsDelivr(공식 배포본)에서 불러온다 -->
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
 
   <!-- FontAwesome 6 Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -95,12 +108,6 @@
     <!-- 히어로 텍스트 & 카피 -->
     <div class="hero-content-container">
 
-      <!-- 에이전시 뱃지 -->
-      <div class="agency-badge">
-        <span class="badge-dot"></span>
-        <span class="badge-text">ELITE BASKETBALL & ATHLETE MANAGEMENT</span>
-      </div>
-
       <!-- 메인 슬로건 -->
       <h1 class="main-slogan">
         PLAY WITH THE<br>
@@ -112,6 +119,12 @@
         우리는 선수의 한계를 넘어,<br class="br-m"> <strong>새로운 브랜드 가치</strong>를 창출합니다.
         <span class="sub-copy-en">KBL · 해외 리그 · 국가대표 엘리트 선수를 위한<br class="br-m"> 프리미엄 통합 솔루션</span>
       </p>
+
+      <!-- 에이전시 뱃지 (서브 카피 아래) -->
+      <div class="agency-badge">
+        <span class="badge-dot"></span>
+        <span class="badge-text">ELITE BASKETBALL & ATHLETE MANAGEMENT</span>
+      </div>
 
       <!-- CTA 버튼 그룹 -->
       <div class="hero-cta-group">
@@ -459,11 +472,11 @@
           <div class="contact-social-wrap">
             <div class="social-title">CONNECT WITH US</div>
             <div class="social-links-row">
-              <a href="https://instagram.com" target="_blank" class="social-circle-link" title="Instagram"><i
+              <a role="button" tabindex="0" data-link-message="FINELA 공식 인스타그램 계정은 준비 중입니다" class="social-circle-link" title="Instagram" aria-label="Instagram"><i
                   class="fa-brands fa-instagram"></i></a>
-              <a href="https://youtube.com" target="_blank" class="social-circle-link" title="YouTube"><i
+              <a role="button" tabindex="0" data-link-message="FINELA 공식 유튜브 채널은 준비 중입니다" class="social-circle-link" title="YouTube" aria-label="YouTube"><i
                   class="fa-brands fa-youtube"></i></a>
-              <a href="https://x.com" target="_blank" class="social-circle-link" title="X (Twitter)"><svg
+              <a role="button" tabindex="0" data-link-message="FINELA 공식 X(트위터) 계정은 준비 중입니다" class="social-circle-link" title="X (Twitter)" aria-label="X (Twitter)"><svg
                   viewBox="0 0 24 24" width="1em" height="1em" fill="currentColor" aria-hidden="true"><path
                     d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" /></svg></a>
             </div>
@@ -547,8 +560,8 @@
           &copy; 2026 FINELA SPORTS AGENCY. ALL RIGHTS RESERVED.
         </div>
         <div class="footer-terms">
-          <a href="#">개인정보처리방침</a>
-          <a href="#">이용약관</a>
+          <a href="#" data-legal="privacy">개인정보처리방침</a>
+          <a href="#" data-legal="terms">이용약관</a>
         </div>
       </div>
 
@@ -624,6 +637,7 @@
 
             <!-- 4K 하이라이트 영상 박스 (시안 1:1 일치 - 단일 16:9 영상 플레이어 & 재생 시뮬레이션) -->
             <div class="modal-video-card" id="modalVideoPlayBtn" role="button" tabindex="0" title="클릭하여 하이라이트 영상 재생"
+              aria-label="하이라이트 영상 재생"
               data-layer="video" data-layer-name="하이라이트 영상">
               <div class="video-thumb-wrap">
                 <img src="assets/detail/video_highlight_clean.jpg" alt="Highlight Video"
@@ -662,13 +676,9 @@
                   </div>
 
                   <div class="modal-action-buttons" data-layer="action-buttons" data-layer-name="버튼 묶음">
-                    <button class="btn-watch-highlight" id="btnWatchHighlight" onclick="alert('하이라이트 풀 영상 링크로 이동합니다.')"
+                    <button class="btn-watch-highlight" id="btnWatchHighlight"
                       data-layer="btn-highlights" data-layer-name="WATCH HIGHLIGHTS 버튼">
                       WATCH HIGHLIGHTS
-                    </button>
-                    <button class="btn-career-stats" id="btnCareerStats" onclick="alert('선수 커리어 상세 기록 PDF를 다운로드합니다.')"
-                      data-layer="btn-career" data-layer-name="VIEW CAREER STATS 버튼">
-                      VIEW CAREER STATS
                     </button>
                   </div>
                 </div>
@@ -809,35 +819,6 @@
     <span class="sm-cart-fab-count" id="storeCartFabCount">0</span>
   </button>
 
-  <!-- B. 상품 상세 퀵뷰 모달 (PRODUCT MODAL) — 기존 그리드용, 현재는 사용하지 않음 -->
-  <div class="product-modal" id="productModal">
-    <div class="product-modal-box">
-      <button class="modal-close-btn" id="closeProdModal">&times;</button>
-
-      <div class="prod-modal-img-wrap">
-        <img src="" alt="Product" class="prod-modal-img" id="prodModalImg">
-      </div>
-
-      <div class="prod-modal-info">
-        <h3 class="prod-modal-title" id="prodModalTitle">Product Name</h3>
-        <div class="prod-modal-price" id="prodModalPrice">₩0</div>
-        <p class="prod-modal-desc" id="prodModalDesc">Product Description</p>
-
-        <!-- 사이즈 선택기 -->
-        <div class="size-selector-group" id="prodModalSizeGroup">
-          <div class="size-label">SELECT SIZE</div>
-          <div class="size-options" id="prodSizeOptions">
-            <!-- JS 바인딩 -->
-          </div>
-        </div>
-
-        <button class="btn-add-cart" id="btnAddCart">
-          <i class="fa-solid fa-cart-plus"></i> ADD TO CART
-        </button>
-      </div>
-    </div>
-  </div>
-
     <!-- D. 풀스크린 스크롤 스냅용 우측 플로팅 도트 내비게이션 -->
   <nav class="scroll-dot-nav" id="scrollDotNav" aria-label="Page Sections Navigation">
     <a href="#hero" class="dot-nav-item active" data-title="HOME" aria-label="HOME">
@@ -917,6 +898,8 @@
   <!-- 새로고침해도 보던 화면(구역·상세 창·장바구니 서랍) 유지 -->
   <script src="page-state.js"></script>
   <script src="mobile-top.js"></script>
+  <!-- 푸터 개인정보처리방침 · 이용약관 (샘플 문서 팝업) -->
+  <script src="legal.js"></script>
 
 </body>
 

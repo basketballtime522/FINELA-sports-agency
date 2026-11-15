@@ -159,6 +159,7 @@
     return '<form class="co-grid" novalidate>' +
       '<div class="co-left">' +
         '<section class="co-sec"><h3>배송 정보</h3>' +
+          '<p class="co-note co-privacy"><i class="fa-solid fa-triangle-exclamation"></i> 가상 결제입니다. <b>실제 이름·연락처·주소는 입력하지 마세요.</b> 테스트용 값(예: 홍길동, 010-0000-0000)을 권장하며, 입력한 정보는 이 브라우저에만 저장되고 5분 뒤 자동 삭제됩니다.</p>' +
           '<label class="co-field"><span>받는 분</span><input name="name" type="text" autocomplete="name" placeholder="이름"><em class="co-err" data-err="name"></em></label>' +
           '<label class="co-field"><span>연락처</span><input name="phone" type="tel" inputmode="numeric" autocomplete="tel" placeholder="010-0000-0000"><em class="co-err" data-err="phone"></em></label>' +
           '<label class="co-field"><span>주소</span><input name="addr" type="text" autocomplete="street-address" placeholder="도로명 주소"><em class="co-err" data-err="addr"></em></label>' +

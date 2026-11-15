@@ -121,29 +121,50 @@
   }
 
   /* ───────────── HOME ───────────── */
+  /* 모바일 구성 순서: 슬로건 → 서브 카피 → ELITE BASKETBALL 뱃지 → 배경 사진 → 버튼 → 지표
+     - 문구 묶음(.hero-content-container)을 display: contents 로 풀어 자식들을 히어로 구역의 세로 흐름에 직접 놓고,
+       order 로 사진(.hero-media-wrapper)을 뱃지 아래·버튼 위에 끼워 넣는다. */
   .hero-section {
     min-height: 100vh;
     min-height: 100svh;
-    padding-top: var(--header-height) !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    padding: calc(var(--header-height) + 28px) 20px 40px !important;
   }
-  /* 슬라이드 사진: 폭 전체로 원본 비율(약 3:2)에 가깝게 위쪽에 보여 주고, 아래쪽은 어둡게 이어 붙인다.
-     (예전에는 화면 전체를 cover 로 채워서 세로 폰에서 사진이 3배 가까이 확대·잘려 보였음) */
-  .hero-slideshow {
-    inset: var(--header-height) 0 auto 0 !important;
+  .hero-content-container {
+    display: contents !important;
+  }
+  .hero-section { text-align: center; }
+  .main-slogan { order: 1; width: 100%; }
+  .hero-sub-copy { order: 2; width: 100%; margin-bottom: 18px !important; }
+  .agency-badge { order: 3; }
+  .hero-media-wrapper {
+    order: 4;
+    position: relative !important;
+    inset: auto !important;
+    flex: none;
+    width: calc(100% + 40px);
+    margin: 0 -20px 24px;
     height: min(66.67vw, 460px);
-    -webkit-mask-image: linear-gradient(to bottom, #000 62%, transparent 100%);
-    mask-image: linear-gradient(to bottom, #000 62%, transparent 100%);
+    overflow: hidden;
+  }
+  .hero-cta-group { order: 5; }
+  .hero-slide-dots { order: 6; display: none !important; }   /* 모바일은 점 표시 없이 사진만 자동 전환 */
+  .hero-metrics-bar { order: 7; }
+  /* 슬라이드 사진: 폭 전체로 원본 비율(약 3:2). 위·아래 가장자리는 어둡게 이어 붙인다 */
+  .hero-slideshow {
+    inset: 0 !important;
+    height: 100%;
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 16%, #000 84%, transparent 100%);
+    mask-image: linear-gradient(to bottom, transparent 0%, #000 16%, #000 84%, transparent 100%);
   }
   .hero-slide {
     background-position: center 30% !important;
   }
-  .hero-content-container {
-    padding: calc(min(66.67vw, 460px) - 36px) 20px 40px !important;
-    width: 100%;
-  }
   .agency-badge {
     padding: 7px 14px !important;
-    margin-bottom: 20px !important;
+    margin-bottom: 8px !important;
   }
   .badge-text {
     font-size: 10px !important;
@@ -179,9 +200,6 @@
     letter-spacing: 1px !important;
     text-align: center;
     justify-content: center;
-  }
-  .hero-slide-dots {
-    margin-bottom: 20px;
   }
   .hero-metrics-bar {
     display: grid !important;

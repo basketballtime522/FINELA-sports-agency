@@ -121,20 +121,24 @@
   }
 
   // ───────────────────────── 히스토리 ─────────────────────────
-  function urlFor(sec) {
-    return location.pathname + location.search + (sec && sec !== 'hero' ? '#' + sec : '');
+  // 주소: 선수 상세가 열려 있으면 #player-번호(1부터, 예: #player-3), 아니면 #구역.
+  // 이 주소를 공유하면 받는 사람은 바로 그 선수 상세 화면으로 열린다(딥링크).
+  function urlFor(sec, ov) {
+    var base = location.pathname + location.search;
+    if (ov && ov.player != null) return base + '#player-' + (Number(ov.player) + 1);
+    return base + (sec && sec !== 'hero' ? '#' + sec : '');
   }
   function pushEntry(sec, ov) {
     parts.length = idx + 1;      // 앞으로 가기 목록은 버린다(일반 브라우저와 같은 동작)
     idx += 1;
     parts[idx] = keyOf(ov);
     saveParts();
-    try { history.pushState({ i: idx, section: sec, ov: ov }, '', urlFor(sec)); } catch (e) {}
+    try { history.pushState({ i: idx, section: sec, ov: ov }, '', urlFor(sec, ov)); } catch (e) {}
   }
   function replaceEntry(sec, ov) {
     parts[idx] = keyOf(ov);
     saveParts();
-    try { history.replaceState({ i: idx, section: sec, ov: ov }, '', urlFor(sec)); } catch (e) {}
+    try { history.replaceState({ i: idx, section: sec, ov: ov }, '', urlFor(sec, ov)); } catch (e) {}
   }
 
   function same(a, b) { return JSON.stringify(a) === JSON.stringify(b); }
@@ -259,7 +263,7 @@
         if (!st2 || !st2.ov) return;
         var sec = currentSection();
         if (sec && sec !== st2.section) {
-          try { history.replaceState({ i: st2.i, section: sec, ov: st2.ov }, '', urlFor(sec)); } catch (e) {}
+          try { history.replaceState({ i: st2.i, section: sec, ov: st2.ov }, '', urlFor(sec, st2.ov)); } catch (e) {}
         }
       }, 260);
     }, { passive: true });
@@ -268,7 +272,12 @@
   // ───────────────────────── 복원(새로고침) ─────────────────────────
   function restore() {
     var s = read();
-    var target = (s && s.section) || (location.hash && location.hash.slice(1)) || null;
+    // 공유받은 선수 상세 주소(#player-3)로 들어온 경우
+    var hm = /^#player-(\d+)$/.exec(location.hash || '');
+    var hashPlayer = hm ? Number(hm[1]) - 1 : null;
+    if (hashPlayer != null && !(typeof PLAYERS_DATA !== 'undefined' && hashPlayer >= 0 && hashPlayer < PLAYERS_DATA.length)) hashPlayer = null;
+    var target = (s && s.section) || (hashPlayer != null ? 'roster' : null) || (location.hash && location.hash.slice(1)) || null;
+    if (hashPlayer != null && !(s && s.section)) target = 'roster';
 
     // 1) 구역 위치: 폰트·이미지 때문에 높이가 늦게 바뀌므로 몇 차례 다시 맞춘다
     settleSection = target || null;
@@ -293,6 +302,11 @@
       } catch (e) {}
       try { if (s.ordersOpen && window.FinelaOrders) window.FinelaOrders.open(); } catch (e) {}
       // 결제 창은 입력 중이던 정보가 사라지므로 새로고침 때는 장바구니 서랍까지만 복원한다
+    }
+
+    // 주소의 선수 번호가 있으면 그 선수 상세를 연다(저장된 화면보다 주소를 우선)
+    if (hashPlayer != null && (!s || s.player !== hashPlayer)) {
+      try { if (window.FinelaPlayer) window.FinelaPlayer.open(hashPlayer); } catch (e) {}
     }
 
     // 복원 직후부터 바로 저장한다.
