@@ -642,6 +642,16 @@
     background: #e60012;
   }
 
+  /* STORE 카테고리 이전·다음 버튼: 폰에서는 작게, 양옆 가장자리 세로 중앙(내용이 비치도록 반투명) */
+  .sm-cat-arrow {
+    width: 38px !important;
+    height: 38px !important;
+    font-size: 14px !important;
+    opacity: 0.88;
+  }
+  .sm-cat-arrow.prev { left: 6px !important; }
+  .sm-cat-arrow.next { right: 6px !important; }
+
   /* STORE 상세 창의 장바구니 바로가기: 폰에서는 글자를 빼고 아이콘+개수만 */
   .sm-cart-fab {
     right: 14px !important;

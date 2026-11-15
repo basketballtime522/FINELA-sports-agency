@@ -328,8 +328,6 @@
     const c = CATS[catIndex];
     const list = productsOf(c.key);
     const heroPics = heroPhotos(c, list);
-    const prev = CATS[mod(catIndex - 1, N)];
-    const next = CATS[mod(catIndex + 1, N)];
     body.innerHTML = `
       <header class="sm-head">
         <div class="sm-eyebrow">STORE · CATEGORY ${pad2(catIndex + 1)} / ${pad2(N)}</div>
@@ -353,18 +351,18 @@
       <h3 class="sm-section-title">ALL ITEMS</h3>
       <div class="sm-pgrid">${list.map(productCard).join('')}</div>`}
 
-      <div class="sm-catnav">
-        <button type="button" data-cat-step="-1"><i class="fa-solid fa-arrow-left"></i><span><small>PREV</small>${pad2(mod(catIndex - 1, N) + 1)} ${esc(prev.name)}</span></button>
-        <button type="button" data-cat-step="1"><span><small>NEXT</small>${pad2(mod(catIndex + 1, N) + 1)} ${esc(next.name)}</span><i class="fa-solid fa-arrow-right"></i></button>
-      </div>`;
+      `;
+    // 이전·다음 카테고리 이동 버튼은 페이지 아래가 아니라 화면 양옆 세로 중앙에 고정(아래 syncCatArrows) — 상품 상세에서는 숨김
     modal.scrollTop = keepScroll ? catScroll : 0;
     startHero(heroPics.length);
+    syncCatArrows();
   }
 
   function renderProduct(p) {
     stopHero();
     prod = p;
     view = 'product';
+    syncCatArrows();   // 상품 상세에서는 이전·다음 카테고리 버튼 숨김
     galIndex = 0;
     galItems = galleryOf(p);
     selSize = p.hasSize ? (p.sizes.indexOf('L') >= 0 ? 'L' : p.sizes[0]) : null;
@@ -444,6 +442,7 @@
       document.body.style.overflow = 'hidden';
     }
     closeBtn.focus({ preventScroll: true });
+    syncCatArrows();
   }
 
   function close() {
@@ -453,6 +452,7 @@
     document.body.style.overflow = '';
     view = null;
     prod = null;
+    syncCatArrows();
     // 링을 마지막으로 본 카테고리 위치에 맞춤
     rotateTo(catIndex);
     if (lastFocus && lastFocus.focus) lastFocus.focus({ preventScroll: true });
@@ -542,9 +542,23 @@
       cartFabCount.hidden = n === 0;
     }
   }
+  // 이전·다음 카테고리 버튼: 카테고리 목록 화면에서만, 화면 양옆 세로 중앙에 고정(모달 밖에 둠 — 모달의 backdrop-filter 때문)
+  // 이동 방향의 카테고리 이름은 따로 표시하지 않는다(툴팁만).
+  function syncCatArrows() {
+    const show = modal.classList.contains('active') && view === 'category';
+    ['storeCatPrev', 'storeCatNext'].forEach((id) => {
+      const b = document.getElementById(id);
+      if (b) b.hidden = !show;
+    });
+  }
+  [['storeCatPrev', -1], ['storeCatNext', 1]].forEach(([id, dir]) => {
+    const b = document.getElementById(id);
+    if (b) b.addEventListener('click', () => { if (view === 'category') renderCategory(catIndex + dir); });
+  });
+
   if (cartFab) {
     cartFab.addEventListener('click', () => { if (window.FinelaCart) window.FinelaCart.openDrawer(); });
-    new MutationObserver(syncCartFab).observe(modal, { attributes: true, attributeFilter: ['class'] });
+    new MutationObserver(() => { syncCartFab(); syncCatArrows(); }).observe(modal, { attributes: true, attributeFilter: ['class'] });
     window.addEventListener('finela:cart', syncCartFab);
     syncCartFab();
   }

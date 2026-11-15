@@ -264,6 +264,39 @@ body.cart-open .sm-cart-fab,
 body.checkout-open .sm-cart-fab,
 body.orders-open .sm-cart-fab { display: none; }
 
+/* ---------- 이전·다음 카테고리 버튼 (카테고리 목록 화면, 양옆 세로 중앙 고정) ---------- */
+.sm-cat-arrow {
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 7050; /* 상세 창(7000) 위, 장바구니 서랍(7100) 아래 */
+  width: 52px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 1px solid rgba(230, 0, 18, 0.5);
+  background: rgba(14, 16, 24, 0.82);
+  backdrop-filter: blur(10px);
+  color: #fff;
+  font-size: 18px;
+  cursor: pointer;
+  box-shadow: 0 0 8px rgba(230, 0, 18, 0.28), 0 0 18px rgba(230, 0, 18, 0.12);
+  transition: background 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+.sm-cat-arrow[hidden] { display: none; }
+.sm-cat-arrow.prev { left: 22px; }
+.sm-cat-arrow.next { right: 22px; }
+.sm-cat-arrow:hover {
+  background: #e60012;
+  border-color: #ff4d57;
+  box-shadow: 0 0 14px rgba(230, 0, 18, 0.95), 0 0 36px rgba(230, 0, 18, 0.55);
+}
+body.cart-open .sm-cat-arrow,
+body.checkout-open .sm-cat-arrow,
+body.orders-open .sm-cat-arrow { display: none; }
+
 /* ---------- 상세 창 (전체화면) ---------- */
 .sm-modal {
   position: fixed;
