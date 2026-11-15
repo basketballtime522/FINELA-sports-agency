@@ -85,12 +85,12 @@
   function setupGallery(items, onChange) {
     gallery = { items, index: 0, onChange };
     showGallery(0);
-    pauseAuto(2500);   // 처음 열었을 때는 첫 사진을 조금 더 보여 준다
+    pauseAuto(1500);   // 처음 열었을 때는 첫 사진을 조금 더 보여 준다(첫 넘김까지 최대 약 5초)
   }
 
   // 큰 사진 자동 넘김: 1.5초마다 다음 사진. 사용자가 직접 조작하면 잠시 쉰다.
   // (창이 닫혔거나 탭이 가려졌거나, 모션 줄이기 설정이면 넘기지 않는다)
-  const AUTO_MS = 1500;
+  const AUTO_MS = 3500;   // 1.5초는 너무 빨라서 3.5초로
   const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   let autoPauseUntil = 0;
   function pauseAuto(ms) { autoPauseUntil = Date.now() + (ms || 5000); }

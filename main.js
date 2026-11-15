@@ -790,6 +790,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const CART_KEY = 'finela.cart.v1';
   const LIMITED_MAX = 1;
   const NORMAL_MAX = 10;
+  // 배송비: 상품 금액 5만원 이상 무료배송, 5만원 미만은 3,000원 (빈 장바구니는 0원)
+  const FREE_SHIP_MIN = 50000;
+  const SHIP_FEE = 3000;
+  const shippingFor = (sub) => (sub > 0 && sub < FREE_SHIP_MIN ? SHIP_FEE : 0);
   const isLimitedProduct = (p) => !!p && p.category === 'limited';
   const maxQtyOf = (p) => (isLimitedProduct(p) ? LIMITED_MAX : NORMAL_MAX);
   const cartQtyOf = (id) => cart.filter(c => c.id === id).reduce((a, c) => a + c.qty, 0);
@@ -950,9 +954,27 @@ document.addEventListener('DOMContentLoaded', () => {
     // 다른 화면(STORE 바로가기 버튼, 결제 창 등)이 장바구니 변화를 따라가도록 알린다
     try { window.dispatchEvent(new CustomEvent('finela:cart', { detail: { count: totalItems } })); } catch (e) {}
 
+    // 금액 영역(상품 금액 · 배송비 · 합계 · 무료배송 안내)
+    const renderTotals = (sub) => {
+      const ship = shippingFor(sub);
+      const subEl = document.getElementById('cartSubtotal');
+      const shipEl = document.getElementById('cartShipFee');
+      const hintEl = document.getElementById('cartShipHint');
+      if (subEl) subEl.innerText = `₩${sub.toLocaleString()}`;
+      if (shipEl) shipEl.innerText = sub === 0 ? '-' : (ship === 0 ? '무료' : `₩${ship.toLocaleString()}`);
+      if (hintEl) {
+        hintEl.innerText = sub === 0
+          ? `₩${FREE_SHIP_MIN.toLocaleString()} 이상 무료배송 (미만 배송비 ₩${SHIP_FEE.toLocaleString()})`
+          : (ship === 0
+              ? '무료배송이 적용되었습니다.'
+              : `₩${(FREE_SHIP_MIN - sub).toLocaleString()} 더 담으면 무료배송 (현재 배송비 ₩${SHIP_FEE.toLocaleString()})`);
+      }
+      cartTotalPrice.innerText = `₩${(sub + ship).toLocaleString()}`;
+    };
+
     if (cart.length === 0) {
       cartItemsList.innerHTML = `<div class="cart-empty-message"><i class="fa-solid fa-cart-shopping mb-2 text-2xl text-gray-600 block"></i>장바구니에 담긴 상품이 없습니다.</div>`;
-      cartTotalPrice.innerText = '₩0';
+      renderTotals(0);
       return;
     }
 
@@ -983,7 +1005,7 @@ document.addEventListener('DOMContentLoaded', () => {
       `;
     }).join('');
 
-    cartTotalPrice.innerText = `₩${sum.toLocaleString()}`;
+    renderTotals(sum);
   }
 
   // 이 줄(상품+사이즈)이 가질 수 있는 최대 수량 = 상품 한도 − 같은 상품의 다른 사이즈 줄 수량
@@ -1032,6 +1054,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // 장바구니 index 번째 줄이 가질 수 있는 최대 수량 / 수량 변경(한도 안에서만)
     maxForIndex(index) { return cart[index] ? cartMaxFor(cart[index]) : 0; },
     changeQty(index, delta) { window.changeCartQty(index, delta); return cart[index] ? cart[index].qty : 0; },
+    // 배송비 계산(상품 금액 기준) — 결제 창·주문 내역에서 같은 규칙을 쓰도록 여기서만 정의
+    shipping: shippingFor,
+    freeShipMin: FREE_SHIP_MIN,
+    shipFee: SHIP_FEE,
     count() { return cart.reduce((a, c) => a + c.qty, 0); },
     qtyInCart: cartQtyOf,
     isOpen() { return cartDrawer.classList.contains('active'); },

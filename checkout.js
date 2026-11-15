@@ -53,7 +53,8 @@
       if (q) return changeQty(Number(q.getAttribute('data-index')), Number(q.getAttribute('data-co-qty')));
       var g = t.closest('[data-co-goto]');
       if (g) return gotoProduct(Number(g.getAttribute('data-co-goto')));
-      if (t.closest('[data-co-edit]')) return showForm();
+      if (t === popEl()) return closePop();                  // 팝업 바깥(어두운 영역)을 누르면 팝업만 닫기
+      if (t.closest('[data-co-edit]')) return closePop();    // 수정하기: 팝업만 닫고 입력 화면으로
       if (t.closest('[data-co-pay]')) return finalize();
       if (t.closest('[data-co-orders]')) return openOrders();
       if (t.closest('[data-co-done]')) return finish();
@@ -66,7 +67,8 @@
     document.addEventListener('keydown', function (e) {
       if (e.key === 'Escape' && root.classList.contains('active')) {
         e.stopImmediatePropagation();
-        close();
+        if (popEl()) closePop();    // 팝업이 떠 있으면 팝업만 닫는다
+        else close();
       }
     }, true);
   }
@@ -108,11 +110,18 @@
   function countOf(items) {
     return items.reduce(function (a, c) { return a + c.qty; }, 0);
   }
+  // 배송비: 상품 금액 5만원 이상 무료, 미만 3,000원 (규칙은 main.js 의 FinelaCart.shipping 한 곳에서만 정의)
+  function shipOf(items) { return cartApi().shipping(sumOf(items)); }
+  function grandOf(items) { return sumOf(items) + shipOf(items); }
   function totalsHtml(items) {
     var sum = sumOf(items);
+    var ship = shipOf(items);
+    var hint = ship > 0
+      ? '<p class="co-ship-hint"><i class="fa-solid fa-truck-fast"></i> ' + won(cartApi().freeShipMin - sum) + ' 더 담으면 무료배송 (5만원 이상 무료, 미만 배송비 ' + won(cartApi().shipFee) + ')</p>'
+      : '<p class="co-ship-hint is-free"><i class="fa-solid fa-truck-fast"></i> 5만원 이상 구매로 무료배송이 적용되었습니다.</p>';
     return '<div class="co-line"><span>상품 금액</span><b>' + won(sum) + '</b></div>' +
-      '<div class="co-line"><span>배송비</span><b>무료</b></div>' +
-      '<div class="co-line co-total"><span>총 결제 금액</span><b>' + won(sum) + '</b></div>';
+      '<div class="co-line"><span>배송비</span><b>' + (ship ? won(ship) : '무료') + '</b></div>' +
+      '<div class="co-line co-total"><span>총 결제 금액</span><b>' + won(sum + ship) + '</b></div>' + hint;
   }
 
   // 수량을 바꿨을 때 입력 중인 칸은 그대로 두고 상품 목록·금액만 다시 그린다
@@ -125,7 +134,7 @@
     var tot = root.querySelector('#coTotals');
     if (tot) tot.innerHTML = totalsHtml(items);
     var btn = root.querySelector('#coSubmit');
-    if (btn) btn.textContent = won(sumOf(items)) + ' 결제하기';
+    if (btn) btn.textContent = won(grandOf(items)) + ' 결제하기';
   }
 
   function changeQty(index, delta) {
@@ -166,7 +175,7 @@
           '<div id="coTotals">' + totalsHtml(items) + '</div>' +
           '<label class="co-agree"><input type="checkbox" name="agree"><span>주문 내용을 확인했으며 결제에 동의합니다.</span></label>' +
           '<em class="co-err" data-err="agree"></em>' +
-          '<button type="submit" class="co-submit" id="coSubmit">' + won(sumOf(items)) + ' 결제하기</button>' +
+          '<button type="submit" class="co-submit" id="coSubmit">' + won(grandOf(items)) + ' 결제하기</button>' +
           '<button type="button" class="co-back" data-co-close>장바구니로 돌아가기</button>' +
         '</section>' +
       '</aside>' +
@@ -184,6 +193,7 @@
   }
 
   function showForm() {
+    closePop();
     var items = cartApi().items();
     if (!items.length) return close();
     var body = bodyEl();
@@ -224,45 +234,54 @@
     showConfirm();
   }
 
-  // ───────────────────────── 2) 최종 확인 ─────────────────────────
+  // ───────────────────────── 2) 최종 확인 (팝업) ─────────────────────────
+  // 입력 화면은 그대로 두고 그 위에 팝업을 띄운다. "결제 확정"을 눌러야 주문이 완료되고, "수정하기"는 팝업만 닫는다.
+  function popEl() { return root ? root.querySelector('#coPop') : null; }
+  function closePop() {
+    var p = popEl();
+    if (p) p.remove();
+  }
+
   function showConfirm() {
     var items = cartApi().items();
     if (!items.length || !pending) return showForm();
+    closePop();
     var pay = payOf(pending.pay);
-    var body = bodyEl();
-    body.setAttribute('data-co-step', 'confirm');
-    body.innerHTML =
-      '<div class="co-confirm-head">' +
-        '<h3><i class="fa-solid fa-clipboard-check"></i> 최종 확인</h3>' +
-        '<p>아래 내용으로 결제합니다. 확인 후 <b>결제 확정</b>을 눌러야 주문이 완료됩니다.</p>' +
-      '</div>' +
-      '<div class="co-grid">' +
-        '<div class="co-left">' +
-          '<section class="co-sec"><h3>배송 정보</h3>' +
-            '<dl class="co-info">' +
-              '<div><dt>받는 분</dt><dd>' + esc(pending.name) + '</dd></div>' +
-              '<div><dt>연락처</dt><dd>' + esc(pending.phone) + '</dd></div>' +
-              '<div><dt>주소</dt><dd>' + esc((pending.addr + ' ' + pending.addr2).trim()) + '</dd></div>' +
-              '<div><dt>배송 메모</dt><dd>' + (pending.memo ? esc(pending.memo) : '<span class="co-muted">없음</span>') + '</dd></div>' +
-            '</dl>' +
-          '</section>' +
-          '<section class="co-sec"><h3>결제 수단</h3>' +
-            '<dl class="co-info"><div><dt>결제 수단</dt><dd><i class="' + pay.icon + '"></i> ' + esc(pay.label) + '</dd></div></dl>' +
-            '<p class="co-note"><i class="fa-solid fa-circle-info"></i> 가상 결제입니다. 실제로 결제되지 않습니다.</p>' +
-          '</section>' +
+    var pop = document.createElement('div');
+    pop.className = 'co-pop';
+    pop.id = 'coPop';
+    pop.setAttribute('role', 'alertdialog');
+    pop.setAttribute('aria-modal', 'true');
+    pop.setAttribute('aria-label', '최종 확인');
+    pop.innerHTML =
+      '<div class="co-pop-card">' +
+        '<div class="co-pop-head">' +
+          '<h3><i class="fa-solid fa-clipboard-check"></i> 최종 확인</h3>' +
+          '<p>아래 내용으로 결제합니다. <b>결제 확정</b>을 눌러야 주문이 완료됩니다.</p>' +
         '</div>' +
-        '<aside class="co-right">' +
-          '<section class="co-sec co-summary"><h3>주문 상품 <small>' + countOf(items) + '개</small></h3>' +
-            '<ul class="co-items">' + itemsHtml(items, true) + '</ul>' +
-            totalsHtml(items) +
-            '<button type="button" class="co-submit" data-co-pay>' + won(sumOf(items)) + ' 결제 확정</button>' +
-            '<button type="button" class="co-back" data-co-edit><i class="fa-solid fa-pen"></i> 정보 수정하기</button>' +
-          '</section>' +
-        '</aside>' +
+        '<div class="co-pop-body">' +
+          '<h4>주문 상품 <small>' + countOf(items) + '개</small></h4>' +
+          '<ul class="co-items co-pop-items">' + itemsHtml(items, true) + '</ul>' +
+          '<h4>배송 정보</h4>' +
+          '<dl class="co-info">' +
+            '<div><dt>받는 분</dt><dd>' + esc(pending.name) + '</dd></div>' +
+            '<div><dt>연락처</dt><dd>' + esc(pending.phone) + '</dd></div>' +
+            '<div><dt>주소</dt><dd>' + esc((pending.addr + ' ' + pending.addr2).trim()) + '</dd></div>' +
+            '<div><dt>배송 메모</dt><dd>' + (pending.memo ? esc(pending.memo) : '<span class="co-muted">없음</span>') + '</dd></div>' +
+            '<div><dt>결제 수단</dt><dd><i class="' + pay.icon + '"></i> ' + esc(pay.label) + '</dd></div>' +
+          '</dl>' +
+          totalsHtml(items) +
+          '<p class="co-note"><i class="fa-solid fa-circle-info"></i> 가상 결제입니다. 실제로 결제되지 않습니다.</p>' +
+        '</div>' +
+        '<div class="co-pop-actions">' +
+          '<button type="button" class="co-back co-pop-edit" data-co-edit><i class="fa-solid fa-pen"></i> 수정하기</button>' +
+          '<button type="button" class="co-submit co-pop-pay" data-co-pay>' + won(grandOf(items)) + ' 결제 확정</button>' +
+        '</div>' +
       '</div>';
-    root.querySelector('.co-panel').scrollTop = 0;
+    root.appendChild(pop);
+    var payBtn = pop.querySelector('[data-co-pay]');
+    if (payBtn) setTimeout(function () { payBtn.focus({ preventScroll: true }); }, 30);
   }
-
   // ───────────────────────── 3) 주문 확정 → 완료 ─────────────────────────
   function newOrderNo() {
     var now = new Date();
@@ -279,18 +298,23 @@
   function finalize() {
     var items = cartApi().items();
     if (!items.length || !pending) return close();
+    closePop();
     var pay = payOf(pending.pay);
-    var total = sumOf(items);
+    var subtotal = sumOf(items);
+    var shipping = shipOf(items);
+    var total = subtotal + shipping;
     var order = {
       no: newOrderNo(),
       ts: Date.now(),
       items: items.map(function (c) {
         return { id: c.id, title: c.title, size: c.size, qty: c.qty, price: c.price, image: c.image || '' };
       }),
+      subtotal: subtotal,
+      shipping: shipping,
       total: total,
       pay: pay.label,
       receiver: { name: pending.name, phone: pending.phone, addr: pending.addr, addr2: pending.addr2, memo: pending.memo },
-      refund: null
+      refunds: []
     };
     if (window.FinelaOrders) window.FinelaOrders.add(order);
 
@@ -304,10 +328,13 @@
         '<dl class="co-done-info">' +
           '<div><dt>주문번호</dt><dd>' + esc(order.no) + '</dd></div>' +
           '<div><dt>결제 수단</dt><dd>' + esc(order.pay) + '</dd></div>' +
+          '<div><dt>상품 금액</dt><dd>' + won(subtotal) + '</dd></div>' +
+          '<div><dt>배송비</dt><dd>' + (shipping ? won(shipping) : '무료') + '</dd></div>' +
           '<div><dt>결제 금액</dt><dd>' + won(total) + '</dd></div>' +
           '<div><dt>받는 분</dt><dd>' + esc(pending.name) + '</dd></div>' +
           '<div><dt>배송지</dt><dd>' + esc((pending.addr + ' ' + pending.addr2).trim()) + '</dd></div>' +
         '</dl>' +
+        '<p class="co-note" style="text-align:left;margin-top:16px"><i class="fa-solid fa-circle-info"></i> 데모 주문은 주문 후 5분이 지나면 주문 내역에서 자동으로 삭제됩니다.</p>' +
         '<button type="button" class="co-submit" data-co-orders><i class="fa-solid fa-receipt"></i> 주문 내역 · 배송 조회</button>' +
         '<button type="button" class="co-back" data-co-done>쇼핑 계속하기</button>' +
       '</div>';
@@ -340,6 +367,7 @@
 
   function close() {
     if (!root) return;
+    closePop();
     root.classList.remove('active');
     document.body.classList.remove('checkout-open');
     if (lastFocus && lastFocus.focus) { try { lastFocus.focus({ preventScroll: true }); } catch (e) {} }

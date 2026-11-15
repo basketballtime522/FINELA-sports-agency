@@ -282,9 +282,9 @@
       </button>`;
   }
 
-  // ── 카테고리 대표 이미지: 그 카테고리 상품 사진을 1.5초마다 돌려 보여 준다(메인 화면 슬라이드처럼 부드럽게 전환) ──
+  // ── 카테고리 대표 이미지: 그 카테고리 상품 사진을 3.5초마다 돌려 보여 준다(메인 화면 슬라이드처럼 부드럽게 전환) ──
   // 사진이 있는 상품만 넣는다. 사진이 한 장도 없으면 기존처럼 빈 사진칸, 한 장이면 고정.
-  const HERO_MS = 1500;
+  const HERO_MS = 3500;   // 1.5초는 너무 빨라서 3.5초로
   let heroTimer = null;
   function stopHero() {
     if (heroTimer) { clearInterval(heroTimer); heroTimer = null; }
@@ -417,7 +417,7 @@
           <button type="button" class="sm-add" data-add><i class="fa-solid fa-cart-plus"></i> ADD TO CART</button>
 
           <ul class="sm-meta">
-            <li><i class="fa-solid fa-truck-fast"></i>배송비 무료 · 결제 후 3~5일 이내 출고</li>
+            <li><i class="fa-solid fa-truck-fast"></i>5만원 이상 무료배송 (5만원 미만 배송비 3,000원) · 결제 후 3~5일 이내 출고</li>
             <li><i class="fa-solid fa-rotate-left"></i>수령 후 7일 이내 교환·반품 (미착용 상품)</li>
             <li><i class="fa-solid fa-shield-halved"></i>FINELA 공식 스토어 정품</li>
           </ul>

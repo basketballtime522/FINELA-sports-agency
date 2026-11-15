@@ -653,7 +653,7 @@
     grid-template-columns: 1fr !important;
     gap: 28px !important;
   }
-  /* 모바일 순서: 메시지 보내기(폼) → 연락처 정보 → CONNECT WITH US + 로고(+ 오른쪽 여백에 마스코트) */
+  /* 모바일 순서: 메시지 보내기(폼) → 연락처 정보 → CONNECT WITH US(인스타·유튜브·X 아이콘) + 오른쪽 여백에 마스코트 */
   .contact-form-card {
     order: -1;
   }
@@ -662,21 +662,12 @@
     grid-template-columns: minmax(0, 1fr) auto;
     grid-template-areas:
       "title  mascot"
-      "links  mascot"
-      "logo   mascot";
+      "links  mascot";
     column-gap: 12px;
     align-items: center;
   }
   .contact-social-wrap .social-title { grid-area: title; }
   .contact-social-wrap .social-links-row { grid-area: links; }
-  .contact-social-wrap .contact-m-logo {
-    grid-area: logo;
-    display: block;
-    width: 120px;
-    height: auto;
-    margin-top: 16px;
-    filter: drop-shadow(0 0 12px rgba(230, 0, 18, 0.55));
-  }
   .contact-social-wrap .contact-m-mascot {
     grid-area: mascot;
     display: block;
@@ -684,8 +675,7 @@
     height: auto;
     align-self: end;
   }
-  /* 푸터의 로고·마스코트는 위 CONTACT 로 옮겼으므로 모바일 푸터에서는 숨김 */
-  .footer-logo,
+  /* 푸터의 마스코트는 위 CONTACT 로 옮겼으므로 모바일 푸터에서는 숨김(푸터 로고는 그대로 둠) */
   .footer-mascot {
     display: none !important;
   }

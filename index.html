@@ -467,9 +467,8 @@
                   viewBox="0 0 24 24" width="1em" height="1em" fill="currentColor" aria-hidden="true"><path
                     d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" /></svg></a>
             </div>
-            <!-- 모바일 전용: 로고 + 마스코트 (데스크톱에서는 숨김, 푸터의 로고·마스코트는 모바일에서 숨김) -->
-            <img src="finela-logo.png" alt="FINELA" class="contact-m-logo m-only">
-            <img src="assets/mascot/finela_mascot.png" alt="FINELA 마스코트" class="contact-m-mascot m-only" loading="lazy">
+            <!-- 모바일 전용: 마스코트 (데스크톱에서는 숨김, 푸터의 마스코트는 모바일에서 숨김) -->
+            <img src="assets/mascot/finela_mascot.png" alt="FINELA 마스코트" class="contact-m-mascot m-only">
           </div>
         </div>
 
@@ -879,8 +878,11 @@
     </div>
 
     <div class="cart-drawer-footer">
+      <div class="cart-sum-row"><span>상품 금액</span><span id="cartSubtotal">₩0</span></div>
+      <div class="cart-sum-row"><span>배송비</span><span id="cartShipFee">-</span></div>
+      <p class="cart-ship-hint" id="cartShipHint">₩50,000 이상 무료배송 (미만 배송비 ₩3,000)</p>
       <div class="cart-total-row">
-        <span>TOTAL (배송비 무료)</span>
+        <span>TOTAL</span>
         <span class="cart-total-price" id="cartTotalPrice">₩0</span>
       </div>
       <button class="btn-checkout" id="btnCheckout">
