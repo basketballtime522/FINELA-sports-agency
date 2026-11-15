@@ -252,6 +252,21 @@
     return list;
   }
 
+  // ── 구매 제한 표시 (제한값은 main.js 의 FinelaCart 가 가진다: LIMITED 1개 / 그 외 10개) ──
+  const maxOf = (p) => (window.FinelaCart ? window.FinelaCart.maxQty(p) : 10);
+  const inCartOf = (p) => (window.FinelaCart ? window.FinelaCart.qtyInCart(p.id) : 0);
+  const roomOf = (p) => Math.max(0, maxOf(p) - inCartOf(p));
+  function limitText(p) {
+    const max = maxOf(p);
+    const base = max === 1 ? '1인 1개 한정 구매 상품입니다.' : `상품당 최대 ${max}개까지 구매할 수 있어요.`;
+    const have = inCartOf(p);
+    return have > 0 ? `${base} (장바구니 ${have}개)` : base;
+  }
+  function refreshLimit() {
+    const el = document.getElementById('smLimit');
+    if (el && prod) el.textContent = limitText(prod);
+  }
+
   function productCard(p) {
     return `
       <button type="button" class="sm-pcard" data-product="${p.id}">
@@ -354,6 +369,8 @@
             <button type="button" data-qty="1" aria-label="수량 늘리기"><i class="fa-solid fa-plus"></i></button>
           </div>
 
+          <p class="sm-limit" id="smLimit">${limitText(p)}</p>
+
           <button type="button" class="sm-add" data-add><i class="fa-solid fa-cart-plus"></i> ADD TO CART</button>
 
           <ul class="sm-meta">
@@ -431,26 +448,65 @@
     }
     const q = t.closest('[data-qty]');
     if (q) {
-      qty = Math.min(20, Math.max(1, qty + Number(q.dataset.qty)));
+      // 담을 수 있는 한도(제한 − 이미 담긴 수량)까지만 올라간다
+      const cap = Math.max(1, roomOf(prod));
+      const next = qty + Number(q.dataset.qty);
+      qty = Math.min(cap, Math.max(1, next));
       const el = document.getElementById('smQty');
       if (el) el.textContent = qty;
+      if (next > cap) {
+        const lim = document.getElementById('smLimit');
+        if (lim) {
+          lim.classList.add('is-warn');
+          setTimeout(() => lim.classList.remove('is-warn'), 1200);
+        }
+      }
       return;
     }
     if (t.closest('[data-add]') && prod) {
-      if (window.FinelaCart) window.FinelaCart.add(prod, selSize, qty);
+      const res = window.FinelaCart ? window.FinelaCart.add(prod, selSize, qty) : null;
       const btn = body.querySelector('[data-add]');
       if (btn) {
-        btn.classList.add('is-added');
-        btn.innerHTML = '<i class="fa-solid fa-check"></i> ADDED';
+        const ok = !res || res.status !== 'full';
+        const msg = !res || res.status === 'ok'
+          ? '<i class="fa-solid fa-check"></i> ADDED'
+          : (res.status === 'capped'
+              ? `<i class="fa-solid fa-check"></i> 최대 ${res.max}개까지 담았어요`
+              : (res.max === 1 ? '<i class="fa-solid fa-ban"></i> 이미 담은 한정 상품이에요'
+                               : `<i class="fa-solid fa-ban"></i> 최대 ${res.max}개까지만 담을 수 있어요`));
+        btn.classList.toggle('is-added', ok);
+        btn.classList.toggle('is-blocked', !ok);
+        btn.innerHTML = msg;
+        qty = 1;
+        const el = document.getElementById('smQty');
+        if (el) el.textContent = qty;
+        refreshLimit();
         setTimeout(() => {
-          btn.classList.remove('is-added');
+          btn.classList.remove('is-added', 'is-blocked');
           btn.innerHTML = '<i class="fa-solid fa-cart-plus"></i> ADD TO CART';
-        }, 1600);
+        }, 1800);
       }
     }
   });
 
-  closeBtn.addEventListener('click', close);
+  // 상품 상세에서 X → 카테고리 상품 목록으로(ESC·뒤로 가기와 동일), 목록에서 X → 창 닫기
+  closeBtn.addEventListener('click', back);
+
+  // 새로고침 시 보던 화면 복원(page-state.js)에서 쓰는 연결 창구
+  window.FinelaStore = {
+    state() {
+      if (!modal.classList.contains('active') || !view) return null;
+      return { cat: catIndex, prod: view === 'product' && prod ? prod.id : null };
+    },
+    restore(s) {
+      if (!s || typeof s.cat !== 'number') return;
+      const p = s.prod != null ? productById(Number(s.prod)) : null;
+      // 저장된 카테고리 번호가 어긋나 있어도 상품이 속한 카테고리로 바로잡아 연다
+      const own = p ? CATS.findIndex((c) => c.key === p.category) : -1;
+      openCategory(own >= 0 ? own : s.cat);
+      if (p) renderProduct(p);
+    }
+  };
 
   window.addEventListener('keydown', (e) => {
     if (!modal.classList.contains('active')) return;

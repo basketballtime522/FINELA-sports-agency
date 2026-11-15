@@ -1,0 +1,568 @@
+/* ==============================================================================
+   FINELA 모바일 · 세로 태블릿 대응 (mobile.css)
+   - 모든 CSS 맨 뒤에 로드. 데스크톱 스타일은 건드리지 않고 @media 안에서만 덮어쓴다.
+   - 데스크톱 CSS 가 vh 기반 clamp + !important 로 짜여 있어서 여기서도 !important 로 덮는다.
+   - 기준 폭: 900px 이하(세로 태블릿·폰) / 600px 이하(폰) / 380px 이하(작은 폰)
+   ============================================================================== */
+
+@media (max-width: 900px) {
+
+  :root {
+    --header-height: 64px;
+  }
+
+  html, body {
+    overflow-x: hidden !important;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  /* 모달·서랍이 열려 있을 때 뒤 화면이 같이 스크롤되지 않게 */
+  body.cart-open, body.checkout-open, body.modal-open, body.svc-modal-open {
+    overflow: hidden !important;
+  }
+
+  /* ───────────── 헤더 ───────────── */
+  .gnb-container {
+    padding: 0 14px !important;
+    gap: 8px !important;
+  }
+  .brand-logo-wrap {
+    gap: 10px !important;
+    min-width: 0;
+  }
+  .brand-logo-img {
+    height: 34px !important;
+  }
+  .brand-tag {
+    font-size: 9px !important;
+    letter-spacing: 1.5px !important;
+    padding-left: 8px !important;
+    line-height: 1.25;
+  }
+  .gnb-actions {
+    gap: 8px !important;
+    flex: none;
+  }
+  .cart-icon-btn {
+    width: 40px !important;
+    height: 40px !important;
+  }
+  .btn-contact-pill {
+    font-size: 12px !important;
+    letter-spacing: 0.5px !important;
+    padding: 9px 14px !important;
+    white-space: nowrap;
+  }
+  .mobile-menu-toggle {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    font-size: 24px !important;
+  }
+  .nav-menu {
+    display: none !important;
+  }
+  .gnb-nav.mobile-active .nav-menu {
+    display: flex !important;
+    flex-direction: column;
+    position: fixed;
+    top: var(--header-height);
+    left: 0;
+    width: 100%;
+    max-height: calc(100vh - var(--header-height));
+    overflow-y: auto;
+    background: rgba(6, 7, 9, 0.98);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border-red);
+    padding: 12px 24px 20px;
+    gap: 0 !important;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.9);
+    z-index: 999;
+  }
+  .gnb-nav.mobile-active .nav-link {
+    display: block;
+    padding: 16px 4px !important;
+    font-size: 16px !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  }
+  .scroll-dot-nav {
+    display: none !important;
+  }
+
+  /* ───────────── 공통 섹션 ───────────── */
+  .section {
+    min-height: auto !important;
+    padding-top: calc(var(--header-height) + 28px) !important;
+    padding-bottom: 36px !important;
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+  .section-header {
+    margin-bottom: 20px !important;
+  }
+  .section-title {
+    font-size: 2rem !important;
+    letter-spacing: 1px !important;
+  }
+  .section-desc {
+    font-size: 0.9rem !important;
+    line-height: 1.55 !important;
+  }
+
+  /* ───────────── HOME ───────────── */
+  .hero-section {
+    min-height: 100vh;
+    min-height: 100svh;
+    padding-top: var(--header-height) !important;
+  }
+  .hero-content-container {
+    padding: 28px 20px 40px !important;
+    width: 100%;
+  }
+  .agency-badge {
+    padding: 7px 14px !important;
+    margin-bottom: 20px !important;
+  }
+  .badge-text {
+    font-size: 10px !important;
+    letter-spacing: 1.2px !important;
+    text-align: center;
+  }
+  .main-slogan {
+    font-size: clamp(2.4rem, 12.5vw, 4.4rem) !important;
+    margin-bottom: 16px !important;
+    letter-spacing: 1px !important;
+  }
+  .hero-sub-copy {
+    font-size: 0.98rem !important;
+    line-height: 1.6 !important;
+  }
+  .sub-copy-en {
+    font-size: 0.82rem !important;
+    display: block;
+    margin-top: 8px;
+  }
+  .hero-cta-group {
+    gap: 12px !important;
+    margin-bottom: 28px !important;
+    width: 100%;
+  }
+  .btn-explore-roster,
+  .btn-about-finela {
+    flex: 1;
+    padding: 14px 10px !important;
+    font-size: 14px !important;
+    letter-spacing: 1px !important;
+    text-align: center;
+    justify-content: center;
+  }
+  .hero-slide-dots {
+    margin-bottom: 20px;
+  }
+  .hero-metrics-bar {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px 12px !important;
+    width: 100%;
+    padding: 18px 14px !important;
+    border-radius: 20px !important;
+    flex-direction: initial;
+  }
+  .metric-divider {
+    display: none !important;
+  }
+  .metric-val {
+    font-size: 24px !important;
+  }
+  .metric-label {
+    font-size: 9.5px !important;
+    letter-spacing: 1px !important;
+    text-align: center;
+  }
+  .scroll-down-indicator {
+    display: none !important;
+  }
+
+  /* ───────────── ROSTER ─────────────
+     데스크톱은 28:15 코트 안에 6열 2행을 맞춰 넣는 구조라 폰에서는 폭이 0 에 가깝게 찌그러진다.
+     폰에서는 코트 비율 고정을 풀고 카드를 2~3열 목록으로 보여준다(코트 그림은 흐린 배경으로만). */
+  .roster-section {
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+    padding-top: calc(var(--header-height) + 28px) !important;
+  }
+  .roster-container {
+    max-width: 100% !important;
+  }
+  .roster-main-title {
+    font-size: 2.1rem !important;
+  }
+  .roster-court {
+    display: block !important;
+    aspect-ratio: auto !important;
+    padding: 14px 10px 18px !important;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 14px;
+    overflow: hidden;
+  }
+  .roster-court::before {
+    background-size: cover !important;
+    background-position: center !important;
+    opacity: 0.22 !important;
+  }
+  .roster-court > .roster-top-bar {
+    margin: 0 0 12px !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 10px !important;
+  }
+  .btn-back-home {
+    font-size: 11px !important;
+    padding: 7px 14px !important;
+  }
+  .roster-quick-link {
+    font-size: 11px !important;
+  }
+  .roster-grid,
+  .roster-court > .roster-grid {
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 8px !important;
+    max-width: none !important;
+    width: 100% !important;
+    margin: 0 0 14px !important;
+  }
+  .roster-card {
+    border-radius: 10px !important;
+  }
+  .card-info {
+    padding: 6px 7px !important;
+  }
+  .player-name-en {
+    font-size: 11px !important;
+    line-height: 1.15 !important;
+    word-break: break-word;
+  }
+  .player-name-ko {
+    font-size: 10px !important;
+  }
+  .player-card-num {
+    font-size: 15px !important;
+  }
+  .roster-court > .roster-scroll-footer {
+    margin: 4px 0 0 !important;
+    font-size: 9.5px !important;
+  }
+
+  /* ───────────── SERVICES ───────────── */
+  .services-section .section-container {
+    max-width: 100% !important;
+  }
+  /* 탭 3개를 한 줄에 균등 배치(긴 이름은 두 줄로) */
+  .services-tab-nav {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr);
+    justify-content: stretch !important;
+    gap: 6px !important;
+    margin-bottom: 18px !important;
+  }
+  .svc-tab-btn {
+    white-space: normal !important;
+    text-align: center;
+    font-size: 12.5px !important;
+    line-height: 1.25;
+    letter-spacing: 0.3px !important;
+    padding: 4px 2px 10px !important;
+  }
+  .facility-feature-box {
+    grid-template-columns: 1fr !important;
+    padding: 16px !important;
+    gap: 16px !important;
+    margin-bottom: 16px !important;
+  }
+  .facility-img-wrap {
+    height: 190px !important;
+  }
+  .facility-info-wrap h3 {
+    font-size: 22px !important;
+  }
+  .facility-sub {
+    font-size: 13px !important;
+  }
+  .facility-desc {
+    font-size: 13px !important;
+  }
+  .coaches-grid,
+  .accommodation-grid,
+  .management-grid {
+    grid-template-columns: 1fr !important;
+    gap: 14px !important;
+  }
+  .coach-card {
+    min-height: auto !important;
+    padding: 22px 18px !important;
+  }
+  .acc-card,
+  .mgmt-card {
+    padding: 18px !important;
+  }
+
+  /* ───────────── STORE 링 ───────────── */
+  .store-section .section-container {
+    max-width: 100% !important;
+  }
+  .sr-stage {
+    --sr-w: min(62vw, 300px);
+    --sr-h: calc(var(--sr-w) * 1.32);
+  }
+  .sr-viewport {
+    height: calc(var(--sr-h) + 30px);
+  }
+  .sr-caption {
+    flex-direction: column;
+    gap: 12px !important;
+    text-align: center;
+  }
+  .sr-cap-text {
+    text-align: center;
+  }
+  .sr-cap-btn {
+    padding: 12px 26px;
+  }
+
+  /* ───────────── 선수 상세 창 ─────────────
+     데스크톱은 1232x660 고정 아트보드를 코트 폭에 맞춰 통째로 줄이는 구조라 폰에서는 글자가 읽히지 않는다.
+     폰에서는 아트보드·레이어 이동값(translate/scale)을 끄고 위→아래로 쌓는다:
+     선수 사진 카드 → 하이라이트 영상 → 스탯 → 프로필 → (스크롤) 광고·방송 / SNS.
+     (main.js fitPlayerModalCourt 도 이 폭에서는 인라인 크기·위치를 넣지 않는다) */
+  .player-modal [data-layer] {
+    translate: none !important;
+    scale: none !important;
+  }
+  .player-modal .modal-screen-profile {
+    height: auto !important;
+    min-height: 0 !important;
+    overflow: visible !important;
+    padding: calc(var(--header-height) + 12px) 14px 20px !important;
+    justify-content: flex-start !important;
+  }
+  .player-modal .modal-court {
+    width: 100% !important;
+    aspect-ratio: auto !important;
+    display: block !important;
+  }
+  .player-modal .modal-court::before {
+    display: none !important;
+  }
+  .player-modal .modal-stage {
+    position: relative !important;
+    left: auto !important;
+    top: auto !important;
+    width: 100% !important;
+    height: auto !important;
+    scale: none !important;
+    padding: 0 !important;
+    display: flex !important;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .player-modal .modal-back-roster {
+    position: static !important;
+    align-self: flex-start;
+    padding: 8px 16px !important;
+    font-size: 11px !important;
+    letter-spacing: 1.5px !important;
+  }
+  .player-modal .modal-stage > .modal-hero-split {
+    grid-row: auto !important;
+    grid-template-columns: 1fr !important;
+    gap: 14px !important;
+    align-items: start !important;
+  }
+  .player-modal .modal-court .modal-visual-col {
+    width: 100% !important;
+    max-width: 440px;
+    margin: 0 auto !important;
+    aspect-ratio: 912 / 1000;
+  }
+  .player-modal .modal-stage > .modal-scroll-guide {
+    grid-row: auto !important;
+    align-self: center !important;
+    margin: 6px 0 0 !important;
+  }
+  .player-modal .modal-middle-grid {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+  .player-modal .modal-stats-subcol,
+  .player-modal .modal-profile-subcol {
+    gap: 12px !important;
+  }
+  .player-modal .modal-stage .stat-metric-label {
+    font-size: 13px !important;
+    margin-bottom: 3px !important;
+  }
+  .player-modal .modal-stage .stat-metric-val {
+    font-size: 30px !important;
+  }
+  .player-modal .modal-stage .stat-pair-card .stat-cell {
+    padding: 12px 14px !important;
+  }
+  .player-modal .modal-stage .profile-spec-card {
+    min-height: 0 !important;
+    padding: 14px 16px !important;
+  }
+  .player-modal .modal-stage .card-mini-title {
+    font-size: 16px !important;
+    margin-bottom: 8px !important;
+  }
+  .player-modal .modal-stage .spec-label {
+    font-size: 10px !important;
+  }
+  .player-modal .modal-stage .spec-val {
+    font-size: 18px !important;
+  }
+  .player-modal .modal-stage .spec-team-info {
+    font-size: 12px !important;
+  }
+  .player-modal .modal-extra-section {
+    padding: 32px 16px 96px !important;
+  }
+  .player-modal .extra-group-title-row {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .player-modal .extra-group-title {
+    font-size: 17px !important;
+  }
+  /* 광고·방송 / SNS 카드는 원래 가로로 밀어서 넘기는 트랙 → 폰에서는 카드를 크게(광고 1장 + 다음 장 살짝, SNS 2장) */
+  .player-modal .cf-cards-grid.extra-carousel-track {
+    grid-auto-columns: 84% !important;
+    gap: 12px !important;
+  }
+  .player-modal .insta-cards-grid.extra-carousel-track {
+    grid-auto-columns: calc((100% - 10px) / 2) !important;
+    gap: 10px !important;
+  }
+  /* 이전·다음 선수 버튼: 화면 아래 양쪽 고정 */
+  .player-modal .modal-nav-arrow {
+    position: fixed !important;
+    top: auto !important;
+    bottom: 18px !important;
+    transform: none !important;
+    width: 44px !important;
+    height: 44px !important;
+    font-size: 16px !important;
+  }
+  .player-modal .modal-nav-prev {
+    left: 14px !important;
+    right: auto !important;
+  }
+  .player-modal .modal-nav-next {
+    right: 14px !important;
+    left: auto !important;
+  }
+
+  /* ───────────── PARTNERS ───────────── */
+  .sp-cols {
+    grid-template-columns: 1fr !important;
+    gap: 18px !important;
+  }
+  .sp-grid {
+    gap: 10px !important;
+  }
+
+  /* ───────────── 장바구니 서랍 ───────────── */
+  .cart-drawer {
+    width: 100% !important;
+    max-width: 100% !important;
+    right: -100% !important;
+    height: 100vh;
+    height: 100dvh;
+  }
+  .cart-drawer.active {
+    right: 0 !important;
+  }
+  .cart-drawer-header {
+    padding: 16px 18px !important;
+  }
+  .cart-items-list {
+    padding: 16px 16px !important;
+  }
+  .cart-drawer-footer {
+    padding: 16px 16px calc(16px + env(safe-area-inset-bottom, 0px)) !important;
+  }
+
+  /* ───────────── CONTACT ───────────── */
+  .contact-split-grid {
+    grid-template-columns: 1fr !important;
+    gap: 28px !important;
+  }
+  .form-row-2col {
+    grid-template-columns: 1fr !important;
+  }
+  .contact-form-card {
+    padding: 20px 16px !important;
+  }
+  .form-input,
+  .form-select,
+  .form-textarea {
+    font-size: 16px !important; /* iOS 입력 시 자동 확대 방지 */
+  }
+
+  /* ───────────── 푸터 ───────────── */
+  .footer-top {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 16px !important;
+  }
+  .footer-company-info {
+    font-size: 12px !important;
+    line-height: 1.7 !important;
+    word-break: keep-all;
+  }
+  .footer-mascot {
+    margin-right: 0 !important;
+    align-self: center;
+    max-width: 60%;
+    height: auto;
+  }
+  .footer-bottom {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+  }
+}
+
+/* 폰(600px 이하) */
+@media (max-width: 600px) {
+  .roster-grid,
+  .roster-court > .roster-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px !important;
+  }
+  .player-name-en {
+    font-size: 12.5px !important;
+  }
+  .player-name-ko {
+    font-size: 11px !important;
+  }
+  .player-card-num {
+    font-size: 17px !important;
+  }
+}
+
+/* 폰 가로폭이 좁을 때는 로고 옆 SPORTS AGENCY 문구를 숨겨 헤더 버튼과 겹치지 않게 */
+@media (max-width: 480px) {
+  .brand-tag {
+    display: none !important;
+  }
+}
+
+/* 작은 폰(380px 이하) */
+@media (max-width: 380px) {
+  .btn-contact-pill {
+    padding: 8px 11px !important;
+    font-size: 11px !important;
+  }
+}

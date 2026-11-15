@@ -667,6 +667,14 @@
   box-shadow: 0 0 22px rgba(230, 0, 18, 0.5);
 }
 .sm-add.is-added { background: #1d9e62; }
+.sm-add.is-blocked { background: #3a3d4a; color: #c9ccd8; box-shadow: none; }
+.sm-limit {
+  margin: 12px 0 14px;
+  font-size: 13px;
+  color: #8e92a4;
+  transition: color 0.2s;
+}
+.sm-limit.is-warn { color: #ff3341; }
 .sm-meta {
   margin: 26px 0 0;
   padding: 18px 0 0;

@@ -20,6 +20,9 @@
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="store-ring.css">
   <link rel="stylesheet" href="partners.css">
+  <link rel="stylesheet" href="checkout.css">
+  <!-- 모바일·세로 태블릿 대응 (반드시 맨 마지막) -->
+  <link rel="stylesheet" href="mobile.css">
 </head>
 
 <body>
@@ -881,6 +884,7 @@
       <button class="btn-checkout" id="btnCheckout">
         PROCEED TO CHECKOUT
       </button>
+      <button type="button" class="btn-continue" id="btnContinueShopping">쇼핑 계속하기</button>
     </div>
   </div>
 
@@ -892,10 +896,14 @@
   <script src="services-detail.js"></script>
   <!-- STORE 카테고리 링 + 상세 창 -->
   <script src="store-ring.js"></script>
+  <!-- 장바구니 → 가상 결제 화면 -->
+  <script src="checkout.js"></script>
   <script src="player-layout.data.js"></script>
   <script src="player-layout.js"></script>
   <!-- 푸터 마스코트 위치 적용 + 로컬 전용 편집 모드 (player-layout.json 의 footer-mascot 레이어) -->
   <script src="mascot-layout.js"></script>
+  <!-- 새로고침해도 보던 화면(구역·상세 창·장바구니 서랍) 유지 -->
+  <script src="page-state.js"></script>
 
 </body>
 

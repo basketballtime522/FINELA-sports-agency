@@ -222,6 +222,8 @@ document.addEventListener('DOMContentLoaded', () => {
   function fitRosterToCourt() {
     if (!rosterCourt || !rosterGrid) return;
     rosterGrid.style.removeProperty('max-width');
+    // 모바일·세로 태블릿(900px 이하)은 코트 비율 고정 없이 목록형 — mobile.css 참고
+    if (window.matchMedia('(max-width: 900px)').matches) return;
 
     // 카드 하단 텍스트 높이는 폭에 비례하지 않으므로 몇 번에 걸쳐 수렴시킴
     for (let i = 0; i < 6; i++) {
@@ -592,6 +594,22 @@ document.addEventListener('DOMContentLoaded', () => {
   function fitPlayerModalCourt() {
     if (!modalCourt || !modalHero || !playerModal || !playerModal.classList.contains('active')) return;
 
+    // 모바일·세로 태블릿(900px 이하)은 고정 아트보드(1232x660)를 쓰지 않고 위→아래 흐름 배치 — mobile.css 참고.
+    // 데스크톱에서 넣어 둔 인라인 크기·위치를 모두 걷어낸다.
+    if (window.matchMedia('(max-width: 900px)').matches) {
+      modalCourt.style.removeProperty('width');
+      if (modalProfileScreen) {
+        modalProfileScreen.style.removeProperty('padding');
+        modalProfileScreen.style.removeProperty('justify-content');
+      }
+      if (modalStage) modalStage.style.removeProperty('scale');
+      ['scale', 'margin-top', 'margin-bottom'].forEach(prop => modalHero.style.removeProperty(prop));
+      [modalNavPrev, modalNavNext].forEach(btn => {
+        if (btn) ['left', 'right', 'top'].forEach(prop => btn.style.removeProperty(prop));
+      });
+      return;
+    }
+
     matchRosterCourt();
 
     // 아트보드를 코트 폭에 맞춰 통째로 확대·축소
@@ -767,6 +785,71 @@ document.addEventListener('DOMContentLoaded', () => {
   const cartTotalPrice = document.getElementById('cartTotalPrice');
 
   let cart = [];
+
+  // ── 구매 제한: LIMITED 상품은 1개, 그 외 상품은 상품당 최대 10개(사이즈 합산) ──
+  const CART_KEY = 'finela.cart.v1';
+  const LIMITED_MAX = 1;
+  const NORMAL_MAX = 10;
+  const isLimitedProduct = (p) => !!p && p.category === 'limited';
+  const maxQtyOf = (p) => (isLimitedProduct(p) ? LIMITED_MAX : NORMAL_MAX);
+  const cartQtyOf = (id) => cart.filter(c => c.id === id).reduce((a, c) => a + c.qty, 0);
+
+  function saveCart() {
+    try { localStorage.setItem(CART_KEY, JSON.stringify(cart)); } catch (e) { /* 저장 불가 환경 */ }
+  }
+  // 새로고침해도 장바구니 유지. 가격·제한은 저장값을 믿지 않고 상품 데이터로 다시 맞춘다.
+  function loadCart() {
+    try {
+      const raw = JSON.parse(localStorage.getItem(CART_KEY) || '[]');
+      if (!Array.isArray(raw)) return;
+      const used = {};
+      cart = [];
+      raw.forEach(c => {
+        const prod = PRODUCTS_DATA.find(p => p.id === c.id);
+        if (!prod) return;
+        const room = maxQtyOf(prod) - (used[prod.id] || 0);
+        const q = Math.min(room, Math.max(0, Math.floor(Number(c.qty) || 0)));
+        if (q <= 0) return;
+        used[prod.id] = (used[prod.id] || 0) + q;
+        cart.push({
+          id: prod.id, title: prod.title, price: prod.price, priceStr: prod.priceStr,
+          image: prod.image || (prod.images && prod.images[0]) || '',
+          size: prod.hasSize && prod.sizes.indexOf(c.size) >= 0 ? c.size : null,
+          qty: q
+        });
+      });
+    } catch (e) { cart = []; }
+  }
+
+  // 담기: 제한을 넘으면 가능한 만큼만 담고 이유를 돌려준다.
+  // 결과 {added, status: 'ok' | 'capped' | 'full', max, inCart}
+  function addToCart(prod, size, qty) {
+    const max = maxQtyOf(prod);
+    const want = Math.max(1, Math.floor(Number(qty) || 1));
+    const room = Math.max(0, max - cartQtyOf(prod.id));
+    const n = Math.min(want, room);
+    if (n > 0) {
+      const sz = size || null;
+      const existing = cart.find(c => c.id === prod.id && c.size === sz);
+      if (existing) {
+        existing.qty += n;
+      } else {
+        cart.push({
+          id: prod.id, title: prod.title, price: prod.price, priceStr: prod.priceStr,
+          image: prod.image || (prod.images && prod.images[0]) || '',
+          size: sz, qty: n
+        });
+      }
+      updateCartUI();
+    }
+    return {
+      added: n,
+      status: n === 0 ? 'full' : (n < want ? 'capped' : 'ok'),
+      max,
+      inCart: cartQtyOf(prod.id)
+    };
+  }
+
   let currentSelectedProduct = null;
   let currentSelectedSize = 'L';
 
@@ -850,25 +933,7 @@ document.addEventListener('DOMContentLoaded', () => {
     btnAddCart.addEventListener('click', () => {
       if (!currentSelectedProduct) return;
 
-      const item = {
-        id: currentSelectedProduct.id,
-        title: currentSelectedProduct.title,
-        price: currentSelectedProduct.price,
-        priceStr: currentSelectedProduct.priceStr,
-        image: currentSelectedProduct.image,
-        size: currentSelectedSize,
-        qty: 1
-      };
-
-      // 중복 체크
-      const existing = cart.find(c => c.id === item.id && c.size === item.size);
-      if (existing) {
-        existing.qty += 1;
-      } else {
-        cart.push(item);
-      }
-
-      updateCartUI();
+      addToCart(currentSelectedProduct, currentSelectedSize, 1);
       productModal.classList.remove('active');
       document.body.style.overflow = 'auto';
 
@@ -879,6 +944,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 장바구니 UI 갱신
   function updateCartUI() {
+    saveCart();
     const totalItems = cart.reduce((acc, cur) => acc + cur.qty, 0);
     cartBadge.innerText = totalItems;
 
@@ -898,7 +964,15 @@ document.addEventListener('DOMContentLoaded', () => {
             : `<div class="cart-item-img cart-item-img-ph"><i class="fa-regular fa-image"></i></div>`}
           <div class="cart-item-info">
             <div class="cart-item-name">${c.title} ${c.size ? `(${c.size})` : ''}</div>
-            <div class="cart-item-price">₩${(c.price * c.qty).toLocaleString()} (x${c.qty})</div>
+            <div class="cart-item-bottom">
+              <div class="cart-qty" aria-label="수량 조절">
+                <button type="button" class="cart-qty-btn" onclick="changeCartQty(${i}, -1)" aria-label="수량 줄이기" ${c.qty <= 1 ? 'disabled' : ''}><i class="fa-solid fa-minus"></i></button>
+                <span class="cart-qty-num">${c.qty}</span>
+                <button type="button" class="cart-qty-btn" onclick="changeCartQty(${i}, 1)" aria-label="수량 늘리기" ${cartMaxFor(c) <= c.qty ? 'disabled' : ''}><i class="fa-solid fa-plus"></i></button>
+              </div>
+              <div class="cart-item-price">₩${(c.price * c.qty).toLocaleString()}</div>
+            </div>
+            ${cartMaxFor(c) <= c.qty ? `<div class="cart-item-limit">${maxQtyOf(PRODUCTS_DATA.find(p => p.id === c.id)) === 1 ? '1인 1개 한정 상품' : '최대 수량'}</div>` : ''}
           </div>
           <button class="cart-item-remove" onclick="removeCartItem(${i})">
             <i class="fa-solid fa-trash-can"></i>
@@ -909,6 +983,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
     cartTotalPrice.innerText = `₩${sum.toLocaleString()}`;
   }
+
+  // 이 줄(상품+사이즈)이 가질 수 있는 최대 수량 = 상품 한도 − 같은 상품의 다른 사이즈 줄 수량
+  function cartMaxFor(item) {
+    const prod = PRODUCTS_DATA.find(p => p.id === item.id);
+    return maxQtyOf(prod) - (cartQtyOf(item.id) - item.qty);
+  }
+
+  // 서랍 안 수량 조절 (+/-): 한도 안에서만 변경, 1 미만으로는 내려가지 않는다(삭제는 휴지통 버튼)
+  window.changeCartQty = function (index, delta) {
+    const item = cart[index];
+    if (!item) return;
+    item.qty = Math.min(cartMaxFor(item), Math.max(1, item.qty + delta));
+    updateCartUI();
+  };
 
   // 전역 삭제 함수
   window.removeCartItem = function (index) {
@@ -930,30 +1018,45 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 새 STORE 상세 창(store-ring.js)에서 장바구니에 담을 때 쓰는 연결 창구
   window.FinelaCart = {
+    // 결과 {added, status, max, inCart} 를 돌려준다. 이미 한도면 서랍은 열지 않는다.
     add(prod, size, qty) {
-      const n = Math.max(1, Number(qty) || 1);
-      const existing = cart.find(c => c.id === prod.id && c.size === (size || null));
-      if (existing) {
-        existing.qty += n;
-      } else {
-        cart.push({
-          id: prod.id,
-          title: prod.title,
-          price: prod.price,
-          priceStr: prod.priceStr,
-          image: prod.image || (prod.images && prod.images[0]) || '',
-          size: size || null,
-          qty: n
-        });
-      }
-      updateCartUI();
-      openCartDrawer();
-    }
+      const res = addToCart(prod, size, qty);
+      if (res.added > 0) openCartDrawer();
+      return res;
+    },
+    maxQty: maxQtyOf,
+    qtyInCart: cartQtyOf,
+    isOpen() { return cartDrawer.classList.contains('active'); },
+    openDrawer: openCartDrawer,
+    // 결제 화면(checkout.js)용: 현재 담긴 상품 복사본 / 비우기 / 서랍 닫기
+    items() { return cart.map(c => Object.assign({}, c)); },
+    clear() { cart = []; updateCartUI(); },
+    closeDrawer: closeCartDrawer
   };
 
   if (openCartBtn) openCartBtn.addEventListener('click', openCartDrawer);
   if (closeCartBtn) closeCartBtn.addEventListener('click', closeCartDrawer);
   if (cartOverlay) cartOverlay.addEventListener('click', closeCartDrawer);
+  const btnContinueShopping = document.getElementById('btnContinueShopping');
+  if (btnContinueShopping) btnContinueShopping.addEventListener('click', closeCartDrawer);
+  // ESC 로 장바구니 서랍 닫기 (결제 창이 열려 있으면 결제 창이 먼저 처리한다 — checkout.js 가 캡처 단계에서 가로챔)
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && cartDrawer.classList.contains('active') &&
+        !document.body.classList.contains('checkout-open')) {
+      e.stopImmediatePropagation();
+      closeCartDrawer();
+    }
+  }, true);
+
+  // 저장된 장바구니 복원 (새로고침 유지)
+  loadCart();
+  updateCartUI();
+
+  // 새로고침 시 보던 화면 복원(page-state.js)에서 쓰는 선수 상세 창 연결 창구
+  window.FinelaPlayer = {
+    open: openPlayerModal,
+    current() { return playerModal && playerModal.classList.contains('active') ? currentModalPlayerIndex : -1; }
+  };
 
   const btnCheckout = document.getElementById('btnCheckout');
   if (btnCheckout) {
@@ -962,10 +1065,7 @@ document.addEventListener('DOMContentLoaded', () => {
         alert('장바구니에 상품을 먼저 담아주세요.');
         return;
       }
-      alert('주문 결제 페이지로 이동합니다. (가상 결제 시뮬레이션)');
-      cart = [];
-      updateCartUI();
-      closeCartDrawer();
+      if (window.FinelaCheckout) window.FinelaCheckout.open();
     });
   }
 

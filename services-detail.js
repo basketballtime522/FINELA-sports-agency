@@ -286,6 +286,13 @@
     else if (type === 'fnb') renderFnb();
     else return;
 
+    // 상세 창 뒤에 깔린 SERVICES 탭을 그 상세 창이 속한 탭에 맞춘다
+    // (숙소·식음료 → Premium Accommodation / 센터·코치 → Performance Training).
+    // 닫았을 때 엉뚱한 탭이 보이거나 새로고침 후 트레이닝 탭으로 고정되는 문제를 막는다.
+    var tabKey = (type === 'suite' || type === 'fnb') ? 'accommodation' : 'training';
+    var tabBtn = document.querySelector('.svc-tab-btn[data-tab="' + tabKey + '"]');
+    if (tabBtn && !tabBtn.classList.contains('active')) tabBtn.click();
+
     // 코치는 화면 중앙 팝업, 나머지는 전체화면 상세 창
     currentView = type;
     modal.classList.toggle('is-popup', type === 'coach');
@@ -377,6 +384,24 @@
   });
 
   closeBtn.addEventListener('click', close);
+
+  // 새로고침 시 보던 화면 복원(page-state.js)에서 쓰는 연결 창구
+  window.FinelaServices = {
+    state() {
+      if (!modal.classList.contains('active') || !currentView) return null;
+      return { type: currentView, group: coachGroupKey, index: coachIndex };
+    },
+    restore(s) {
+      if (!s || !s.type) return;
+      returnTo = null;
+      if (s.type === 'coach') {
+        open('coach', s.group);
+        if (typeof s.index === 'number') renderCoach(s.group, s.index);
+      } else {
+        open(s.type);
+      }
+    }
+  };
 
   window.addEventListener('keydown', (e) => {
     if (!modal.classList.contains('active')) return;
