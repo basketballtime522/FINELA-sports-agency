@@ -7,8 +7,10 @@
 
 /* 모바일에서만 줄바꿈하는 <br class="br-m"> (데스크톱에서는 한 줄로 이어 보임) */
 .br-m { display: none; }
-/* 모바일 전용 요소(CONTACT 안의 로고·마스코트): 데스크톱에서는 숨김 */
+/* 모바일 전용 요소(CONTACT 안의 마스코트): 데스크톱에서는 숨김 */
 .m-only { display: none; }
+/* 모바일 전용 "맨 위로" 버튼: 데스크톱에서는 항상 숨김 */
+.m-top-btn { display: none; }
 
 @media (max-width: 900px) {
 
@@ -608,6 +610,38 @@
     align-items: center;
   }
 
+  /* 메인 화면 떠다니는 점 효과 제거(main.js 도 이 폭에서는 그리기를 멈춘다) */
+  #ambientCanvas {
+    display: none !important;
+  }
+
+  /* "맨 위로" 버튼: STORE 장바구니 바로가기(오른쪽 아래, 높이 약 50px) 바로 위 */
+  .m-top-btn {
+    position: fixed;
+    right: 14px;
+    bottom: calc(16px + 44px + 10px + env(safe-area-inset-bottom, 0px));   /* 장바구니 바로가기(하단 16px + 높이 44px) 위 10px */
+    z-index: 7060;               /* 상세 창(7000)·장바구니 바로가기(7050) 위, 서랍(7100)·결제(7200) 아래 */
+    width: 46px;
+    height: 46px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(230, 0, 18, 0.7);
+    border-radius: 50%;
+    background: rgba(14, 16, 24, 0.92);
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    box-shadow: 0 0 14px rgba(230, 0, 18, 0.35), 0 6px 18px rgba(0, 0, 0, 0.5);
+    -webkit-tap-highlight-color: transparent;
+  }
+  .m-top-btn[hidden] {
+    display: none;
+  }
+  .m-top-btn:active {
+    background: #e60012;
+  }
+
   /* STORE 상세 창의 장바구니 바로가기: 폰에서는 글자를 빼고 아이콘+개수만 */
   .sm-cart-fab {
     right: 14px !important;
@@ -657,23 +691,23 @@
   .contact-form-card {
     order: -1;
   }
+  /* CONNECT WITH US 제목과 아이콘 3개의 간격은 웹과 똑같이 둔다(제목 아래 18px, 아이콘 48px · 간격 14px).
+     마스코트는 오른쪽 여백에 겹쳐 놓고, 높이를 "제목 글자 윗선 ~ 아이콘 아랫선"에 맞춘다. */
   .contact-social-wrap {
-    display: grid !important;
-    grid-template-columns: minmax(0, 1fr) auto;
-    grid-template-areas:
-      "title  mascot"
-      "links  mascot";
-    column-gap: 12px;
-    align-items: center;
+    position: relative;
+    padding-top: 18px !important;   /* 마스코트 윗선을 제목 윗선에 맞추기 위해 값을 고정 */
   }
-  .contact-social-wrap .social-title { grid-area: title; }
-  .contact-social-wrap .social-links-row { grid-area: links; }
   .contact-social-wrap .contact-m-mascot {
-    grid-area: mascot;
+    position: absolute;
     display: block;
-    width: clamp(96px, 30vw, 140px);
-    height: auto;
-    align-self: end;
+    right: 0;
+    top: 18px;
+    height: calc(100% - 18px);
+    width: auto;
+    max-width: calc(100% - 190px);   /* 아이콘 3개(172px) 영역과 겹치지 않게 */
+    object-fit: contain;
+    object-position: right bottom;
+    pointer-events: none;
   }
   /* 푸터의 마스코트는 위 CONTACT 로 옮겼으므로 모바일 푸터에서는 숨김(푸터 로고는 그대로 둠) */
   .footer-mascot {

@@ -328,7 +328,6 @@
     const c = CATS[catIndex];
     const list = productsOf(c.key);
     const heroPics = heroPhotos(c, list);
-    const prices = list.map((p) => p.price);
     const prev = CATS[mod(catIndex - 1, N)];
     const next = CATS[mod(catIndex + 1, N)];
     body.innerHTML = `
@@ -342,11 +341,6 @@
         ${heroHtml(c, heroPics)}
         <div class="sm-hero-info">
           <p>${esc(c.desc)}</p>
-          ${c.comingSoon ? '' : `<div class="sm-stats">
-            <div><strong>${list.length}</strong><span>상품 종류</span></div>
-            <div><strong>${prices.length ? won(Math.min.apply(null, prices)) : '-'}</strong><span>최저가</span></div>
-            <div><strong>${prices.length ? won(Math.max.apply(null, prices)) : '-'}</strong><span>최고가</span></div>
-          </div>`}
         </div>
       </div>
 

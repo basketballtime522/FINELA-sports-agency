@@ -143,7 +143,21 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
 
+    // 모바일·세로 태블릿(900px 이하)에서는 입자 효과를 쓰지 않는다(화면이 좁아 입자가 빽빽해 보임) — 그리기 자체를 멈춰 배터리도 아낀다
+    const mobileMq = window.matchMedia('(max-width: 900px)');
+    let particlesRunning = false;
+    function startParticles() {
+      if (particlesRunning || mobileMq.matches) return;
+      particlesRunning = true;
+      animateParticles();
+    }
+    if (mobileMq.addEventListener) mobileMq.addEventListener('change', () => {
+      if (mobileMq.matches) ctx.clearRect(0, 0, width, height);
+      else startParticles();
+    });
+
     function animateParticles() {
+      if (mobileMq.matches) { particlesRunning = false; ctx.clearRect(0, 0, width, height); return; }
       ctx.clearRect(0, 0, width, height);
       particles.forEach(p => {
         p.x += p.vx;
@@ -165,7 +179,7 @@ document.addEventListener('DOMContentLoaded', () => {
       });
       requestAnimationFrame(animateParticles);
     }
-    animateParticles();
+    startParticles();
   }
 
   // ============================================================================

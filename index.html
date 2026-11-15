@@ -795,6 +795,10 @@
     <button type="button" class="sm-close" id="storeModalClose" aria-label="닫기"><i class="fa-solid fa-xmark"></i></button>
     <div class="sm-inner" id="storeModalBody"></div>
   </div>
+  <!-- 모바일 전용 "맨 위로" 버튼 (mobile.css / mobile-top.js). STORE 장바구니 바로가기 바로 위에 놓인다 -->
+  <button type="button" class="m-top-btn" id="mobileTopBtn" aria-label="맨 위로 이동" hidden>
+    <i class="fa-solid fa-arrow-up"></i>
+  </button>
   <!-- STORE 상세 창이 열려 있을 때만 보이는 장바구니 바로가기 (오른쪽 아래). 모달의 backdrop-filter 때문에 모달 밖에 둔다 -->
   <button type="button" class="sm-cart-fab" id="storeCartFab" aria-label="장바구니 열기" hidden>
     <i class="fa-solid fa-cart-shopping"></i>
@@ -909,6 +913,7 @@
   <script src="mascot-layout.js"></script>
   <!-- 새로고침해도 보던 화면(구역·상세 창·장바구니 서랍) 유지 -->
   <script src="page-state.js"></script>
+  <script src="mobile-top.js"></script>
 
 </body>
 
