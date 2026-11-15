@@ -109,8 +109,8 @@
 
       <!-- 서브 카피 -->
       <p class="hero-sub-copy">
-        우리는 선수의 한계를 넘어, <strong>새로운 브랜드 가치</strong>를 창출합니다.
-        <span class="sub-copy-en">KBL · 해외 리그 · 국가대표 엘리트 선수를 위한 프리미엄 통합 솔루션</span>
+        우리는 선수의 한계를 넘어,<br class="br-m"> <strong>새로운 브랜드 가치</strong>를 창출합니다.
+        <span class="sub-copy-en">KBL · 해외 리그 · 국가대표 엘리트 선수를 위한<br class="br-m"> 프리미엄 통합 솔루션</span>
       </p>
 
       <!-- CTA 버튼 그룹 -->
@@ -181,18 +181,6 @@
 
       <!-- 농구 코트 영역: OUR ATHLETES 아래 ~ SCROLL FOR MORE 아래까지 (코트 라인이 이 박스 테두리에 맞춰짐) -->
       <div class="roster-court">
-
-        <!-- 2. 컨트롤 바 -->
-        <div class="roster-top-bar">
-          <a href="#hero" class="btn-back-home" title="메인 홈으로 이동">
-            <i class="fa-solid fa-arrow-left"></i> BACK TO HOME
-          </a>
-          <div class="roster-quick-links">
-            <a href="#services" class="roster-quick-link">EXPLORE SERVICES</a>
-            <span class="roster-quick-divider"></span>
-            <a href="#media" class="roster-quick-link">VIEW MEDIA</a>
-          </div>
-        </div>
 
         <!-- 3. 12인 선수단 카드 그리드 (JS 동적 렌더링 - 6열 2행) -->
         <div class="roster-grid" id="rosterGrid">
@@ -479,6 +467,9 @@
                   viewBox="0 0 24 24" width="1em" height="1em" fill="currentColor" aria-hidden="true"><path
                     d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" /></svg></a>
             </div>
+            <!-- 모바일 전용: 로고 + 마스코트 (데스크톱에서는 숨김, 푸터의 로고·마스코트는 모바일에서 숨김) -->
+            <img src="finela-logo.png" alt="FINELA" class="contact-m-logo m-only">
+            <img src="assets/mascot/finela_mascot.png" alt="FINELA 마스코트" class="contact-m-mascot m-only" loading="lazy">
           </div>
         </div>
 
@@ -805,6 +796,12 @@
     <button type="button" class="sm-close" id="storeModalClose" aria-label="닫기"><i class="fa-solid fa-xmark"></i></button>
     <div class="sm-inner" id="storeModalBody"></div>
   </div>
+  <!-- STORE 상세 창이 열려 있을 때만 보이는 장바구니 바로가기 (오른쪽 아래). 모달의 backdrop-filter 때문에 모달 밖에 둔다 -->
+  <button type="button" class="sm-cart-fab" id="storeCartFab" aria-label="장바구니 열기" hidden>
+    <i class="fa-solid fa-cart-shopping"></i>
+    <span class="sm-cart-fab-label">장바구니</span>
+    <span class="sm-cart-fab-count" id="storeCartFabCount">0</span>
+  </button>
 
   <!-- B. 상품 상세 퀵뷰 모달 (PRODUCT MODAL) — 기존 그리드용, 현재는 사용하지 않음 -->
   <div class="product-modal" id="productModal">
@@ -869,7 +866,12 @@
     <div class="cart-drawer-header">
       <h3 class="cart-drawer-title"><i class="fa-solid fa-bag-shopping text-red-500 mr-2"
           style="color: var(--finela-red);"></i> YOUR CART</h3>
-      <button class="modal-close-btn" style="position: static;" id="closeCartBtn">&times;</button>
+      <div class="cart-drawer-actions">
+        <button type="button" class="cart-orders-btn" id="openOrdersBtn" title="주문 내역 · 배송 조회 · 환불">
+          <i class="fa-solid fa-receipt"></i> 주문 내역
+        </button>
+        <button class="modal-close-btn" style="position: static;" id="closeCartBtn" aria-label="장바구니 닫기">&times;</button>
+      </div>
     </div>
 
     <div class="cart-items-list" id="cartItemsList">
@@ -898,6 +900,7 @@
   <script src="store-ring.js"></script>
   <!-- 장바구니 → 가상 결제 화면 -->
   <script src="checkout.js"></script>
+  <script src="orders.js"></script>
   <script src="player-layout.data.js"></script>
   <script src="player-layout.js"></script>
   <!-- 푸터 마스코트 위치 적용 + 로컬 전용 편집 모드 (player-layout.json 의 footer-mascot 레이어) -->

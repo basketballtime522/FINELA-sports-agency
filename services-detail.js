@@ -72,14 +72,12 @@
           <div class="svc-gallery-count"></div>
         </div>
         <div class="svc-gallery-thumbs-wrap">
-          <button type="button" class="svc-thumbs-arrow" data-thumbs-step="-1" aria-label="썸네일 이전"><i class="fa-solid fa-chevron-left"></i></button>
-          <div class="svc-gallery-thumbs">
+          <div class="svc-gallery-thumbs" title="좌우로 끌어서 넘기기">
             ${items.map((it, i) => `
               <button type="button" class="svc-thumb" data-gallery-index="${i}" aria-label="${esc(it.caption)}">
-                <img src="${esc(thumbOf(it.img))}" alt="" loading="lazy">
+                <img src="${esc(thumbOf(it.img))}" alt="" loading="lazy" draggable="false">
               </button>`).join('')}
           </div>
-          <button type="button" class="svc-thumbs-arrow" data-thumbs-step="1" aria-label="썸네일 다음"><i class="fa-solid fa-chevron-right"></i></button>
         </div>
       </div>`;
   }
@@ -87,7 +85,21 @@
   function setupGallery(items, onChange) {
     gallery = { items, index: 0, onChange };
     showGallery(0);
+    pauseAuto(2500);   // 처음 열었을 때는 첫 사진을 조금 더 보여 준다
   }
+
+  // 큰 사진 자동 넘김: 1.5초마다 다음 사진. 사용자가 직접 조작하면 잠시 쉰다.
+  // (창이 닫혔거나 탭이 가려졌거나, 모션 줄이기 설정이면 넘기지 않는다)
+  const AUTO_MS = 1500;
+  const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let autoPauseUntil = 0;
+  function pauseAuto(ms) { autoPauseUntil = Date.now() + (ms || 5000); }
+  setInterval(() => {
+    if (reduceMotion || !gallery || document.hidden) return;
+    if (!modal.classList.contains('active')) return;
+    if (Date.now() < autoPauseUntil) return;
+    showGallery(gallery.index + 1);
+  }, AUTO_MS);
 
   function showGallery(i) {
     if (!gallery) return;
@@ -353,8 +365,53 @@
     }
   });
 
+  // 사진 줄(썸네일)·큰 사진 끌어서 넘기기
+  //  - 썸네일 줄: 마우스로 좌우로 끌면 줄이 움직인다(터치는 브라우저 기본 가로 스크롤 사용)
+  //  - 큰 사진: 좌우로 밀면 이전/다음 사진 (마우스·터치 모두)
+  //  - 끌고 난 직후 발생하는 클릭은 무시(썸네일이 잘못 선택되지 않도록)
+  let drag = null;
+  let suppressClick = false;
+  modal.addEventListener('pointerdown', (e) => {
+    pauseAuto(5000);
+    if (e.pointerType === 'mouse' && e.button !== 0) return;
+    const strip = e.target.closest('.svc-gallery-thumbs');
+    if (strip && e.pointerType === 'mouse') {
+      drag = { kind: 'strip', strip, x: e.clientX, left: strip.scrollLeft, moved: false };
+    } else if (e.target.closest('.svc-gallery-main') && !e.target.closest('button')) {
+      drag = { kind: 'main', x: e.clientX, moved: false };
+    }
+  });
+  modal.addEventListener('pointermove', (e) => {
+    if (!drag) return;
+    const dx = e.clientX - drag.x;
+    if (Math.abs(dx) > 5) drag.moved = true;
+    if (drag.kind === 'strip' && drag.moved) {
+      drag.strip.classList.add('is-dragging');
+      drag.strip.scrollLeft = drag.left - dx;
+    }
+  });
+  const endDrag = (e) => {
+    if (!drag) return;
+    const d = drag;
+    drag = null;
+    if (d.kind === 'strip') {
+      d.strip.classList.remove('is-dragging');
+      if (d.moved) suppressClick = true;
+    } else if (d.kind === 'main') {
+      const dx = e.clientX - d.x;
+      if (Math.abs(dx) > 50 && gallery) {
+        showGallery(gallery.index + (dx < 0 ? 1 : -1));
+        suppressClick = true;
+      }
+    }
+    if (suppressClick) setTimeout(() => { suppressClick = false; }, 60);
+  };
+  modal.addEventListener('pointerup', endDrag);
+  modal.addEventListener('pointercancel', endDrag);
+
   // 상세 창 내부 동작
   modal.addEventListener('click', (e) => {
+    if (suppressClick) { suppressClick = false; return; }
     const t = e.target;
     // 바깥 여백 클릭 시 닫기 (팝업은 팝업 카드 바깥 전체가 여백)
     if (t === modal || (t === body && modal.classList.contains('is-popup'))) return closeOrReturn();
@@ -363,12 +420,6 @@
     if (step) return showGallery(gallery.index + Number(step.dataset.galleryStep));
     const thumb = t.closest('[data-gallery-index]');
     if (thumb) return showGallery(Number(thumb.dataset.galleryIndex));
-    const tstep = t.closest('[data-thumbs-step]');
-    if (tstep) {
-      const strip = body.querySelector('.svc-gallery-thumbs');
-      if (strip) strip.scrollBy({ left: strip.clientWidth * 0.8 * Number(tstep.dataset.thumbsStep), behavior: 'smooth' });
-      return;
-    }
     const group = t.closest('[data-open-coach-group]');
     if (group) {
       // 센터 상세 창에서 연 코치 팝업: 닫으면 이 화면(스크롤·사진 위치 포함)으로 돌아오도록 기억
@@ -387,6 +438,7 @@
 
   // 새로고침 시 보던 화면 복원(page-state.js)에서 쓰는 연결 창구
   window.FinelaServices = {
+    close() { if (modal.classList.contains('active')) close(); },
     state() {
       if (!modal.classList.contains('active') || !currentView) return null;
       return { type: currentView, group: coachGroupKey, index: coachIndex };
@@ -408,6 +460,7 @@
     if (e.key === 'Escape') { e.preventDefault(); closeOrReturn(); return; }
     if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
       const dir = e.key === 'ArrowLeft' ? -1 : 1;
+      pauseAuto(5000);
       if (gallery) showGallery(gallery.index + dir);
       else if (body.querySelector('.svc-coach')) renderCoach(coachGroupKey, coachIndex + dir);
       e.preventDefault();

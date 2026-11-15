@@ -165,3 +165,124 @@ body.checkout-open { overflow: hidden; }
 @media (prefers-reduced-motion: reduce) {
   .co-root *, .co-pay span { transition: none !important; }
 }
+
+/* ───────────── 결제 창: 상품 링크 · 수량 · 최종 확인 ───────────── */
+body.orders-open { overflow: hidden; }
+
+.co-item-imgbtn { padding: 0; border: 0; background: none; cursor: pointer; flex: none; line-height: 0; }
+.co-item-link {
+  padding: 0; border: 0; background: none; cursor: pointer;
+  text-align: left; font-family: inherit; color: #fff;
+}
+.co-item-link:hover { color: var(--finela-red-bright); text-decoration: underline; }
+.co-qty {
+  display: inline-flex; align-items: center; margin-top: 6px;
+  border: 1px solid var(--border-card); border-radius: 8px; overflow: hidden;
+}
+.co-qty button {
+  width: 28px; height: 28px; display: flex; align-items: center; justify-content: center;
+  color: #fff; font-size: 10px; background: rgba(255, 255, 255, 0.05); cursor: pointer;
+  transition: var(--transition-smooth);
+}
+.co-qty button:hover:not(:disabled) { background: var(--finela-red); }
+.co-qty button:disabled { color: var(--text-dark-label); cursor: not-allowed; }
+.co-qty span { min-width: 30px; text-align: center; font-family: var(--font-display); font-size: 14px; color: #fff; }
+.co-item-limit { margin-top: 5px; font-size: 11.5px; color: var(--text-muted); }
+
+.co-confirm-head { margin: 4px 0 18px; }
+.co-confirm-head h3 { font-family: var(--font-display); font-size: 22px; letter-spacing: 1px; color: #fff; }
+.co-confirm-head h3 i { color: var(--finela-red); margin-right: 8px; }
+.co-confirm-head p { margin-top: 6px; font-size: 13.5px; color: var(--text-muted); }
+.co-confirm-head b { color: #fff; }
+.co-info { margin: 0; }
+.co-info > div { display: flex; gap: 16px; padding: 10px 0; border-top: 1px solid var(--border-subtle); font-size: 14px; }
+.co-info > div:first-child { border-top: 0; padding-top: 0; }
+.co-info dt { flex: none; width: 84px; color: var(--text-muted); }
+.co-info dd { margin: 0; color: #fff; overflow-wrap: anywhere; }
+.co-info dd i { color: var(--finela-red); margin-right: 4px; }
+.co-muted { color: var(--text-dark-label); }
+.co-done .co-submit { margin-top: 22px; }
+.co-done .co-back { margin-top: 8px; }
+
+/* ───────────── 장바구니 서랍 위 "주문 내역" 버튼 ───────────── */
+.cart-drawer-actions { display: flex; align-items: center; gap: 10px; }
+.cart-orders-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 8px 12px; border: 1px solid var(--border-card); border-radius: 999px;
+  background: rgba(255, 255, 255, 0.05); color: var(--text-platinum);
+  font-size: 12px; font-weight: 700; cursor: pointer; white-space: nowrap;
+  transition: var(--transition-smooth);
+}
+.cart-orders-btn:hover { border-color: var(--finela-red); background: var(--finela-red-soft); color: #fff; }
+.cart-orders-btn i { color: var(--finela-red); }
+
+/* ───────────── 주문 내역 ───────────── */
+.or-intro { margin: 0 0 16px; font-size: 13.5px; color: var(--text-muted); }
+.or-intro b { color: #fff; }
+.or-list { display: flex; flex-direction: column; gap: 18px; }
+.or-card { background: var(--bg-surface-card); border: 1px solid var(--border-card); border-radius: 14px; padding: 20px; }
+.or-card-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
+.or-no { font-family: var(--font-display); font-size: 18px; letter-spacing: 1px; color: #fff; }
+.or-date { margin-top: 4px; font-size: 12.5px; color: var(--text-muted); }
+.or-badge {
+  flex: none; padding: 6px 12px; border-radius: 999px; font-size: 12px; font-weight: 800;
+  border: 1px solid var(--border-card); color: var(--text-platinum); background: rgba(255, 255, 255, 0.06);
+}
+.or-badge-paid, .or-badge-preparing { color: #ffd479; border-color: rgba(255, 212, 121, 0.4); background: rgba(255, 212, 121, 0.08); }
+.or-badge-shipping { color: #7fd1ff; border-color: rgba(127, 209, 255, 0.4); background: rgba(127, 209, 255, 0.08); }
+.or-badge-delivered { color: #5fe0a0; border-color: rgba(95, 224, 160, 0.4); background: rgba(95, 224, 160, 0.08); }
+.or-badge-refund-req { color: #ffb36b; border-color: rgba(255, 179, 107, 0.45); background: rgba(255, 179, 107, 0.1); }
+.or-badge-refunded { color: var(--text-muted); }
+.or-items { max-height: none; }
+.or-total { display: flex; justify-content: space-between; align-items: baseline; margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--border-subtle); font-size: 14px; color: var(--text-muted); }
+.or-total b { font-family: var(--font-display); font-size: 22px; color: var(--finela-red); }
+.or-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
+.or-btn {
+  display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px;
+  border: 1px solid var(--border-card); border-radius: 8px; background: var(--bg-surface-input);
+  color: #fff; font-size: 13px; font-weight: 700; cursor: pointer; transition: var(--transition-smooth);
+}
+.or-btn:hover, .or-btn.is-on { border-color: var(--finela-red); background: var(--finela-red-soft); }
+.or-btn-refund i { color: var(--finela-red-bright); }
+.or-refund-note {
+  margin-top: 14px; padding: 12px 14px; border-radius: 10px; font-size: 13px; line-height: 1.55;
+  color: #ffd2a1; background: rgba(255, 179, 107, 0.08); border: 1px solid rgba(255, 179, 107, 0.3);
+}
+.or-refund-note.is-done { color: #b8f0d4; background: rgba(95, 224, 160, 0.07); border-color: rgba(95, 224, 160, 0.3); }
+.or-refund-note b { color: #fff; }
+.or-refund-meta { margin-top: 4px; font-size: 12px; color: var(--text-muted); }
+.or-panel { margin-top: 16px; padding: 18px; border-radius: 12px; background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-subtle); }
+.or-panel h4 { font-family: var(--font-display); font-size: 16px; letter-spacing: 1px; color: #fff; margin-bottom: 14px; }
+.or-refund-help { margin: 0 0 14px; font-size: 13px; color: var(--text-muted); line-height: 1.5; }
+.or-reason { width: 100%; height: 46px; padding: 0 12px; background: var(--bg-surface-input); border: 1px solid var(--border-card); border-radius: 8px; color: #fff; font-size: 16px; font-family: inherit; }
+.or-refund-submit { margin-top: 4px; }
+.or-steps { list-style: none; margin: 18px 0 4px; padding: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.or-step { display: flex; flex-direction: column; align-items: center; gap: 6px; text-align: center; opacity: 0.4; position: relative; }
+.or-step::before { content: ''; position: absolute; top: 18px; left: -50%; width: 100%; height: 2px; background: var(--border-card); z-index: 0; }
+.or-step:first-child::before { display: none; }
+.or-step.is-reached { opacity: 1; }
+.or-step.is-reached::before { background: var(--finela-red); }
+.or-step-dot {
+  position: relative; z-index: 1; width: 36px; height: 36px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center; font-size: 14px;
+  background: var(--bg-surface-input); border: 1px solid var(--border-card); color: var(--text-muted);
+}
+.or-step.is-reached .or-step-dot { background: var(--finela-red); border-color: var(--finela-red); color: #fff; }
+.or-step.is-current .or-step-dot { box-shadow: 0 0 0 4px var(--finela-red-soft), 0 0 16px var(--finela-red-glow); }
+.or-step-label { font-size: 12.5px; font-weight: 700; color: #fff; }
+.or-step-time { font-size: 11px; color: var(--text-muted); }
+.or-empty { text-align: center; padding: 70px 16px; background: var(--bg-surface-card); border: 1px solid var(--border-card); border-radius: 14px; }
+.or-empty > i { font-size: 38px; color: var(--text-dark-label); margin-bottom: 16px; }
+.or-empty h3 { font-family: var(--font-display); font-size: 22px; letter-spacing: 1px; color: #fff; }
+.or-empty p { margin: 8px auto 0; max-width: 380px; font-size: 13.5px; color: var(--text-muted); line-height: 1.55; }
+.or-empty-btn { max-width: 260px; margin: 22px auto 0; display: block; }
+
+@media (max-width: 600px) {
+  .or-card { padding: 16px; }
+  .or-card-head { flex-direction: column; }
+  .or-steps { gap: 4px; }
+  .or-step-label { font-size: 11px; }
+  .or-step-time { font-size: 9.5px; }
+  .co-info dt { width: 70px; }
+  .cart-orders-btn { padding: 7px 10px; font-size: 11.5px; }
+}

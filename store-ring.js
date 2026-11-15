@@ -282,11 +282,52 @@
       </button>`;
   }
 
+  // ── 카테고리 대표 이미지: 그 카테고리 상품 사진을 1.5초마다 돌려 보여 준다(메인 화면 슬라이드처럼 부드럽게 전환) ──
+  // 사진이 있는 상품만 넣는다. 사진이 한 장도 없으면 기존처럼 빈 사진칸, 한 장이면 고정.
+  const HERO_MS = 1500;
+  let heroTimer = null;
+  function stopHero() {
+    if (heroTimer) { clearInterval(heroTimer); heroTimer = null; }
+  }
+  function heroPhotos(c, list) {
+    const seen = {};
+    const out = [];
+    const add = (src) => { if (src && !seen[src]) { seen[src] = true; out.push(src); } };
+    add(c.photo);
+    list.forEach((p) => {
+      (p.images && p.images.length ? p.images : [p.image]).forEach(add);
+    });
+    return out;
+  }
+  function heroHtml(c, photos) {
+    if (!photos.length) return photo(c.photo, c.nameKo, 'sm-hero-photo');
+    return `<div class="sm-photo sm-hero-photo sm-hero-slides" data-hero-slides>
+      ${photos.map((src, k) => `<img src="${esc(src)}" alt="${esc(c.nameKo)} ${k + 1}" class="${k === 0 ? 'active' : ''}">`).join('')}
+    </div>`;
+  }
+  function startHero(count) {
+    stopHero();
+    if (count < 2) return;
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    let cur = 0;
+    heroTimer = setInterval(() => {
+      const box = body.querySelector('[data-hero-slides]');
+      if (!box || view !== 'category' || !modal.classList.contains('active')) return stopHero();
+      if (document.hidden) return;
+      const imgs = box.querySelectorAll('img');
+      imgs[cur].classList.remove('active');
+      cur = (cur + 1) % imgs.length;
+      imgs[cur].classList.add('active');
+    }, HERO_MS);
+  }
+
   function renderCategory(i, keepScroll) {
+    stopHero();
     catIndex = mod(i, N);
     view = 'category';
     const c = CATS[catIndex];
     const list = productsOf(c.key);
+    const heroPics = heroPhotos(c, list);
     const prices = list.map((p) => p.price);
     const prev = CATS[mod(catIndex - 1, N)];
     const next = CATS[mod(catIndex + 1, N)];
@@ -298,7 +339,7 @@
       </header>
 
       <div class="sm-hero">
-        ${photo(c.photo, c.nameKo, 'sm-hero-photo')}
+        ${heroHtml(c, heroPics)}
         <div class="sm-hero-info">
           <p>${esc(c.desc)}</p>
           ${c.comingSoon ? '' : `<div class="sm-stats">
@@ -323,9 +364,11 @@
         <button type="button" data-cat-step="1"><span><small>NEXT</small>${pad2(mod(catIndex + 1, N) + 1)} ${esc(next.name)}</span><i class="fa-solid fa-arrow-right"></i></button>
       </div>`;
     modal.scrollTop = keepScroll ? catScroll : 0;
+    startHero(heroPics.length);
   }
 
   function renderProduct(p) {
+    stopHero();
     prod = p;
     view = 'product';
     galIndex = 0;
@@ -410,6 +453,7 @@
   }
 
   function close() {
+    stopHero();
     modal.classList.remove('active');
     modal.setAttribute('aria-hidden', 'true');
     document.body.style.overflow = '';
@@ -492,8 +536,28 @@
   // 상품 상세에서 X → 카테고리 상품 목록으로(ESC·뒤로 가기와 동일), 목록에서 X → 창 닫기
   closeBtn.addEventListener('click', back);
 
+  // 장바구니 바로가기 버튼: 상세 창(카테고리·상품)이 열려 있을 때만 오른쪽 아래에 표시, 담긴 개수 표시
+  const cartFab = document.getElementById('storeCartFab');
+  const cartFabCount = document.getElementById('storeCartFabCount');
+  function syncCartFab() {
+    if (!cartFab) return;
+    cartFab.hidden = !modal.classList.contains('active');
+    const n = window.FinelaCart && window.FinelaCart.count ? window.FinelaCart.count() : 0;
+    if (cartFabCount) {
+      cartFabCount.textContent = n;
+      cartFabCount.hidden = n === 0;
+    }
+  }
+  if (cartFab) {
+    cartFab.addEventListener('click', () => { if (window.FinelaCart) window.FinelaCart.openDrawer(); });
+    new MutationObserver(syncCartFab).observe(modal, { attributes: true, attributeFilter: ['class'] });
+    window.addEventListener('finela:cart', syncCartFab);
+    syncCartFab();
+  }
+
   // 새로고침 시 보던 화면 복원(page-state.js)에서 쓰는 연결 창구
   window.FinelaStore = {
+    close() { if (modal.classList.contains('active')) close(); },
     state() {
       if (!modal.classList.contains('active') || !view) return null;
       return { cat: catIndex, prod: view === 'product' && prod ? prod.id : null };

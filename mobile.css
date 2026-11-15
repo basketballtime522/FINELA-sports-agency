@@ -5,11 +5,18 @@
    - 기준 폭: 900px 이하(세로 태블릿·폰) / 600px 이하(폰) / 380px 이하(작은 폰)
    ============================================================================== */
 
+/* 모바일에서만 줄바꿈하는 <br class="br-m"> (데스크톱에서는 한 줄로 이어 보임) */
+.br-m { display: none; }
+/* 모바일 전용 요소(CONTACT 안의 로고·마스코트): 데스크톱에서는 숨김 */
+.m-only { display: none; }
+
 @media (max-width: 900px) {
 
   :root {
     --header-height: 64px;
   }
+
+  .br-m { display: inline; }
 
   html, body {
     overflow-x: hidden !important;
@@ -117,8 +124,19 @@
     min-height: 100svh;
     padding-top: var(--header-height) !important;
   }
+  /* 슬라이드 사진: 폭 전체로 원본 비율(약 3:2)에 가깝게 위쪽에 보여 주고, 아래쪽은 어둡게 이어 붙인다.
+     (예전에는 화면 전체를 cover 로 채워서 세로 폰에서 사진이 3배 가까이 확대·잘려 보였음) */
+  .hero-slideshow {
+    inset: var(--header-height) 0 auto 0 !important;
+    height: min(66.67vw, 460px);
+    -webkit-mask-image: linear-gradient(to bottom, #000 62%, transparent 100%);
+    mask-image: linear-gradient(to bottom, #000 62%, transparent 100%);
+  }
+  .hero-slide {
+    background-position: center 30% !important;
+  }
   .hero-content-container {
-    padding: 28px 20px 40px !important;
+    padding: calc(min(66.67vw, 460px) - 36px) 20px 40px !important;
     width: 100%;
   }
   .agency-badge {
@@ -136,13 +154,15 @@
     letter-spacing: 1px !important;
   }
   .hero-sub-copy {
-    font-size: 0.98rem !important;
+    font-size: clamp(0.88rem, 4.1vw, 1rem) !important;
     line-height: 1.6 !important;
+    word-break: keep-all;
   }
   .sub-copy-en {
-    font-size: 0.82rem !important;
+    font-size: clamp(0.72rem, 3.3vw, 0.86rem) !important;
     display: block;
-    margin-top: 8px;
+    margin-top: 10px;
+    word-break: keep-all;
   }
   .hero-cta-group {
     gap: 12px !important;
@@ -250,9 +270,10 @@
   .player-card-num {
     font-size: 15px !important;
   }
+  /* 모바일에서는 "SCROLL FOR MORE" 안내를 쓰지 않는다 */
+  .roster-scroll-footer,
   .roster-court > .roster-scroll-footer {
-    margin: 4px 0 0 !important;
-    font-size: 9.5px !important;
+    display: none !important;
   }
 
   /* ───────────── SERVICES ───────────── */
@@ -445,23 +466,156 @@
     grid-auto-columns: calc((100% - 10px) / 2) !important;
     gap: 10px !important;
   }
-  /* 이전·다음 선수 버튼: 화면 아래 양쪽 고정 */
+  /* 이전·다음 선수 버튼: 화면 양옆 세로 중앙에 고정(내용이 비치도록 반투명) */
   .player-modal .modal-nav-arrow {
     position: fixed !important;
-    top: auto !important;
-    bottom: 18px !important;
-    transform: none !important;
-    width: 44px !important;
-    height: 44px !important;
-    font-size: 16px !important;
+    top: 50% !important;
+    bottom: auto !important;
+    transform: translateY(-50%) !important;
+    width: 38px !important;
+    height: 38px !important;
+    font-size: 14px !important;
+    opacity: 0.85;
   }
   .player-modal .modal-nav-prev {
-    left: 14px !important;
+    left: 6px !important;
     right: auto !important;
   }
   .player-modal .modal-nav-next {
-    right: 14px !important;
+    right: 6px !important;
     left: auto !important;
+  }
+
+  /* ───────────── SERVICES F&B·센터·숙소 상세 창 ─────────────
+     1열 규칙의 1fr 은 최소 폭이 "내용 폭"이라서, 썸네일 줄(150px × 8장)이 칸을 950px 로 밀어내
+     화면이 가로로 넘치고 사진·성분표가 찌그러졌다 → 칸의 최소 폭을 0 으로 풀고 썸네일 줄만 가로 스크롤. */
+  .svc-fnb-layout {
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 18px !important;
+  }
+  .svc-fnb-layout > *,
+  .svc-modal .svc-gallery,
+  .svc-modal .svc-gallery-main,
+  .svc-modal .svc-gallery-thumbs-wrap,
+  .svc-modal .svc-gallery-thumbs {
+    min-width: 0 !important;
+    max-width: 100%;
+  }
+  .svc-modal .svc-gallery-main {
+    max-height: 62vw;
+  }
+  .svc-modal .svc-gallery-img {
+    max-height: 62vw;
+  }
+  .svc-modal .svc-thumb {
+    width: 104px !important;
+    height: 60px !important;
+  }
+  .svc-nutrition {
+    padding: 18px !important;
+  }
+  .svc-nutrition-menu {
+    font-size: 20px !important;
+  }
+  .svc-nutrition-kcal strong {
+    font-size: 36px !important;
+  }
+  .svc-modal-inner {
+    padding: 64px 16px 72px !important;
+  }
+  .svc-modal .svc-modal-close {
+    top: 12px !important;
+    right: 12px !important;
+    width: 42px !important;
+    height: 42px !important;
+  }
+
+  /* ───────────── SERVICES 코치 소개 팝업 ─────────────
+     데스크톱 규칙(.svc-popup .svc-coach 가 사진 칸 240px 이상 + 글 칸 2열)이 좁은 화면 1열 규칙보다 우선해서
+     글 칸이 한 글자 폭으로 찌그러지고 팝업이 2000px 넘게 길어졌다 → 폰에서는 1열로 쌓는다. */
+  .svc-modal.is-popup .svc-modal-inner {
+    padding: 14px 10px 24px !important;
+    align-items: flex-start !important;
+  }
+  .svc-popup {
+    width: 100% !important;
+    padding: 20px 16px 20px !important;
+    border-radius: 14px !important;
+  }
+  .svc-popup-close {
+    top: 10px !important;
+    right: 10px !important;
+    width: 36px !important;
+    height: 36px !important;
+    font-size: 15px !important;
+  }
+  .svc-popup-head {
+    padding-right: 44px !important;
+    margin-bottom: 14px !important;
+  }
+  .svc-popup-title {
+    font-size: 22px !important;
+  }
+  .svc-popup-count {
+    font-size: 12px !important;
+  }
+  .svc-popup .svc-coach {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+  .svc-popup .svc-coach-photo {
+    width: 100%;
+    max-width: 280px;
+    max-height: 340px !important;
+    margin: 0 auto;
+  }
+  .svc-popup .svc-coach-name {
+    font-size: 28px !important;
+  }
+  .svc-popup .svc-coach-name span {
+    font-size: 14px !important;
+    margin-left: 6px !important;
+  }
+  .svc-popup .svc-coach-title {
+    font-size: 14px !important;
+  }
+  .svc-popup .svc-coach-quote {
+    font-size: 15px !important;
+    padding: 10px 14px !important;
+    margin-top: 14px !important;
+  }
+  .svc-popup .svc-career li {
+    font-size: 13.5px !important;
+  }
+  /* 이전·다음 코치 버튼: 팝업 바깥(-26px)에 걸치면 화면 밖으로 나가므로 팝업 아래 양쪽 점 줄 높이로 */
+  .svc-popup-arrow {
+    top: auto !important;
+    bottom: 10px !important;
+    width: 38px !important;
+    height: 38px !important;
+    font-size: 14px !important;
+    transform: none !important;
+  }
+  .svc-popup-arrow.prev {
+    left: 14px !important;
+  }
+  .svc-popup-arrow.next {
+    right: 14px !important;
+  }
+  .svc-popup .svc-coach-dots {
+    margin-top: 18px !important;
+    min-height: 38px;
+    align-items: center;
+  }
+
+  /* STORE 상세 창의 장바구니 바로가기: 폰에서는 글자를 빼고 아이콘+개수만 */
+  .sm-cart-fab {
+    right: 14px !important;
+    bottom: calc(16px + env(safe-area-inset-bottom, 0px)) !important;
+    padding: 13px 16px !important;
+  }
+  .sm-cart-fab-label {
+    display: none;
   }
 
   /* ───────────── PARTNERS ───────────── */
@@ -498,6 +652,42 @@
   .contact-split-grid {
     grid-template-columns: 1fr !important;
     gap: 28px !important;
+  }
+  /* 모바일 순서: 메시지 보내기(폼) → 연락처 정보 → CONNECT WITH US + 로고(+ 오른쪽 여백에 마스코트) */
+  .contact-form-card {
+    order: -1;
+  }
+  .contact-social-wrap {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      "title  mascot"
+      "links  mascot"
+      "logo   mascot";
+    column-gap: 12px;
+    align-items: center;
+  }
+  .contact-social-wrap .social-title { grid-area: title; }
+  .contact-social-wrap .social-links-row { grid-area: links; }
+  .contact-social-wrap .contact-m-logo {
+    grid-area: logo;
+    display: block;
+    width: 120px;
+    height: auto;
+    margin-top: 16px;
+    filter: drop-shadow(0 0 12px rgba(230, 0, 18, 0.55));
+  }
+  .contact-social-wrap .contact-m-mascot {
+    grid-area: mascot;
+    display: block;
+    width: clamp(96px, 30vw, 140px);
+    height: auto;
+    align-self: end;
+  }
+  /* 푸터의 로고·마스코트는 위 CONTACT 로 옮겼으므로 모바일 푸터에서는 숨김 */
+  .footer-logo,
+  .footer-mascot {
+    display: none !important;
   }
   .form-row-2col {
     grid-template-columns: 1fr !important;

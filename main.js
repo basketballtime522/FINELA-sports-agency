@@ -683,15 +683,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
-  function closePlayerModalFunc() {
+  function closePlayerModalFunc(silent) {
     if (!playerModal) return;
     playerModal.classList.remove('active');
       document.body.style.overflow = 'auto';
       document.body.classList.remove('modal-open');
 
-    // Roster 섹션으로 즉시 부드럽게 복귀
+    // Roster 섹션으로 즉시 부드럽게 복귀 (뒤로 가기로 닫을 때(silent === true)는 위치를 건드리지 않음)
     const rosterSec = document.getElementById('roster');
-    if (rosterSec) {
+    if (rosterSec && silent !== true) {
       rosterSec.scrollIntoView({ behavior: 'smooth' });
     }
   }
@@ -947,6 +947,8 @@ document.addEventListener('DOMContentLoaded', () => {
     saveCart();
     const totalItems = cart.reduce((acc, cur) => acc + cur.qty, 0);
     cartBadge.innerText = totalItems;
+    // 다른 화면(STORE 바로가기 버튼, 결제 창 등)이 장바구니 변화를 따라가도록 알린다
+    try { window.dispatchEvent(new CustomEvent('finela:cart', { detail: { count: totalItems } })); } catch (e) {}
 
     if (cart.length === 0) {
       cartItemsList.innerHTML = `<div class="cart-empty-message"><i class="fa-solid fa-cart-shopping mb-2 text-2xl text-gray-600 block"></i>장바구니에 담긴 상품이 없습니다.</div>`;
@@ -1024,7 +1026,13 @@ document.addEventListener('DOMContentLoaded', () => {
       if (res.added > 0) openCartDrawer();
       return res;
     },
-    maxQty: maxQtyOf,
+    // 상품 id 기준 한도 (결제 창에서 "한정 상품" 문구 판단용)
+    // 상품 객체 또는 상품 id 를 받는다
+    maxQty(x) { return maxQtyOf(x && typeof x === 'object' ? x : PRODUCTS_DATA.find(p => p.id === x)); },
+    // 장바구니 index 번째 줄이 가질 수 있는 최대 수량 / 수량 변경(한도 안에서만)
+    maxForIndex(index) { return cart[index] ? cartMaxFor(cart[index]) : 0; },
+    changeQty(index, delta) { window.changeCartQty(index, delta); return cart[index] ? cart[index].qty : 0; },
+    count() { return cart.reduce((a, c) => a + c.qty, 0); },
     qtyInCart: cartQtyOf,
     isOpen() { return cartDrawer.classList.contains('active'); },
     openDrawer: openCartDrawer,
@@ -1037,6 +1045,8 @@ document.addEventListener('DOMContentLoaded', () => {
   if (openCartBtn) openCartBtn.addEventListener('click', openCartDrawer);
   if (closeCartBtn) closeCartBtn.addEventListener('click', closeCartDrawer);
   if (cartOverlay) cartOverlay.addEventListener('click', closeCartDrawer);
+  const openOrdersBtn = document.getElementById('openOrdersBtn');
+  if (openOrdersBtn) openOrdersBtn.addEventListener('click', () => { if (window.FinelaOrders) window.FinelaOrders.open(); });
   const btnContinueShopping = document.getElementById('btnContinueShopping');
   if (btnContinueShopping) btnContinueShopping.addEventListener('click', closeCartDrawer);
   // ESC 로 장바구니 서랍 닫기 (결제 창이 열려 있으면 결제 창이 먼저 처리한다 — checkout.js 가 캡처 단계에서 가로챔)
@@ -1055,6 +1065,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // 새로고침 시 보던 화면 복원(page-state.js)에서 쓰는 선수 상세 창 연결 창구
   window.FinelaPlayer = {
     open: openPlayerModal,
+    close() { closePlayerModalFunc(true); },
     current() { return playerModal && playerModal.classList.contains('active') ? currentModalPlayerIndex : -1; }
   };
 

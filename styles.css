@@ -4218,12 +4218,14 @@ html {
 }
 
 .roster-court > .roster-grid {
+  grid-row: 2 !important; /* 위쪽 컨트롤 바를 없앴으므로 가운데 줄에 고정(위·아래 1fr 여백 동일) */
   margin: 0 !important;
   /* 화면이 좁아 선수단이 코트에 다 안 들어갈 때 main.js가 max-width를 줄임 → 가운데 정렬 유지 */
   justify-self: center !important;
 }
 
 .roster-court > .roster-scroll-footer {
+  grid-row: 3 !important;
   align-self: start !important;
   margin: clamp(6px, 1vh, 14px) 0 0 !important;
 }
@@ -5666,11 +5668,32 @@ body.cart-open .scroll-dot-nav {
 
 .svc-gallery-thumbs {
   flex: 1;
+  min-width: 0;
   display: flex;
   gap: 10px;
   overflow-x: auto;
   scroll-behavior: smooth;
   scrollbar-width: none;
+  cursor: grab;
+  touch-action: pan-x pan-y;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* 마우스로 끄는 동안에는 즉시 따라오도록 부드러운 스크롤을 끈다 */
+.svc-gallery-thumbs.is-dragging {
+  scroll-behavior: auto;
+  cursor: grabbing;
+}
+
+.svc-gallery-main {
+  touch-action: pan-y;
+}
+
+.svc-gallery-img,
+.svc-thumb img {
+  -webkit-user-drag: none;
+  user-select: none;
 }
 
 .svc-gallery-thumbs::-webkit-scrollbar {
