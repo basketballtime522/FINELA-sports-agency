@@ -252,19 +252,6 @@
     background-position: center !important;
     opacity: 0.22 !important;
   }
-  .roster-court > .roster-top-bar {
-    margin: 0 0 12px !important;
-    flex-direction: column !important;
-    align-items: flex-start !important;
-    gap: 10px !important;
-  }
-  .btn-back-home {
-    font-size: 11px !important;
-    padding: 7px 14px !important;
-  }
-  .roster-quick-link {
-    font-size: 11px !important;
-  }
   .roster-grid,
   .roster-court > .roster-grid {
     grid-template-columns: repeat(3, 1fr) !important;
@@ -806,5 +793,17 @@
   .btn-contact-pill {
     padding: 8px 11px !important;
     font-size: 11px !important;
+  }
+}
+
+/* 안내 토스트: 좁은 화면에서는 줄바꿈해서 화면 안에 들어오게 */
+@media (max-width: 900px) {
+  .link-info-toast {
+    white-space: normal;
+    width: max-content;
+    max-width: calc(100vw - 32px);
+    padding: 12px 18px;
+    font-size: 14px;
+    line-height: 1.5;
   }
 }

@@ -28,8 +28,8 @@
 3. **토탈 서비스 (Total Management Services)**
    - 3대 탭 인터랙션: 퍼포먼스 트레이닝(최첨단 센터 & 3인 코치진), 프리미엄 숙소(1인 1실, 맞춤 식단, 수중 테라피, 크라이오테라피), 1:1 라이프스타일 & 법률 자문단
 4. **공식 스토어 (FINELA Store)**
-   - 6종 시그니처 굿즈 및 어센틱 레플리카 져지 카탈로그
-   - 상품 퀵뷰 모달(사이즈 선택 가능) 및 실시간 **슬라이딩 장바구니 드로어(Cart Drawer)**
+   - 8개 카테고리 **3D 링** → 카테고리 상세 창 → 상품 상세 창(사이즈 선택)
+   - **슬라이딩 장바구니 드로어(Cart Drawer)**, 가상 결제 화면, 주문 내역(품목별 환불)
 5. **공식 파트너사 (Our Partners)**
    - 나이키, 게토레이, 삼성, SK텔레콤 등 8대 글로벌 후원사 (호버 시 브랜드 시그니처 컬러 변환)
 6. **문의하기 (Contact Us)**
@@ -78,8 +78,8 @@ git push -u origin main
 웹사이트의 모든 텍스트, 선수 명단, 스탯, 상품 가격, 이미지 경로는 **`finela-data.js`** 파일 하나에서 손쉽게 수정할 수 있습니다.
 
 - **선수 정보 변경/추가**: `finela-data.js`의 `PLAYERS_DATA` 배열 수정
-- **스토어 굿즈 변경**: `finela-data.js`의 `PRODUCTS_DATA` 배열 수정
-- **서비스 및 파트너사 변경**: `finela-data.js`의 `SERVICES_DATA`, `SPONSORS_DATA` 수정
+- **스토어 굿즈 변경**: `finela-data.js`의 `PRODUCTS_DATA`, `STORE_CATEGORIES` 수정
+- **서비스 및 파트너사 변경**: `finela-data.js`의 `SERVICES_DATA`, `SERVICE_DETAILS`, `SPONSORS_DATA` 수정
 
 수정 후 `git commit -am "update: 선수 정보 수정"` 및 `git push`를 실행하면 **버셀이 자동으로 감지하여 10초 만에 사이트를 실시간 업데이트**합니다.
 
@@ -90,11 +90,22 @@ git push -u origin main
 ```text
 FINELA 에이전트/
 ├── index.html              # 메인 공식 웹사이트 단일 페이지
-├── styles.css              # 다크 모드 & 네온 레드 반응형 스타일시트
-├── main.js                 # 모달, 슬라이드쇼, 장바구니 등 인터랙티브 로직
+├── 404.html                # 없는 주소 안내 페이지
+├── styles.css              # 기본 스타일 (데스크톱)
+├── mobile.css              # 모바일(≤900px) 전용 스타일
+├── store-ring.css / .js    # STORE 3D 카테고리 링과 상세 창
+├── checkout.css / .js      # 가상 결제 화면
+├── partners.css            # 파트너사 섹션
+├── main.js                 # 슬라이드쇼, 선수 상세, 장바구니 등 공통 로직
 ├── finela-data.js          # 선수, 상품, 서비스, 파트너사 통합 설정 데이터
+├── services-detail.js      # SERVICES 상세 창(갤러리·코치)
+├── orders.js               # 주문 내역·환불
+├── page-state.js           # 뒤로/앞으로 가기, 새로고침 시 화면 유지, 선수 딥링크
+├── player-layout.*         # 선수 상세 화면 배치 데이터와 편집기
+├── mascot-layout.js        # CONTACT 마스코트 배치
+├── mobile-top.js           # 모바일 맨 위로 버튼
+├── legal.js                # 이용약관·개인정보처리방침 팝업
 ├── vercel.json             # Vercel 배포 및 캐싱 헤더 설정 파일
-├── package.json            # 프로젝트 메타데이터
 ├── .gitignore              # 불필요한 시스템 파일 제외 설정
 ├── README.md               # 프로젝트 안내 및 배포 매뉴얼
 └── assets/                 # 최적화된 로컬 이미지 에셋

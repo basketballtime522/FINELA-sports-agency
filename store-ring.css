@@ -55,8 +55,6 @@
   width: 100%;
   height: calc(var(--sr-h) + 40px);
   overflow: hidden;
-  perspective: 2200px;
-  perspective-origin: 50% 50%;
   cursor: grab;
   touch-action: pan-y;
 }
@@ -82,7 +80,6 @@
   top: 50%;
   width: 0;
   height: 0;
-  transform-style: preserve-3d;
   margin-top: -2px;
 }
 
@@ -410,27 +407,6 @@ body.orders-open .sm-cat-arrow { display: none; }
   line-height: 1.75;
   color: #c4c7d4;
 }
-.sm-stats {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-}
-.sm-stats > div {
-  padding: 14px 12px;
-  border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background: rgba(255, 255, 255, 0.03);
-}
-.sm-stats strong {
-  display: block;
-  font-family: var(--font-display);
-  font-size: 18px;
-  color: #fff;
-}
-.sm-stats span {
-  font-size: 11px;
-  color: #8e92a4;
-}
 
 .sm-section-title {
   margin: 0 0 18px;
@@ -531,40 +507,6 @@ body.orders-open .sm-cat-arrow { display: none; }
   color: #fff;
 }
 .sm-soon span { font-size: 14px; color: #8e92a4; }
-
-.sm-catnav {
-  display: flex;
-  justify-content: space-between;
-  gap: 16px;
-}
-.sm-catnav button {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  padding: 16px 22px;
-  border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  background: rgba(255, 255, 255, 0.03);
-  color: #fff;
-  font-family: var(--font-display);
-  font-size: 16px;
-  font-weight: 600;
-  letter-spacing: 1px;
-  cursor: pointer;
-  transition: border-color 0.2s ease, background 0.2s ease;
-}
-.sm-catnav button:hover {
-  border-color: #e60012;
-  background: rgba(230, 0, 18, 0.1);
-}
-.sm-catnav small {
-  display: block;
-  font-family: var(--font-en);
-  font-size: 10px;
-  letter-spacing: 2px;
-  color: #8e92a4;
-}
-.sm-catnav button:last-child { text-align: right; }
 
 /* ---------- 상품 상세 ---------- */
 .sm-back {

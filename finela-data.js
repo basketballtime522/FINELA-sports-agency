@@ -79,7 +79,7 @@ const PLAYERS_DATA = [
     ],
     instagramPosts: [
       { img: "assets/media/insta_training.jpg", likes: "14.2K", caption: "새벽 훈련 완료. 항상 다음 경기를 준비합니다.", url: "" },
-      { img: "assets/media/insta_buzzer_beater.jpg", likes: "28.5K", caption: "Buzzer beater moment. 팬 여러분 감사합니다!", url: "" },
+      { img: "assets/media/insta_training.jpg", likes: "28.5K", caption: "Buzzer beater moment. 팬 여러분 감사합니다!", url: "" },
       { img: "assets/media/insta_fashion.jpg", likes: "19.8K", caption: "Game day tunnel fit. #FINELA #OOTD", url: "" },
       { img: "assets/media/insta_trophy.jpg", likes: "35.1K", caption: "With my team. 우리는 하나입니다.", url: "" }
     ]
@@ -118,7 +118,7 @@ const PLAYERS_DATA = [
     ],
     instagramPosts: [
       { img: "assets/media/insta_training.jpg", likes: "12.1K", caption: "Focus on the process. 멈추지 않는다.", url: "" },
-      { img: "assets/media/insta_buzzer_beater.jpg", likes: "22.4K", caption: "승리의 순간. 함께 뛰어준 동료들에게 감사.", url: "" },
+      { img: "assets/media/insta_training.jpg", likes: "22.4K", caption: "승리의 순간. 함께 뛰어준 동료들에게 감사.", url: "" },
       { img: "assets/media/insta_fashion.jpg", likes: "18.2K", caption: "Off the court style check.", url: "" },
       { img: "assets/media/insta_trophy.jpg", likes: "31.0K", caption: "Gold medal mission begins now.", url: "" }
     ]
@@ -157,7 +157,7 @@ const PLAYERS_DATA = [
     ],
     instagramPosts: [
       { img: "assets/media/insta_training.jpg", likes: "9.8K", caption: "드리블 디테일 훈련. 매일 조금씩 더 강하게.", url: "" },
-      { img: "assets/media/insta_buzzer_beater.jpg", likes: "18.1K", caption: "앤드원! 팬들의 함성이 만든 득점.", url: "" },
+      { img: "assets/media/insta_training.jpg", likes: "18.1K", caption: "앤드원! 팬들의 함성이 만든 득점.", url: "" },
       { img: "assets/media/insta_fashion.jpg", likes: "14.5K", caption: "Tunnel walk in all black.", url: "" },
       { img: "assets/media/insta_trophy.jpg", likes: "25.3K", caption: "팀과 함께 최고의 결과를 만들겠습니다.", url: "" }
     ]
@@ -196,7 +196,7 @@ const PLAYERS_DATA = [
     ],
     instagramPosts: [
       { img: "assets/media/insta_training.jpg", likes: "11.5K", caption: "슈팅 1000개 챌린지 성공.", url: "" },
-      { img: "assets/media/insta_buzzer_beater.jpg", likes: "26.0K", caption: "클러치 타임. 믿어주셔서 감사합니다.", url: "" },
+      { img: "assets/media/insta_training.jpg", likes: "26.0K", caption: "클러치 타임. 믿어주셔서 감사합니다.", url: "" },
       { img: "assets/media/insta_fashion.jpg", likes: "17.3K", caption: "비시즌 화보 촬영 현장 스케치.", url: "" },
       { img: "assets/media/insta_trophy.jpg", likes: "28.9K", caption: "국가대표의 자부심을 가슴에 품고.", url: "" }
     ]
@@ -235,7 +235,7 @@ const PLAYERS_DATA = [
     ],
     instagramPosts: [
       { img: "assets/media/insta_training.jpg", likes: "8.9K", caption: "완벽한 포물선을 만들기 위한 반복 훈련.", url: "" },
-      { img: "assets/media/insta_buzzer_beater.jpg", likes: "15.4K", caption: "Back to back 3pt! 응원 감사합니다.", url: "" },
+      { img: "assets/media/insta_training.jpg", likes: "15.4K", caption: "Back to back 3pt! 응원 감사합니다.", url: "" },
       { img: "assets/media/insta_fashion.jpg", likes: "12.8K", caption: "Street casual look.", url: "" },
       { img: "assets/media/insta_trophy.jpg", likes: "21.0K", caption: "아이치-나고야를 향해 달려갑니다.", url: "" }
     ]
@@ -274,7 +274,7 @@ const PLAYERS_DATA = [
     ],
     instagramPosts: [
       { img: "assets/media/insta_training.jpg", likes: "10.2K", caption: "웨이트 트레이닝 세션 완료. 몸 상태 최상.", url: "" },
-      { img: "assets/media/insta_buzzer_beater.jpg", likes: "17.9K", caption: "코트 위의 허슬 플레이는 언제나 내 몫.", url: "" },
+      { img: "assets/media/insta_training.jpg", likes: "17.9K", caption: "코트 위의 허슬 플레이는 언제나 내 몫.", url: "" },
       { img: "assets/media/insta_fashion.jpg", likes: "13.6K", caption: "편안한 일상 속 휴식 시간.", url: "" },
       { img: "assets/media/insta_trophy.jpg", likes: "24.5K", caption: "대표팀 유니폼의 무게를 잊지 않겠습니다.", url: "" }
     ]
@@ -313,7 +313,7 @@ const PLAYERS_DATA = [
     ],
     instagramPosts: [
       { img: "assets/media/insta_training.jpg", likes: "11.1K", caption: "속공 마무리 훈련. 스피드와 정확도.", url: "" },
-      { img: "assets/media/insta_buzzer_beater.jpg", likes: "20.3K", caption: "원맨 패스트브레이크 덩크!", url: "" },
+      { img: "assets/media/insta_training.jpg", likes: "20.3K", caption: "원맨 패스트브레이크 덩크!", url: "" },
       { img: "assets/media/insta_fashion.jpg", likes: "16.4K", caption: "Styling with my favorite kicks.", url: "" },
       { img: "assets/media/insta_trophy.jpg", likes: "27.2K", caption: "아시안게임 메달을 향해 원팀으로!", url: "" }
     ]
@@ -352,7 +352,7 @@ const PLAYERS_DATA = [
     ],
     instagramPosts: [
       { img: "assets/media/insta_training.jpg", likes: "18.5K", caption: "Vertical jump training day. 더 높이.", url: "" },
-      { img: "assets/media/insta_buzzer_beater.jpg", likes: "42.0K", caption: "Windmill dunk in transition!", url: "" },
+      { img: "assets/media/insta_training.jpg", likes: "42.0K", caption: "Windmill dunk in transition!", url: "" },
       { img: "assets/media/insta_fashion.jpg", likes: "25.1K", caption: "Seattle vibe. #FINELA", url: "" },
       { img: "assets/media/insta_trophy.jpg", likes: "48.9K", caption: "태극마크를 달고 최고의 퍼포먼스를 약속합니다.", url: "" }
     ]
@@ -391,7 +391,7 @@ const PLAYERS_DATA = [
     ],
     instagramPosts: [
       { img: "assets/media/insta_training.jpg", likes: "9.2K", caption: "선배들과 함께하는 훈련, 배울 점이 너무 많습니다.", url: "" },
-      { img: "assets/media/insta_buzzer_beater.jpg", likes: "16.8K", caption: "게임 위닝 레이업. 끝까지 포기하지 않았습니다.", url: "" },
+      { img: "assets/media/insta_training.jpg", likes: "16.8K", caption: "게임 위닝 레이업. 끝까지 포기하지 않았습니다.", url: "" },
       { img: "assets/media/insta_fashion.jpg", likes: "11.4K", caption: "Weekend campus look.", url: "" },
       { img: "assets/media/insta_trophy.jpg", likes: "23.0K", caption: "더 높은 무대를 향해 멈추지 않고 전진합니다.", url: "" }
     ]
@@ -430,7 +430,7 @@ const PLAYERS_DATA = [
     ],
     instagramPosts: [
       { img: "assets/media/insta_training.jpg", likes: "7.8K", caption: "베테랑의 무게감. 후배들을 이끌고 솔선수범.", url: "" },
-      { img: "assets/media/insta_buzzer_beater.jpg", likes: "13.2K", caption: "골밑 블록슛으로 지켜낸 승리.", url: "" },
+      { img: "assets/media/insta_training.jpg", likes: "13.2K", caption: "골밑 블록슛으로 지켜낸 승리.", url: "" },
       { img: "assets/media/insta_fashion.jpg", likes: "9.5K", caption: "Family time.", url: "" },
       { img: "assets/media/insta_trophy.jpg", likes: "19.8K", caption: "마지막 아시안게임이라는 마음가짐으로.", url: "" }
     ]
@@ -469,7 +469,7 @@ const PLAYERS_DATA = [
     ],
     instagramPosts: [
       { img: "assets/media/insta_training.jpg", likes: "12.3K", caption: "땀은 배신하지 않는다. 오늘도 묵묵하게.", url: "" },
-      { img: "assets/media/insta_buzzer_beater.jpg", likes: "24.1K", caption: "리바운드 하나가 승부를 바꿉니다.", url: "" },
+      { img: "assets/media/insta_training.jpg", likes: "24.1K", caption: "리바운드 하나가 승부를 바꿉니다.", url: "" },
       { img: "assets/media/insta_fashion.jpg", likes: "15.0K", caption: "Post-game chill.", url: "" },
       { img: "assets/media/insta_trophy.jpg", likes: "32.4K", caption: "우리의 목표는 오직 금메달 하나뿐입니다.", url: "" }
     ]
@@ -508,7 +508,7 @@ const PLAYERS_DATA = [
     ],
     instagramPosts: [
       { img: "assets/media/insta_training.jpg", likes: "15.2K", caption: "Grinding every single day. No shortcuts.", url: "" },
-      { img: "assets/media/insta_buzzer_beater.jpg", likes: "33.7K", caption: "Posterize dunk! Loving the energy.", url: "" },
+      { img: "assets/media/insta_training.jpg", likes: "33.7K", caption: "Posterize dunk! Loving the energy.", url: "" },
       { img: "assets/media/insta_fashion.jpg", likes: "20.1K", caption: "Seoul street culture. 🔥", url: "" },
       { img: "assets/media/insta_trophy.jpg", likes: "38.5K", caption: "Ready to represent with everything I got.", url: "" }
     ]
@@ -791,7 +791,14 @@ const SPONSORS_DATA = [
       desc: "국가대표 선수단의 유니폼과 훈련 용품을 후원하는 공식 키트 스폰서입니다.",
       collab: ["선수별 시그니처 컬러 훈련복 제작", "FINELA 스토어 공동 기획 컬렉션", "시즌 개막 캠페인 촬영"],
       athleteIdx: [3, 4]
-    }
+    },
+    // 추가 스폰서: 카드에 보이는 한 줄 후원 내용 (line)
+    "GATORADE": { line: "훈련·경기 수분·전해질 공급" },
+    "SK TELECOM": { line: "AI 데이터 분석·5G 중계 지원" },
+    "KB BANK": { line: "선수 자산관리·금융 서비스" },
+    "KOREAN AIR": { line: "국제대회·원정 항공 지원" },
+    "HYUNDAI": { line: "선수 전용 의전 차량 지원" },
+    "RED BULL": { line: "에너지 드링크·콘텐츠 협업" }
   };
   SPONSORS_DATA.forEach((sp) => Object.assign(sp, { tier: "supporting", logo: "", image: "" }, EXTRA[sp.name] || {}));
 })();
@@ -802,7 +809,7 @@ const SERVICES_DATA = {
     title: "최첨단 퍼포먼스 센터",
     subtitle: "데이터 기반의 체계적인 훈련 프로세스",
     desc: "FINELA 전용 훈련 센터는 NBA 및 유럽 명문 구단에서 사용하는 최신 모션 트래킹 시스템과 생체 데이터 분석 장비를 갖추고 있습니다. '정밀 분석 ➔ 맞춤형 프로그램 설계 ➔ 실전 적용 ➔ 피드백'의 4단계 훈련 프로세스를 통해 선수의 약점을 지우고 강점을 극대화합니다.",
-    image: "assets/services/facility_hightech.jpg",
+    image: "assets/services/facility_physical.jpg",
     coaches: [
       {
         icon: "fa-solid fa-dumbbell",

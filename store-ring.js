@@ -75,6 +75,7 @@
   const dots = Array.from(stage.querySelectorAll('[data-dot]'));
 
   let radius = 400;
+  let persp = 2200;
   let angle = 0;          // 현재 각도
   let target = 0;         // 목표 각도 (THETA 배수로 스냅)
   let activeIdx = -1;
@@ -94,15 +95,16 @@
     const w = cards[0].offsetWidth || 240;
     const gap = Math.max(14, w * 0.1);
     radius = (w + gap) / 2 / Math.tan(Math.PI / N);
-    cards.forEach((c, i) => {
-      c.style.transform = `rotateY(${i * THETA}deg) translateZ(${radius}px)`;
-    });
-    viewport.style.perspective = Math.round(radius * 5 + w * 2) + 'px';
+    persp = Math.round(radius * 5 + w * 2);
     paint();
   }
 
   function paint() {
-    track.style.transform = `translateZ(${-radius}px) rotateY(${angle}deg)`;
+    // 카드마다 원근(perspective)이 들어간 변환을 직접 준다. (track 의 preserve-3d 3D 공간을 쓰지 않음)
+    // preserve-3d 로 두면 스크롤로 링이 화면 위로 일부 나갔을 때 정면 카드 아랫부분이 잘려 보이는 렌더링 문제가 있었다.
+    cards.forEach((c, i) => {
+      c.style.transform = `perspective(${persp}px) translateZ(${-radius}px) rotateY(${angle + i * THETA}deg) translateZ(${radius}px)`;
+    });
     let best = 0;
     let bestAbs = 999;
     cards.forEach((c, i) => {

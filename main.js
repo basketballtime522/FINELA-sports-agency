@@ -1054,7 +1054,18 @@ document.addEventListener('DOMContentLoaded', () => {
   // 7. 공식 후원사 렌더링 (OUR PARTNERS & SPONSORS)
   // ============================================================================
   const sponsorsGrid = document.getElementById('sponsorsGrid');
+  // 후원사 링크는 실제 사이트로 연결하지 않는 가상 데모이므로 클릭 시 안내 문구만 보여 준다
+  const SPONSOR_DEMO_MSG = (name) => `${String(name).replace(/"/g, '')} · 가상 데모입니다. 실제 사이트와 연동되지 않습니다`;
   if (sponsorsGrid) {
+    const sponsorInfo = (e) => {
+      const el = e.target.closest('[data-link-message]');
+      if (!el || el.hasAttribute('href')) return;
+      if (e.type === 'keydown' && e.key !== 'Enter' && e.key !== ' ') return;
+      e.preventDefault();
+      showLinkInfo(el.dataset.linkMessage);
+    };
+    sponsorsGrid.addEventListener('click', sponsorInfo);
+    sponsorsGrid.addEventListener('keydown', sponsorInfo);
     // 메인 스폰서: 소개 블록을 좌우 번갈아 배치 / 나머지: 하단 로고 그리드 (partners.css)
     const mainSponsors = SPONSORS_DATA.filter(sp => sp.tier === 'main').sort((a, b) => (a.order || 0) - (b.order || 0));
     const otherSponsors = SPONSORS_DATA.filter(sp => sp.tier !== 'main');
@@ -1084,16 +1095,19 @@ document.addEventListener('DOMContentLoaded', () => {
                   <div class="sp-chips">${athletes.map(p => `<span class="sp-chip">${p.nameKo}</span>`).join('')}</div>
                 </div>` : ''}
             </div>
-            <a class="sp-visit" href="${sp.url}" target="_blank" rel="noopener">공식 사이트 방문 <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+            <a class="sp-visit" role="button" tabindex="0" data-link-message="${SPONSOR_DEMO_MSG(sp.name)}">공식 사이트 방문 <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
           </div>
         </article>`;
     }).join('');
 
     const cellHtml = otherSponsors.map(sp => `
-      <a href="${sp.url}" target="_blank" rel="noopener" class="sp-cell" style="--brand-accent: ${sp.accentColor};" title="${sp.name} · ${sp.roleKo}">
-        ${sp.logo
-          ? `<img src="${sp.logo}" alt="${sp.name}" loading="lazy">`
-          : `<i class="${sp.iconClass}"></i><span>${sp.name}</span>`}
+      <a role="button" tabindex="0" data-link-message="${SPONSOR_DEMO_MSG(sp.name)}" class="sp-cell" style="--brand-accent: ${sp.accentColor};" title="${sp.name} · ${sp.roleKo}">
+        <div class="sp-cell-head">
+          ${sp.logo
+            ? `<img src="${sp.logo}" alt="${sp.name}" loading="lazy">`
+            : `<i class="${sp.iconClass}"></i><span>${sp.name}</span>`}
+        </div>
+        ${sp.line ? `<p class="sp-cell-line">${sp.line}</p>` : ''}
       </a>`).join('');
 
     // 4열 그리드의 빈 칸은 파트너 제안 칸으로 채움
